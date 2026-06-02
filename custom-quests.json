@@ -1,0 +1,408 @@
+{
+  "_note": "tarkov.dev API에 없는 퀘스트 보완용. Boreas는 추정 데이터 (_estimated:true) — 위키 업데이트 시 수정 필요.",
+  "_updated": "2026-06-01",
+  "quests": [
+    {
+      "id": "custom_boreas_01",
+      "name": "Boreas (Chapter Start)",
+      "kappaRequired": false,
+      "minPlayerLevel": 1,
+      "trader": {
+        "id": "mechanic",
+        "name": "Mechanic"
+      },
+      "map": null,
+      "experience": 8000,
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Boreas",
+      "taskRequirements": [],
+      "objectives": [
+        {
+          "type": "findItem",
+          "description": "Obtain a Paradigm Shipping poster (Ground Zero / any map / Flea Market) OR access the radio at Intelligence Center Level 3"
+        },
+        {
+          "type": "visit",
+          "description": "Speak to Mechanic about the distress signal"
+        }
+      ],
+      "finishRewards": {
+        "traderStanding": [],
+        "items": [],
+        "offerUnlock": [],
+        "skillLevelReward": []
+      },
+      "_chapter": "Boreas",
+      "_note": "Story chapter — start by finding poster on any map or Intel Center Lv3 radio",
+      "_estimated": true,
+      "_warning": "이 퀘스트는 공식 위키에 아직 등재되지 않은 추정 데이터입니다. 실제 내용과 다를 수 있습니다."
+    },
+    {
+      "id": "custom_boreas_02",
+      "name": "Boreas — Fix the Equipment",
+      "kappaRequired": false,
+      "minPlayerLevel": 1,
+      "trader": {
+        "id": "mechanic",
+        "name": "Mechanic"
+      },
+      "map": {
+        "id": "woods",
+        "name": "Woods"
+      },
+      "experience": 10000,
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Boreas",
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "custom_boreas_01",
+            "name": "Boreas (Chapter Start)"
+          },
+          "status": [
+            "complete"
+          ]
+        }
+      ],
+      "objectives": [
+        {
+          "type": "visit",
+          "description": "Go to the Scav Bunker area in Woods (north of Sawmill)"
+        },
+        {
+          "type": "use",
+          "description": "Repair the equipment at the cellular tower using a Toolset"
+        }
+      ],
+      "finishRewards": {
+        "traderStanding": [
+          {
+            "trader": {
+              "id": "mechanic",
+              "name": "Mechanic"
+            },
+            "standing": 0.05
+          }
+        ],
+        "items": [],
+        "offerUnlock": [],
+        "skillLevelReward": []
+      },
+      "_chapter": "Boreas",
+      "_estimated": true,
+      "_warning": "이 퀘스트는 공식 위키에 아직 등재되지 않은 추정 데이터입니다. 실제 내용과 다를 수 있습니다."
+    },
+    {
+      "id": "custom_boreas_03",
+      "name": "Boreas — Find the Directive",
+      "kappaRequired": false,
+      "minPlayerLevel": 1,
+      "trader": {
+        "id": "mechanic",
+        "name": "Mechanic"
+      },
+      "map": {
+        "id": "lighthouse",
+        "name": "Lighthouse"
+      },
+      "experience": 10000,
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Boreas",
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "custom_boreas_02",
+            "name": "Boreas — Fix the Equipment"
+          },
+          "status": [
+            "complete"
+          ]
+        }
+      ],
+      "objectives": [
+        {
+          "type": "findItem",
+          "description": "Find the Paradigm Shipping Directive in the warehouse near the train extraction (north of water treatment plant) on Lighthouse"
+        },
+        {
+          "type": "extract",
+          "description": "Extract from Lighthouse with the Directive"
+        }
+      ],
+      "finishRewards": {
+        "traderStanding": [],
+        "items": [],
+        "offerUnlock": [],
+        "skillLevelReward": []
+      },
+      "_chapter": "Boreas",
+      "_estimated": true,
+      "_warning": "이 퀘스트는 공식 위키에 아직 등재되지 않은 추정 데이터입니다. 실제 내용과 다를 수 있습니다."
+    },
+    {
+      "id": "custom_boreas_04",
+      "name": "Boreas — Report to Traders",
+      "kappaRequired": false,
+      "minPlayerLevel": 1,
+      "trader": {
+        "id": "mechanic",
+        "name": "Mechanic"
+      },
+      "map": null,
+      "experience": 5000,
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Boreas",
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "custom_boreas_03",
+            "name": "Boreas — Find the Directive"
+          },
+          "status": [
+            "complete"
+          ]
+        }
+      ],
+      "objectives": [
+        {
+          "type": "visit",
+          "description": "Speak to Mechanic about Boreas"
+        },
+        {
+          "type": "visit",
+          "description": "Speak to Prapor about the transport"
+        }
+      ],
+      "finishRewards": {
+        "traderStanding": [],
+        "items": [],
+        "offerUnlock": [],
+        "skillLevelReward": []
+      },
+      "_chapter": "Boreas",
+      "_note": "Quest splits here — Prapor branch (depends on Falling Skies choices) + BTR Driver branch",
+      "_estimated": true,
+      "_warning": "이 퀘스트는 공식 위키에 아직 등재되지 않은 추정 데이터입니다. 실제 내용과 다를 수 있습니다."
+    },
+    {
+      "id": "custom_boreas_05a",
+      "name": "Boreas — Prapor Branch (gave case)",
+      "kappaRequired": false,
+      "minPlayerLevel": 1,
+      "trader": {
+        "id": "prapor",
+        "name": "Prapor"
+      },
+      "map": {
+        "id": "reserve",
+        "name": "Reserve"
+      },
+      "experience": 15000,
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Boreas",
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "custom_boreas_04",
+            "name": "Boreas — Report to Traders"
+          },
+          "status": [
+            "complete"
+          ]
+        }
+      ],
+      "objectives": [
+        {
+          "type": "findItem",
+          "description": "Find AMG-10 hydraulic fluid on Reserve (multiple spawns)"
+        },
+        {
+          "type": "handover",
+          "description": "Hand over AMG-10 hydraulic fluid to Prapor"
+        }
+      ],
+      "finishRewards": {
+        "traderStanding": [
+          {
+            "trader": {
+              "id": "prapor",
+              "name": "Prapor"
+            },
+            "standing": 0.05
+          }
+        ],
+        "items": [],
+        "offerUnlock": [],
+        "skillLevelReward": []
+      },
+      "_chapter": "Boreas",
+      "_note": "If you GAVE the armored case to Prapor in Falling Skies — easier route",
+      "_estimated": true,
+      "_warning": "이 퀘스트는 공식 위키에 아직 등재되지 않은 추정 데이터입니다. 실제 내용과 다를 수 있습니다."
+    },
+    {
+      "id": "custom_boreas_05b",
+      "name": "Boreas — Prapor Branch (kept case)",
+      "kappaRequired": false,
+      "minPlayerLevel": 1,
+      "trader": {
+        "id": "prapor",
+        "name": "Prapor"
+      },
+      "map": {
+        "id": "reserve",
+        "name": "Reserve"
+      },
+      "experience": 15000,
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Boreas",
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "custom_boreas_04",
+            "name": "Boreas — Report to Traders"
+          },
+          "status": [
+            "complete"
+          ]
+        }
+      ],
+      "objectives": [
+        {
+          "type": "findItem",
+          "description": "Find AMG-10 hydraulic fluid on Reserve"
+        },
+        {
+          "type": "findItem",
+          "description": "Find 3x Military power filters (FIR)"
+        },
+        {
+          "type": "handover",
+          "description": "Hand over items to Prapor"
+        }
+      ],
+      "finishRewards": {
+        "traderStanding": [
+          {
+            "trader": {
+              "id": "prapor",
+              "name": "Prapor"
+            },
+            "standing": 0.05
+          }
+        ],
+        "items": [],
+        "offerUnlock": [],
+        "skillLevelReward": []
+      },
+      "_chapter": "Boreas",
+      "_note": "If you KEPT the armored case in Falling Skies — harder route (need 3x Military power filters FIR)",
+      "_estimated": true,
+      "_warning": "이 퀘스트는 공식 위키에 아직 등재되지 않은 추정 데이터입니다. 실제 내용과 다를 수 있습니다."
+    },
+    {
+      "id": "custom_boreas_06",
+      "name": "Boreas — BTR Driver Branch",
+      "kappaRequired": false,
+      "minPlayerLevel": 1,
+      "trader": {
+        "id": "btr-driver",
+        "name": "BTR Driver"
+      },
+      "map": {
+        "id": "streets of tarkov",
+        "name": "Streets of Tarkov"
+      },
+      "experience": 12000,
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Boreas",
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "custom_boreas_04",
+            "name": "Boreas — Report to Traders"
+          },
+          "status": [
+            "complete"
+          ]
+        }
+      ],
+      "objectives": [
+        {
+          "type": "visit",
+          "description": "Speak to BTR Driver about transport to Icebreaker"
+        },
+        {
+          "type": "visit",
+          "description": "Reach the BTR Driver checkpoint on Streets of Tarkov"
+        }
+      ],
+      "finishRewards": {
+        "traderStanding": [],
+        "items": [],
+        "offerUnlock": [],
+        "skillLevelReward": []
+      },
+      "_chapter": "Boreas",
+      "_estimated": true,
+      "_warning": "이 퀘스트는 공식 위키에 아직 등재되지 않은 추정 데이터입니다. 실제 내용과 다를 수 있습니다."
+    },
+    {
+      "id": "custom_boreas_07",
+      "name": "Boreas — Board the Icebreaker",
+      "kappaRequired": false,
+      "minPlayerLevel": 1,
+      "trader": {
+        "id": "prapor",
+        "name": "Prapor"
+      },
+      "map": {
+        "id": "shoreline",
+        "name": "Shoreline"
+      },
+      "experience": 20000,
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Boreas",
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "custom_boreas_05a",
+            "name": "Boreas — Prapor Branch (gave case)"
+          },
+          "status": [
+            "complete"
+          ]
+        },
+        {
+          "task": {
+            "id": "custom_boreas_06",
+            "name": "Boreas — BTR Driver Branch"
+          },
+          "status": [
+            "complete"
+          ]
+        }
+      ],
+      "objectives": [
+        {
+          "type": "findItem",
+          "description": "Bring 400,000 Roubles and 2,500 Euros"
+        },
+        {
+          "type": "findItem",
+          "description": "Bring a Handheld Green Flare (RSP-30)"
+        },
+        {
+          "type": "visit",
+          "description": "Go to the Shoreline pier (Lighthouse extract direction)"
+        },
+        {
+          "type": "extract",
+          "description": "Board and extract from the Icebreaker via Shoreline pier"
+        }
+      ],
+      "finishRewards": {
+        "traderStanding": [],
+        "items": [],
+        "offerUnlock": [],
+        "skillLevelReward": []
+      },
+      "_chapter": "Boreas",
+      "_note": "Final step — unlocks Icebreaker map access",
+      "_estimated": true,
+      "_warning": "이 퀘스트는 공식 위키에 아직 등재되지 않은 추정 데이터입니다. 실제 내용과 다를 수 있습니다."
+    }
+  ]
+}
