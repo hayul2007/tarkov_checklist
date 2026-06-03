@@ -629,7 +629,7 @@ const TRADER_META={
   mechanic:{n:'Mechanic',i:'🔧'},ragman:{n:'Ragman',i:'🧥'},
   jaeger:{n:'Jaeger',i:'🎯'},lightkeeper:{n:'Lightkeeper',i:'💡'},
   fence:{n:'Fence',i:'🔒'},ref:{n:'Ref',i:'📡'},
-  'btr-driver':{n:'BTR Driver',i:'🚛'},'btr driver':{n:'BTR Driver',i:'🚛'},btrdriver:{n:'BTR Driver',i:'🚛'},
+  btrdriver:{n:'BTR Driver',i:'🚛'},
   storyteller:{n:'Storyteller',i:'📖'},
 };
 // 맵 이미지 = tarkov.dev 공식 SVG (assets.tarkov.dev). 인터넷 연결 시 실시간 로드.
@@ -835,8 +835,8 @@ async function fetchData(){
           startRewards: q.startRewards||{traderStanding:[],items:[]},
           objectives: (q.objectives||[]).map((o,i)=>({...o, id:'custom_obj_'+q.id+'_'+i, zones:[]})),
         }));
-        // 중복 제거 (이름 정규화: 공백·하이픈·기호 무시, 소문자)
-        const norm = s => (s||'').toLowerCase().replace(/[\s\-_–—:.'']/g,'').replace(/part/g,'');
+        // 중복 제거: API 퀘스트 이름과 조금이라도 겹치면 custom 제외 (API 우선)
+        const norm = s => (s||'').toLowerCase().replace(/[^a-z0-9]/g,'').replace(/part\d*/g,'').replace(/\d+$/,'');
         const existingNames = new Set(quests.map(q=>norm(q.name)));
         const newQ = customQ.filter(q=>!existingNames.has(norm(q.name)));
         quests = [...quests, ...newQ];
@@ -953,7 +953,12 @@ function renderLLNextBox(tid){
 function llClass(ll){return['','ll1','ll2','ll3','ll4'][ll]||'ll4'}
 function llColor(ll){return['','#c8a84b','#4caf7d','#5a8de0','#9b7ae8'][ll]||'#9b7ae8'}
 
-function tKey(t){return(t?.id||t?.name||'').toLowerCase()}
+function tKey(t){
+  const raw=(t?.name||t?.id||'').toLowerCase().replace(/[^a-z]/g,'');
+  // BTR Driver 별칭 통합
+  if(raw.includes('btr'))return'btrdriver';
+  return raw;
+}
 function mKey(m){return(m?.name||m?.id||'').toLowerCase()}
 
 function isAvail(q){
