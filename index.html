@@ -102,7 +102,18 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 .content::-webkit-scrollbar-track{background:transparent}
 .content::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
 
-/* TRADER GRID */
+/* STORY CHAPTERS */
+.story-box{padding:8px 10px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg2)}
+.story-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.story-lbl-pct{font-size:10px;color:var(--accent);font-weight:600}
+.story-pbar{height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-bottom:7px}
+.story-pfill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s}
+.story-chapter{display:flex;align-items:center;gap:7px;padding:3px 2px;cursor:pointer;border-radius:4px;transition:background .1s}
+.story-chapter:hover{background:var(--bg3)}
+.story-chk{width:14px;height:14px;border:1.5px solid var(--border2);border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .12s}
+.story-chk.on{background:var(--accent);border-color:var(--accent);color:#000}
+.story-ch-name{font-size:11px;color:var(--t2);flex:1;line-height:1.2}
+.story-chapter.done .story-ch-name{color:var(--t3);text-decoration:line-through}
 .trader-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:18px}
 .tc{background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all .15s}
 .tc:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.4)}
@@ -554,6 +565,8 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
         </div>
         <div class="lv-hint" id="lvHint">Level 48+ required for Collector</div>
       </div>
+      <!-- 스토리 챕터 체크박스 -->
+      <div class="story-box" id="storyBox"></div>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-sec-lbl">Navigation</div>
@@ -700,6 +713,42 @@ const COLLECTOR_ITEMS=[
   {name:"WZ Wallet",                                     id:"60b0f6c058e0b0481a09ad11"},
 ];
 
+const STORY_CHAPTERS=[
+  {id:'story_tour',            name:'Tour',            wiki:'https://escapefromtarkov.fandom.com/wiki/Tour'},
+  {id:'story_falling_skies',   name:'Falling Skies',   wiki:'https://escapefromtarkov.fandom.com/wiki/Falling_Skies'},
+  {id:'story_they_are',        name:'They Are Already Here', wiki:'https://escapefromtarkov.fandom.com/wiki/They_Are_Already_Here'},
+  {id:'story_batya',           name:'Batya',           wiki:'https://escapefromtarkov.fandom.com/wiki/Batya'},
+  {id:'story_accidental',      name:'Accidental Witness', wiki:'https://escapefromtarkov.fandom.com/wiki/Accidental_Witness'},
+  {id:'story_blue_fire',       name:'Blue Fire',       wiki:'https://escapefromtarkov.fandom.com/wiki/Blue_Fire'},
+  {id:'story_the_unheard',     name:'The Unheard',     wiki:'https://escapefromtarkov.fandom.com/wiki/The_Unheard'},
+  {id:'story_the_labyrinth',   name:'The Labyrinth',   wiki:'https://escapefromtarkov.fandom.com/wiki/The_Labyrinth_(story_chapter)'},
+  {id:'story_the_ticket',      name:'The Ticket',      wiki:'https://escapefromtarkov.fandom.com/wiki/The_Ticket'},
+  {id:'story_boreas',          name:'Boreas',          wiki:'https://escapefromtarkov.fandom.com/wiki/Boreas'},
+];
+let storyCompleted=new Set();
+
+function renderStoryBox(){
+  const done=storyCompleted.size;
+  const total=STORY_CHAPTERS.length;
+  const pct=Math.round(done/total*100);
+  let html=`<div class="story-lbl"><span>Story Chapters</span><span class="story-lbl-pct">${done}/${total}</span></div>
+  <div class="story-pbar"><div class="story-pfill" style="width:${pct}%"></div></div>`;
+  STORY_CHAPTERS.forEach(ch=>{
+    const on=storyCompleted.has(ch.id);
+    html+=`<div class="story-chapter ${on?'done':''}" onclick="toggleStory('${ch.id}')">
+      <div class="story-chk ${on?'on':''}">${on?'✓':''}</div>
+      <div class="story-ch-name">${ch.name}</div>
+      <a href="${ch.wiki}" target="_blank" onclick="event.stopPropagation()" style="font-size:10px;color:var(--t3);padding:1px 5px;border:1px solid var(--border);border-radius:3px;text-decoration:none;flex-shrink:0;line-height:1.6" title="Wiki">↗</a>
+    </div>`;
+  });
+  document.getElementById('storyBox').innerHTML=html;
+}
+function toggleStory(id){
+  if(storyCompleted.has(id))storyCompleted.delete(id);
+  else storyCompleted.add(id);
+  save();renderStoryBox();
+}
+
 const GQL_TASKS=`query{
   tasks{id name kappaRequired minPlayerLevel wikiLink taskImageLink experience normalizedName
     trader{id name}map{id name}
@@ -774,7 +823,7 @@ let hideoutSearch='';
 
 try{const s=JSON.parse(localStorage.getItem('kappa_v2')||'{}');
   charLevel=s.lv||1;completed=new Set(s.done||[]);
-  bookmarks=new Set(s.bk||[]);// migrate old name-based → id-based
+  bookmarks=new Set(s.bk||[]);
   const rawCf=s.cf||[];
   if(rawCf.length&&typeof rawCf[0]==='string'&&rawCf[0].length<30){
     const nameToId={};COLLECTOR_ITEMS.forEach(it=>nameToId[it.name]=it.id);
@@ -784,12 +833,14 @@ try{const s=JSON.parse(localStorage.getItem('kappa_v2')||'{}');
   hideoutBookmarks=new Set(s.hbk||[]);
   acceptedQuests=new Set(s.acc||[]);
   questProgress=s.qp||{};
+  storyCompleted=new Set(s.sc||[]);
 }catch(e){}
 
 function save(){
   try{localStorage.setItem('kappa_v2',JSON.stringify({
     lv:charLevel,done:[...completed],bk:[...bookmarks],cf:[...collectorFound],
-    hl:hideoutLevels,hbk:[...hideoutBookmarks],acc:[...acceptedQuests],qp:questProgress
+    hl:hideoutLevels,hbk:[...hideoutBookmarks],acc:[...acceptedQuests],qp:questProgress,
+    sc:[...storyCompleted]
   }))}catch(e){}
 }
 
@@ -822,45 +873,147 @@ async function fetchData(){
     });
     hideoutStations=(d.data.hideoutStations||[]).sort((a,b)=>a.name.localeCompare(b.name));
     updateHideoutBadge();
-    // custom-quests.json 병합 (누락된 퀘스트 보완)
-    try {
-      const cr = await fetch('custom-quests.json');
-      if(cr.ok){
-        const cd = await cr.json();
-        const customQ = (cd.quests||[]).map(q=>({
-          ...q,
-          _custom: true,
-          // API 형식에 맞게 정규화
-          finishRewards: q.finishRewards||{traderStanding:[],items:[],offerUnlock:[],skillLevelReward:[]},
-          startRewards: q.startRewards||{traderStanding:[],items:[]},
-          objectives: (q.objectives||[]).map((o,i)=>({...o, id:'custom_obj_'+q.id+'_'+i, zones:[]})),
-        }));
-        const norm = s => (s||'').toLowerCase().replace(/[^a-z0-9]/g,'');
-        // BTR 드라이버 custom 퀘스트: API 퀘스트를 덮어쓰기 (custom 우선)
-        const btrCustom = customQ.filter(q => tKey(q.trader) === 'btrdriver');
-        const otherCustom = customQ.filter(q => tKey(q.trader) !== 'btrdriver');
-        // BTR API 퀘스트 전부 제거 후 custom으로 교체
-        const btrCustomNames = new Set(btrCustom.map(q => norm(q.name)));
-        quests = quests.filter(q => {
-          if(tKey(q.trader) !== 'btrdriver') return true;
-          // API BTR 퀘스트 중 custom에 있는 이름은 제거
-          return !btrCustomNames.has(norm(q.name));
-        });
-        // 나머지 custom: 중복 없는 것만 추가 (API 우선)
-        const existingNames = new Set(quests.map(q => norm(q.name)));
-        const newOther = otherCustom.filter(q => !existingNames.has(norm(q.name)));
-        quests = [...quests, ...btrCustom, ...newOther];
-        if(btrCustom.length) console.log(`BTR Driver quests overridden: ${btrCustom.length} quests`);
-        if(newOther.length) console.log(`Custom quests added: ${newOther.length} quests`);
-      }
-    } catch(e){ console.log('custom-quests.json not found or error:', e.message); }
-
+    // BTR Driver: Battery Change 중복 제거 (같은 이름 2개 → 1개 유지)
+    {
+      const seen = new Set();
+      quests = quests.filter(q => {
+        const key = tKey(q.trader) + '|' + q.name;
+        if(seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    }
+    // BTR Driver: API에 없는 퀘스트 3개 하드코딩 추가
+    // Stick to It은 API에 prereq로만 언급됨 → BTR 소속으로 추가
+    // Saving Private Roman, A Bitter Victory, Hangover → API에 없음
+    {
+      const norm = s => (s||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+      const existingNames = new Set(quests.map(q => norm(q.name)));
+      // Stick to It prereq로 쓰이는 퀘스트 id 찾기
+      const stickReq = quests.find(q => norm(q.name) === norm('Stick to It'));
+      const btrMissing = [
+        {id:'btr_stick_to_it',name:'Stick to It',kappaRequired:false,minPlayerLevel:20,wikiLink:'https://escapefromtarkov.fandom.com/wiki/Stick_to_It',trader:{id:'btrdriver',name:'BTR Driver'},map:null,experience:25000,objectives:[{type:'shoot',description:'Eliminate 30 Rogues'}],finishRewards:{traderStanding:[{trader:{id:'btrdriver',name:'BTR Driver'},standing:0}],items:[],offerUnlock:[],skillLevelReward:[]},startRewards:{traderStanding:[],items:[]},taskRequirements:[]},
+        {id:'btr_saving_private_roman',name:'Saving Private Roman',kappaRequired:false,minPlayerLevel:20,wikiLink:'https://escapefromtarkov.fandom.com/wiki/Saving_Private_Roman',trader:{id:'btrdriver',name:'BTR Driver'},map:null,experience:42000,objectives:[{type:'mark',description:'Mark the transit to Lighthouse with an MS2000 Marker on Woods'},{type:'basic',description:'Use the transit from Woods to Lighthouse'},{type:'mark',description:'Mark the transit to Woods with an MS2000 Marker on Lighthouse'}],finishRewards:{traderStanding:[{trader:{id:'btrdriver',name:'BTR Driver'},standing:0}],items:[],offerUnlock:[],skillLevelReward:[]},startRewards:{traderStanding:[],items:[]},taskRequirements:[]},
+        {id:'btr_a_bitter_victory',name:'A Bitter Victory',kappaRequired:false,minPlayerLevel:20,wikiLink:'https://escapefromtarkov.fandom.com/wiki/A_Bitter_Victory',trader:{id:'btrdriver',name:'BTR Driver'},map:null,experience:30000,objectives:[{type:'handover',description:'Hand over 2 Bottle of Fierce Hatchling moonshine to the BTR Driver'},{type:'handover',description:'Hand over 4 Rye croutons to the BTR Driver'},{type:'handover',description:'Hand over 4 Bottle of Tarkovskaya vodka to the BTR Driver'},{type:'handover',description:'Hand over 2 Salty Dog beef sausage to the BTR Driver'},{type:'basic',description:'Talk to the BTR Driver'},{type:'basic',description:'Survive and extract from the location'}],finishRewards:{traderStanding:[{trader:{id:'btrdriver',name:'BTR Driver'},standing:0}],items:[],offerUnlock:[],skillLevelReward:[]},startRewards:{traderStanding:[],items:[]},taskRequirements:[]},
+        {id:'btr_hangover',name:'Hangover',kappaRequired:false,minPlayerLevel:20,wikiLink:'https://escapefromtarkov.fandom.com/wiki/Hangover',trader:{id:'btrdriver',name:'BTR Driver'},map:null,experience:60000,objectives:[{type:'basic',description:'Return to the BTR Driver and ask about the negotiations with the smugglers'}],finishRewards:{traderStanding:[{trader:{id:'btrdriver',name:'BTR Driver'},standing:0}],items:[],offerUnlock:[],skillLevelReward:[]},startRewards:{traderStanding:[],items:[]},taskRequirements:[]},
+      ].filter(q => !existingNames.has(norm(q.name)))
+       .map(q => ({...q, _custom:true, objectives:q.objectives.map((o,j)=>({...o,id:'btr_obj_'+q.id+'_'+j,zones:[]}))}));
+      quests = [...quests, ...btrMissing];
+      console.log(`BTR missing quests added: ${btrMissing.length}`);
+    }
+    // 누락 퀘스트 하드코딩 추가
+    {
+      const norm = s => (s||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+      const mk = (id,name,trader,traderId,lv,wiki,exp,objs) => ({
+        id, name, kappaRequired:false, minPlayerLevel:lv,
+        wikiLink:wiki, trader:{id:traderId,name:trader}, map:null,
+        experience:exp, _custom:true,
+        objectives:objs.map((d,j)=>({id:id+'_o'+j,type:'basic',description:d,zones:[]})),
+        finishRewards:{traderStanding:[],items:[],offerUnlock:[],skillLevelReward:[]},
+        startRewards:{traderStanding:[],items:[]}, taskRequirements:[]
+      });
+      const MISSING = [
+        // Therapist
+        mk('th_war_never_changes','War Never Changes','Therapist','therapist',1,'https://escapefromtarkov.fandom.com/wiki/War_Never_Changes',27000,['Find 10 Nooby Shield potassium iodide tablets in raid','Hand over the items']),
+        mk('th_biochemistry','Biochemistry','Therapist','therapist',1,'https://escapefromtarkov.fandom.com/wiki/Biochemistry',32000,['Find 3 Aceso Xpress semi-automatic biochemical analyzers in raid','Hand over the items']),
+        // Skier
+        mk('sk_night_sweep','Night Sweep','Skier','skier',50,'https://escapefromtarkov.fandom.com/wiki/Night_Sweep',107000,['Eliminate any 40 targets at night on any location']),
+        mk('sk_easy_money_1','Easy Money - Part 1','Skier','skier',10,'https://escapefromtarkov.fandom.com/wiki/Easy_Money_-_Part_1',4500,['Use the paid vehicle extraction on Customs']),
+        // Peacekeeper
+        mk('pk_wiring_the_vessel','Wiring the Vessel','Peacekeeper','peacekeeper',1,'https://escapefromtarkov.fandom.com/wiki/Wiring_the_Vessel',0,['Board the Icebreaker','Complete electrical objectives on the Icebreaker']),
+        mk('pk_peaceful_atom','Peaceful Atom','Peacekeeper','peacekeeper',1,'https://escapefromtarkov.fandom.com/wiki/Peaceful_Atom',0,['Complete nuclear-related objectives on the Icebreaker']),
+        // Ragman
+        mk('rag_sales_night','Sales Night','Ragman','ragman',30,'https://escapefromtarkov.fandom.com/wiki/Sales_Night',17500,['Eliminate 10 Scavs on night Interchange','Survive and extract from the location']),
+        mk('rag_fresh_stock','Fresh Stock','Ragman','ragman',1,'https://escapefromtarkov.fandom.com/wiki/Fresh_Stock',0,['Hand over required items to Ragman']),
+        mk('rag_new_beginning_1','New Beginning (Prestige 1)','Ragman','ragman',1,'https://escapefromtarkov.fandom.com/wiki/New_Beginning',0,['Complete Prestige 1 requirements']),
+        mk('rag_new_beginning_2','New Beginning (Prestige 2)','Ragman','ragman',1,'https://escapefromtarkov.fandom.com/wiki/New_Beginning',0,['Complete Prestige 2 requirements']),
+        mk('rag_new_beginning_3','New Beginning (Prestige 3)','Ragman','ragman',1,'https://escapefromtarkov.fandom.com/wiki/New_Beginning',0,['Complete Prestige 3 requirements']),
+        mk('rag_new_beginning_4','New Beginning (Prestige 4)','Ragman','ragman',1,'https://escapefromtarkov.fandom.com/wiki/New_Beginning',0,['Complete Prestige 4 requirements']),
+        mk('rag_new_beginning_5','New Beginning (Prestige 5)','Ragman','ragman',1,'https://escapefromtarkov.fandom.com/wiki/New_Beginning',0,['Complete Prestige 5 requirements']),
+        mk('rag_new_beginning_6','New Beginning (Prestige 6)','Ragman','ragman',1,'https://escapefromtarkov.fandom.com/wiki/New_Beginning',0,['Complete Prestige 6 requirements']),
+        // Jaeger
+        mk('jae_wedge','A Wedge Between Us','Jaeger','jaeger',1,'https://escapefromtarkov.fandom.com/wiki/A_Wedge_Between_Us',0,['Eliminate The Wedge boss on Icebreaker']),
+        // Lightkeeper
+        mk('lk_surprise_gift','Surprise Gift','Lightkeeper','lightkeeper',35,'https://escapefromtarkov.fandom.com/wiki/Surprise_Gift',25500,['Return to the old champion\'s hideout on Customs','Locate and obtain the compromising information on Ref','Hand over the found info']),
+        // Ref (Arena quests - 65개)
+        mk('ref_easy_money_2','Easy Money - Part 2','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Easy_Money_-_Part_2',2900,['Hand over 5 found in raid items from the Drinks category','Hand over 5 found in raid items from the Food category']),
+        mk('ref_balancing_1','Balancing - Part 1','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Balancing_-_Part_1',5100,['Eliminate 5 Scavs while using a Steyr AUG on any location']),
+        mk('ref_balancing_2','Balancing - Part 2','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Balancing_-_Part_2',7000,['Eliminate 2 PMC operatives while wearing a PACA Soft Armor on any location']),
+        mk('ref_surprise','Surprise','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Surprise_(quest)',3600,['Hand over 3 found in raid class 4 or higher ballistic plates to Ref']),
+        mk('ref_distraction_1','Create a Distraction - Part 1','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Create_a_Distraction_-_Part_1',5000,['Plant 3 TP-200 TNT bricks on the second floor of the cafe on Ground Zero']),
+        mk('ref_distraction_2','Create a Distraction - Part 2','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Create_a_Distraction_-_Part_2',10000,['Eliminate 2 of Kaban\'s or Kollontay\'s guards on Streets of Tarkov','Do not harm Kaban or Kollontay']),
+        mk('ref_arena_business','Arena Business','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Arena_Business',19500,['Complete Professional Fitness - Part 2','Complete To Great Heights! - Part 6','Complete Hold the Lead']),
+        mk('ref_pro_fitness_1','Professional Fitness - Part 1','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Professional_Fitness_-_Part_1',1800,['Play a match in CheckPoint or Last Hero mode in Arena']),
+        mk('ref_pro_fitness_2','Professional Fitness - Part 2','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Professional_Fitness_-_Part_2',2400,['Eliminate 20 enemies in Arena']),
+        mk('ref_heights_1','To Great Heights! - Part 1','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/To_Great_Heights!_-_Part_1',2800,['Win a match in CheckPoint or LastHero mode in Arena']),
+        mk('ref_heights_2','To Great Heights! - Part 2','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/To_Great_Heights!_-_Part_2',3500,['Win a match in TeamFight, BlastGang, or CheckPoint mode in Arena']),
+        mk('ref_heights_3','To Great Heights! - Part 3','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/To_Great_Heights!_-_Part_3',4500,['Win 2 matches while claiming at least 3rd place in TeamFight, BlastGang, or CheckPoint mode in Arena']),
+        mk('ref_heights_4','To Great Heights! - Part 4','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/To_Great_Heights!_-_Part_4',5600,['Hand over 1,000,000 Roubles','Win three out of six matches in TeamFight, BlastGang or CheckPoint mode in Arena']),
+        mk('ref_heights_5','To Great Heights! - Part 5','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/To_Great_Heights!_-_Part_5',6900,['Win a match claiming at least 2nd place in TeamFight, BlastGang, or CheckPoint mode in Arena']),
+        mk('ref_heights_6','To Great Heights! - Part 6','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/To_Great_Heights!_-_Part_6',7700,['Win 2 matches in a row in TeamFight, BlastGang or CheckPoint mode in Arena']),
+        mk('ref_hold_lead','Hold the Lead','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Hold_the_Lead',9100,['Eliminate 75 enemies in Arena']),
+        mk('ref_conscience_2','Against the Conscience - Part 2','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Against_the_Conscience_-_Part_2',23000,['Eliminate 100 enemies in any game mode in Arena']),
+        mk('ref_decisions','Decisions, Decisions','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Decisions,_Decisions',18500,['Return to the old champion\'s hideout on Customs','Locate and obtain the compromising information on Ref','Hand over the found info']),
+        mk('ref_postponed','Postponed Reward','Ref','ref',35,'https://escapefromtarkov.fandom.com/wiki/Postponed_Reward',0,['Hand over a Lega Medal to Ref']),
+        mk('ref_first_intro','First Introduction','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/First_Introduction',1800,['Play a match in Last Hero or CheckPoint mode']),
+        mk('ref_glad_1','Gladiator Life - Part 1','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Gladiator_Life_-_Part_1',2100,['Eliminate 15 enemies in Last Hero mode']),
+        mk('ref_glad_2','Gladiator Life - Part 2','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Gladiator_Life_-_Part_2',2200,['Capture the objective 5 times in CheckPoint mode']),
+        mk('ref_glad_3','Gladiator Life - Part 3','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Gladiator_Life_-_Part_3',2400,['Eliminate 10 enemies as Enforcer or Assault in CheckPoint mode']),
+        mk('ref_glad_4','Gladiator Life - Part 4','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Gladiator_Life_-_Part_4',2800,['Win a match in CheckPoint mode']),
+        mk('ref_glad_5','Gladiator Life - Part 5','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Gladiator_Life_-_Part_5',3000,['Eliminate 5 enemies with headshots']),
+        mk('ref_glad_6','Gladiator Life - Part 6','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Gladiator_Life_-_Part_6',3000,['Eliminate 10 enemies as Scout or Marksman']),
+        mk('ref_glad_7','Gladiator Life - Part 7','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Gladiator_Life_-_Part_7',3500,['Eliminate 5 enemies while under the effect of any stimulant or painkiller']),
+        mk('ref_glad_8','Gladiator Life - Part 8','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Gladiator_Life_-_Part_8',3700,['Win 2 rounds in TeamFight, BlastGang or ShootOut mode']),
+        mk('ref_glad_9','Gladiator Life - Part 9','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Gladiator_Life_-_Part_9',4000,['Claim at least 5th place in Last Hero mode']),
+        mk('ref_glad_10','Gladiator Life - Part 10','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Gladiator_Life_-_Part_10',6900,['Earn 1,500 objective score in CheckPoint mode','Eliminate 20 enemies in CheckPoint mode']),
+        mk('ref_glad_final','Gladiator Life - Final Exam','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Gladiator_Life_-_Final_Exam',5000,['Win a round without dying in TeamFight, BlastGang or ShootOut mode']),
+        mk('ref_doping_1','Gladiator Doping - Part 1','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Gladiator_Doping_-_Part_1',4500,['Eliminate 30 enemies while under the effect of a painkiller']),
+        mk('ref_doping_2','Gladiator Doping - Part 2','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Gladiator_Doping_-_Part_2',4500,['Eliminate 30 enemies while under the effect of the Propital stimulant']),
+        mk('ref_doping_3','Gladiator Doping - Part 3','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Gladiator_Doping_-_Part_3',4500,['Eliminate 30 enemies while under the effect of the Perfotoran stimulant']),
+        mk('ref_doping_4','Gladiator Doping - Part 4','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Gladiator_Doping_-_Part_4',9999,['Eliminate 30 enemies while under the effect of the Zagustin stimulant','Eliminate 30 enemies while under the effect of the Propital stimulant','Eliminate 30 enemies while under the effect of the Meldonin stimulant']),
+        mk('ref_pro_1','Professional - Part 1','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Professional_-_Part_1',7500,['Plant or deactivate the device 3 times in BlastGang mode']),
+        mk('ref_pro_2','Professional - Part 2','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Professional_-_Part_2',7500,['Win a match claiming at least 4th place in the team in BlastGang or TeamFight mode']),
+        mk('ref_pro_3','Professional - Part 3','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Professional_-_Part_3',15000,['Earn a Round MVP in BlastGang or TeamFight mode']),
+        mk('ref_nlp_1','No Limit to Perfection - Part 1','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/No_Limit_to_Perfection_-_Part_1',15000,['Eliminate 10 enemies while using an RSh-12']),
+        mk('ref_nlp_2','No Limit to Perfection - Part 2','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/No_Limit_to_Perfection_-_Part_2',20000,['Get the first kill of the round 5 times in BlastGang or TeamFight mode']),
+        mk('ref_nlp_3','No Limit to Perfection - Part 3','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/No_Limit_to_Perfection_-_Part_3',25000,['Eliminate 50 enemies while using assault rifles']),
+        mk('ref_nlp_4','No Limit to Perfection - Part 4','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/No_Limit_to_Perfection_-_Part_4',26000,['Eliminate 50 enemies while using marksman rifles']),
+        mk('ref_nlp_5','No Limit to Perfection - Part 5','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/No_Limit_to_Perfection_-_Part_5',27000,['Eliminate 100 enemies while aiming down sights']),
+        mk('ref_nlp_6','No Limit to Perfection - Part 6','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/No_Limit_to_Perfection_-_Part_6',28000,['Eliminate 2 enemies within 15 seconds while using a submachine gun 20 times']),
+        mk('ref_nlp_7','No Limit to Perfection - Part 7','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/No_Limit_to_Perfection_-_Part_7',30000,['Eliminate 50 enemies while using shotguns']),
+        mk('ref_nlp_8','No Limit to Perfection - Part 8','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/No_Limit_to_Perfection_-_Part_8',32000,['Eliminate 50 enemies with point fire while using light machine guns']),
+        mk('ref_nlp_9','No Limit to Perfection - Part 9','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/No_Limit_to_Perfection_-_Part_9',35000,['Eliminate 10 enemies with headshots while using bolt-action rifles']),
+        mk('ref_jat','Jack of All Trades','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Jack_of_All_Trades',12500,['Eliminate 20 enemies as Assault','Eliminate 20 enemies as Enforcer','Eliminate 20 enemies as Scout','Eliminate 20 enemies as Marksman']),
+        mk('ref_heroism','All for the Show - Heroism','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/All_for_the_Show_-_Heroism',10000,['Eliminate 5 enemies while suffering from light or heavy bleeding']),
+        mk('ref_death_above','All for the Show - Death from Above','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/All_for_the_Show_-_Death_from_Above',9900,['Eliminate 3 enemies while mid-air']),
+        mk('ref_adv_1','Advertising Business - Part 1','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Advertising_Business_-_Part_1',12000,['Win 3 matches while wearing the Hexgrid armor in CheckPoint mode']),
+        mk('ref_pyro','All for the Show - Pyrotechnics','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/All_for_the_Show_-_Pyrotechnics',7000,['Eliminate an enemy while using grenades']),
+        mk('ref_adv_2','Advertising Business - Part 2','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Advertising_Business_-_Part_2',10000,['Eliminate 50 enemies with headshots while using an UZI PRO or MDR 7.62x51']),
+        mk('ref_jat_pro','Jack of All Trades - Pro','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Jack_of_All_Trades_-_Pro',12000,['Win a round as Assault in BlastGang or TeamFight mode','Win a round as Enforcer in BlastGang or TeamFight mode','Win a round as Scout in BlastGang or TeamFight mode','Win a round as Marksman in BlastGang or TeamFight mode']),
+        mk('ref_soldier','All for the Show - Soldier','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/All_for_the_Show_-_Soldier',7500,['Eliminate 50 enemies while wearing any beret in CheckPoint mode']),
+        mk('ref_adv_3','Advertising Business - Part 3','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Advertising_Business_-_Part_3',7500,['Win 6 matches while wearing a TV-110 plate carrier']),
+        mk('ref_adv_4','Advertising Business - Part 4','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Advertising_Business_-_Part_4',7700,['Win 10 matches while wearing a Banshee or A18 Skanda plate carrier']),
+        mk('ref_adv_5','Advertising Business - Part 5','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Advertising_Business_-_Part_5',8000,['Eliminate 30 enemies while using a T-5000M or RPDN in BlastGang or TeamFight mode']),
+        mk('ref_adv_6','Advertising Business - Part 6','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Advertising_Business_-_Part_6',8000,['Eliminate 40 enemies with headshots while using a Velociraptor, PKP or SR-2M']),
+        mk('ref_speed_1','I Am Speed - Part 1','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/I_Am_Speed_-_Part_1',32000,['Eliminate 2 enemies within 10 seconds 10 times']),
+        mk('ref_speed_2','I Am Speed - Part 2','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/I_Am_Speed_-_Part_2',36000,['Capture 12 objectives within one match in CheckPoint mode']),
+        mk('ref_speed_3','I Am Speed - Part 3','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/I_Am_Speed_-_Part_3',40000,['Eliminate 25 enemies within one match in CheckPoint, BlastGang, LastHero or TeamFight']),
+        mk('ref_supremacy','All for the Show - Supremacy','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/All_for_the_Show_-_Supremacy',28000,['Earn a Match MVP after eliminating 5 or more enemies with AK-12']),
+        mk('ref_major_sponsor','All for the Show - Major Sponsor','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/All_for_the_Show_-_Major_Sponsor',20000,['Eliminate 5 enemies while using grenades','Eliminate 5 enemies who are blinded by flashbang grenades']),
+        mk('ref_superhuman','Superhuman','Ref','ref',10,'https://escapefromtarkov.fandom.com/wiki/Superhuman',0,['Eliminate an enemy with a melee weapon while wearing a Ghoul mask']),
+      ];
+      const existingNames = new Set(quests.map(q => norm(q.name)));
+      const toAdd = MISSING.filter(q => !existingNames.has(norm(q.name)));
+      quests = [...quests, ...toAdd];
+    }
+    // 트레이더 순서 정의 (prapor, therapist, fence, skier, peacekeeper, mechanic, ragman, jaeger, ref, lightkeeper, btrdriver)
+    const TRADER_ORDER=['prapor','therapist','fence','skier','peacekeeper','mechanic','ragman','jaeger','ref','lightkeeper','btrdriver'];
     computeRep();
     document.getElementById('apiDot').className='adot ok';
     document.getElementById('apiText').textContent=`tarkov.dev · ${quests.length} quests`;
     document.getElementById('nb-traders').textContent=quests.filter(q=>q.kappaRequired).length;
     document.getElementById('lvInput').value=charLevel;
-    updateLevel(false);renderPage();
+    updateLevel(false);renderStoryBox();renderPage();
   }catch(e){
     document.getElementById('apiDot').className='adot err';
     document.getElementById('apiText').textContent='Connection failed — click to retry';
@@ -1058,8 +1211,11 @@ function renderTraders(){
     if(!traders[k])traders[k]={k,tid:q.trader.id,meta:TRADER_META[k]||{n:q.trader.name,i:'❓'},quests:[]};
     traders[k].quests.push(q);
   });
+  // TRADER_ORDER 순서로 정렬
+  const orderedTraders = TRADER_ORDER.filter(k=>traders[k]).map(k=>traders[k])
+    .concat(Object.values(traders).filter(t=>!TRADER_ORDER.includes(t.k)));
   let html=`<div class="trader-grid">`;
-  Object.values(traders).forEach(t=>{
+  orderedTraders.forEach(t=>{
     const done=t.quests.filter(q=>completed.has(q.id)).length;
     const td=tradersData[t.tid]||tradersData[t.k]||null;
     const lli=td?getTraderLL(t.tid):{ll:1,rep:0,next:null,levels:[]};
@@ -1084,7 +1240,7 @@ function renderTraders(){
   html+=`</div>`;
   if(!selTrader){html+=`<div class="empty"><div class="empty-icon">👆</div><div class="empty-text">Click a trader card</div></div>`;return html;}
 
-  const selT=Object.values(traders).find(t=>t.k===selTrader);
+  const selT=orderedTraders.find(t=>t.k===selTrader);
   if(selT){
     const td=tradersData[selT.tid]||tradersData[selT.k]||null;
     const lli=td?getTraderLL(selT.tid):{ll:1,rep:0,next:null,levels:[]};
@@ -1112,7 +1268,12 @@ function renderTraders(){
   }
 
   html+=`<div class="search-row"><span class="search-icon">🔍</span><input type="text" id="qSearch" placeholder="Search quests..." value="${searchQ}" oninput="searchQ=this.value;renderPage()">${searchQ?`<button class="search-clear" onclick="searchQ='';renderPage()">✕</button>`:''}</div>`;
-  const tq=quests.filter(q=>tKey(q.trader)===selTrader&&(!searchQ||q.name.toLowerCase().includes(searchQ.toLowerCase())));
+  const BTR_ORDER=['Shipping Delay - Part 2','Hot Wheels',"Hot Wheels - Let's Try Again",'Swift Retribution','Inevitable Response','Building Foundations','Natural Exchange','Ask for Directions','Battery Change','Protect the Sky','Discombobulate','The Price of Independence','Sensory Analysis - Part 2','Stick to It','Saving Private Roman','A Bitter Victory','Hangover'];
+  let tq=quests.filter(q=>tKey(q.trader)===selTrader&&(!searchQ||q.name.toLowerCase().includes(searchQ.toLowerCase())));
+  if(selTrader==='btrdriver'){
+    const orderMap=Object.fromEntries(BTR_ORDER.map((n,i)=>[n,i]));
+    tq=tq.slice().sort((a,b)=>{const ai=orderMap[a.name]??999,bi=orderMap[b.name]??999;return ai-bi;});
+  }
   const avail=tq.filter(q=>isAvail(q)),locked=tq.filter(q=>isLocked(q)),done=tq.filter(q=>completed.has(q.id));
   function trCat(label,catKey,qs,bc){
     if(!qs.length)return'';
@@ -1960,7 +2121,7 @@ function toggleDone(id){if(completed.has(id)){completed.delete(id);}else{complet
 function toggleBk(id){if(bookmarks.has(id))bookmarks.delete(id);else bookmarks.add(id);save();renderPage();}
 function toggleCollector(item){if(collectorFound.has(item))collectorFound.delete(item);else collectorFound.add(item);save();renderPage();}
 function clearBk(){if(confirm('Clear all bookmarks?')){bookmarks.clear();save();renderPage();}}
-function resetAll(){if(confirm('Reset all progress? This cannot be undone.')){completed.clear();bookmarks.clear();collectorFound.clear();acceptedQuests.clear();hideoutLevels={};hideoutBookmarks.clear();computeRep();save();updateHideoutBadge();renderPage();}}
+function resetAll(){if(confirm('Reset all progress? This cannot be undone.')){completed.clear();bookmarks.clear();collectorFound.clear();acceptedQuests.clear();storyCompleted.clear();hideoutLevels={};hideoutBookmarks.clear();computeRep();save();updateHideoutBadge();renderStoryBox();renderPage();}}
 
 function exportData(){
   const d={lv:charLevel,done:[...completed],bk:[...bookmarks],cf:[...collectorFound],hl:hideoutLevels,hbk:[...hideoutBookmarks],exported:new Date().toISOString()};
@@ -1983,6 +2144,7 @@ function handleImport(e){
 }
 
 fetchData();
+renderStoryBox();
 </script>
 </body>
 </html>
