@@ -18,8 +18,27 @@
   --font:'Segoe UI',system-ui,-apple-system,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:var(--bg0);color:var(--t1);font-family:var(--font);font-size:14px;overflow:hidden}
-input,button,select{font-family:var(--font);font-size:13px;color:var(--t1)}
+html,body{height:100%;background:var(--bg0);color:var(--t1);font-family:var(--font);font-size:15px;overflow:hidden}
+input,button,select{font-family:var(--font);font-size:14px;color:var(--t1)}
+/* ── 가독성 향상 오버라이드 ── */
+.qi-name{font-size:15px !important}
+.qi-obj{font-size:13px !important;color:var(--t2) !important}
+.pill{font-size:11px !important}
+.mc2-name{font-size:14px !important}
+.qd-obj{font-size:13px !important}
+.qd-item-name{font-size:14px !important}
+.tc-name{font-size:14px !important}
+.mqi-name,.mq-row-name{font-size:14px !important}
+.qi-reward-item{font-size:12px !important}
+.sect-title,.qd-sec-title{font-size:12px !important}
+/* 핸드오버 아이템 토글 */
+.obj-toggle{display:inline-block;margin-left:4px;color:var(--accent);text-decoration:underline;text-underline-offset:2px;cursor:pointer;font-weight:600;font-size:12px}
+.obj-toggle:hover{color:var(--t1)}
+.obj-item-list{margin:5px 0 2px 10px;padding:6px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px}
+.obj-item{display:flex;align-items:center;gap:8px;padding:3px 0}
+.obj-item-img{width:34px;height:34px;object-fit:contain;background:var(--bg1);border-radius:4px;flex-shrink:0}
+.obj-item-name{flex:1;font-size:13px;color:var(--t1);line-height:1.3}
+.obj-item-cnt{font-size:13px;font-weight:700;color:var(--accent)}
 input[type=number],input[type=text]{background:var(--bg3);border:1px solid var(--border2);border-radius:5px;padding:5px 8px;color:var(--t1)}
 input:focus{outline:none;border-color:var(--accent)}
 button{background:var(--bg3);border:1px solid var(--border2);border-radius:5px;padding:4px 12px;cursor:pointer;color:var(--t2);transition:all .15s}
@@ -156,6 +175,9 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 .bk-btn{background:none;border:1px solid var(--border);color:var(--t3);font-size:12px;padding:3px 8px;border-radius:4px;cursor:pointer;transition:all .15s;font-family:var(--font)}
 .bk-btn:hover{border-color:var(--accent);color:var(--accent)}
 .bk-btn.on{border-color:var(--accent);color:var(--accent);background:#1a1208}
+.qi-done-btn{background:var(--bg3);border:1.5px solid var(--gborder);color:var(--green);font-size:12px;font-weight:700;padding:5px 12px;border-radius:5px;cursor:pointer;transition:all .15s;font-family:var(--font);white-space:nowrap}
+.qi-done-btn:hover{background:var(--gbg);border-color:var(--green)}
+.qi-done-btn.on{background:var(--green);border-color:var(--green);color:#06140d}
 
 /* MAP TAB */
 .map-layout{display:flex;gap:14px;height:100%;overflow:hidden}
@@ -464,6 +486,24 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 .qd-bk-btn.on{background:#1a1208;border-color:var(--accent);color:var(--accent)}
 .qd-rep{font-size:11px;padding:3px 8px;border-radius:4px;background:#1a1208;color:var(--accent);border:1px solid #3a2e10;display:inline-block;margin-bottom:3px}
 .qd-lock-reason{font-size:11px;padding:6px 10px;background:var(--ybg);border:1px solid #3a2e10;border-radius:5px;color:var(--yellow)}
+/* 컴팩트 필요아이템 행 */
+.qd-item2{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:4px}
+.qd-item2-top{display:flex;align-items:center;gap:6px;flex:1;min-width:0}
+.qd-item2-name{font-size:14px;color:var(--t1);line-height:1.35;position:relative}
+.qd-item2-name.has-pop{text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help;color:var(--accent)}
+.qd-fir{font-size:10px;font-weight:700;color:var(--accent);background:#1a1208;border:1px solid #3a2e10;padding:1px 6px;border-radius:4px;flex-shrink:0}
+/* hover 팝업 */
+.qd-pop{display:none;position:absolute;left:0;top:100%;margin-top:6px;z-index:50;background:var(--bg1);border:1px solid var(--border2);border-radius:8px;padding:7px;min-width:200px;max-width:300px;max-height:280px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.6)}
+.qd-item2-name.has-pop:hover .qd-pop{display:block}
+.qd-pop-item{display:flex;align-items:center;gap:8px;padding:4px 5px;border-radius:4px}
+.qd-pop-item:hover{background:var(--bg3)}
+.qd-pop-item img{width:36px;height:36px;object-fit:contain;background:var(--bg3);border-radius:4px;flex-shrink:0}
+.qd-pop-item span{font-size:13px;color:var(--t1);line-height:1.3;text-decoration:none}
+/* −/+ 카운터 */
+.qd-counter{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.qd-step{width:28px;height:28px;border-radius:6px;border:1px solid var(--border2);background:var(--bg4);color:var(--t1);font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+.qd-step:hover{border-color:var(--accent);color:var(--accent)}
+.qd-count-num{font-size:14px;font-weight:700;min-width:52px;text-align:center}
 
 /* Traders tab - category collapse */
 .tr-cat{margin-bottom:8px}
@@ -589,38 +629,31 @@ const TRADER_META={
   mechanic:{n:'Mechanic',i:'🔧'},ragman:{n:'Ragman',i:'🧥'},
   jaeger:{n:'Jaeger',i:'🎯'},lightkeeper:{n:'Lightkeeper',i:'💡'},
   fence:{n:'Fence',i:'🔒'},ref:{n:'Ref',i:'📡'},
+  'btr-driver':{n:'BTR Driver',i:'🚛'},'btr driver':{n:'BTR Driver',i:'🚛'},btrdriver:{n:'BTR Driver',i:'🚛'},
+  storyteller:{n:'Storyteller',i:'📖'},
 };
+// 맵 이미지 = tarkov.dev 공식 SVG (assets.tarkov.dev). 인터넷 연결 시 실시간 로드.
+const TDSVG='https://assets.tarkov.dev/maps/svg/';
+const TDMAP='https://tarkov.dev/map/';
 const MAP_META={
-  customs:{n:'Customs',i:'🏭',img:'maps/customs.png'},
-  woods:{n:'Woods',i:'🌲',img:'maps/woods.png'},
-  factory:{n:'Factory',i:'⚙️',img:'maps/factory.png'},
-  interchange:{n:'Interchange',i:'🏬',img:'maps/interchange.png'},
-  shoreline:{n:'Shoreline',i:'🏖️',img:'maps/shoreline.png',layers:[
-    {label:'Outdoor',img:'maps/shoreline.png'},
-    {label:'Resort 1F',img:'maps/shoreline_resort_1f.png'},
-    {label:'Resort 2-3F',img:'maps/shoreline_resort_23f.png'},
-  ]},
-  reserve:{n:'Reserve',i:'🏛️',img:'maps/reserve.png',layers:[
-    {label:'Ground',img:'maps/reserve.png'},
-    {label:'Underground',img:'maps/reserve_underground.png'},
-    {label:'Bunker',img:'maps/reserve_bunker.png'},
-  ]},
-  lighthouse:{n:'Lighthouse',i:'💡',img:'maps/lighthouse.png'},
-  'streets of tarkov':{n:'Streets',i:'🏙️',img:'maps/streets.png'},
-  streets:{n:'Streets',i:'🏙️',img:'maps/streets.png'},
-  laboratory:{n:'Labs',i:'🔬',img:'maps/labs_1f.png',layers:[
-    {label:'1F',img:'maps/labs_1f.png'},
-    {label:'2F',img:'maps/labs_2f.png'},
-    {label:'Basement',img:'maps/labs_basement.png'},
-  ]},
-  labs:{n:'Labs',i:'🔬',img:'maps/labs_1f.png',layers:[
-    {label:'1F',img:'maps/labs_1f.png'},
-    {label:'2F',img:'maps/labs_2f.png'},
-    {label:'Basement',img:'maps/labs_basement.png'},
-  ]},
-  'ground zero':{n:'Ground Zero',i:'🌀',img:'maps/groundzero.png'},
-  labyrinth:{n:'Labyrinth',i:'🔮',img:'maps/labyrinth.png'},
+  'ground zero':{n:'그라운드 제로',i:'🌀',svg:TDSVG+'GroundZero.svg',link:TDMAP+'ground-zero'},
+  woods:{n:'삼림 (Woods)',i:'🌲',svg:TDSVG+'Woods.svg',link:TDMAP+'woods'},
+  reserve:{n:'리저브 (Reserve)',i:'🏛️',svg:TDSVG+'Reserve.svg',link:TDMAP+'reserve'},
+  shoreline:{n:'쇼어라인 (Shoreline)',i:'🏖️',svg:TDSVG+'Shoreline.svg',link:TDMAP+'shoreline'},
+  lighthouse:{n:'등대 (Lighthouse)',i:'💡',svg:TDSVG+'Lighthouse.svg',link:TDMAP+'lighthouse'},
+  factory:{n:'공장 (Factory)',i:'⚙️',svg:TDSVG+'Factory.svg',link:TDMAP+'factory'},
+  customs:{n:'커스텀 (Customs)',i:'🏭',svg:TDSVG+'Customs.svg',link:TDMAP+'customs'},
+  'streets of tarkov':{n:'스트리트 (Streets)',i:'🏙️',svg:TDSVG+'StreetsOfTarkov.svg',link:TDMAP+'streets-of-tarkov'},
+  streets:{n:'스트리트 (Streets)',i:'🏙️',svg:TDSVG+'StreetsOfTarkov.svg',link:TDMAP+'streets-of-tarkov'},
+  interchange:{n:'인터체인지 (Interchange)',i:'🏬',svg:TDSVG+'Interchange.svg',link:TDMAP+'interchange'},
+  laboratory:{n:'랩 (Labs)',i:'🔬',link:TDMAP+'the-lab'},
+  labs:{n:'랩 (Labs)',i:'🔬',link:TDMAP+'the-lab'},
+  'the lab':{n:'랩 (Labs)',i:'🔬',link:TDMAP+'the-lab'},
+  'the labyrinth':{n:'미궁 (Labyrinth)',i:'🔮',link:TDMAP+'the-labyrinth'},
+  labyrinth:{n:'미궁 (Labyrinth)',i:'🔮',link:TDMAP+'the-labyrinth'},
 };
+// 맵 탭에 표시할 순서 (사용자 지정 11종)
+const MAP_ORDER=['ground zero','woods','reserve','shoreline','lighthouse','factory','customs','streets of tarkov','interchange','laboratory','labyrinth'];
 const COLLECTOR_ITEMS=[
   {name:"42 Signature Blend English Tea",               id:"5bc9be8fd4351e00334cae6e"},
   {name:"Antique axe",                                   id:"5bc9c1e2d4351e00367fbcf0"},
@@ -802,9 +835,10 @@ async function fetchData(){
           startRewards: q.startRewards||{traderStanding:[],items:[]},
           objectives: (q.objectives||[]).map((o,i)=>({...o, id:'custom_obj_'+q.id+'_'+i, zones:[]})),
         }));
-        // 중복 제거 (name 기준)
-        const existingNames = new Set(quests.map(q=>q.name.toLowerCase()));
-        const newQ = customQ.filter(q=>!existingNames.has(q.name.toLowerCase()));
+        // 중복 제거 (이름 정규화: 공백·하이픈·기호 무시, 소문자)
+        const norm = s => (s||'').toLowerCase().replace(/[\s\-_–—:.'']/g,'').replace(/part/g,'');
+        const existingNames = new Set(quests.map(q=>norm(q.name)));
+        const newQ = customQ.filter(q=>!existingNames.has(norm(q.name)));
         quests = [...quests, ...newQ];
         if(newQ.length) console.log(`Custom quests loaded: ${newQ.length} quests added`);
       }
@@ -1093,7 +1127,7 @@ function qCard(q,state){
   const rewardItems=(q.finishRewards?.items||[]).slice(0,3);
   const rewardRep=(q.finishRewards?.traderStanding||[]);
   let rewardHtml='';
-  if(q.experience||rewardItems.length||rewardRep.length){
+  if(q.experience||rewardItems.length||rewardRep.length||q._rewardText){
     rewardHtml=`<div class="qi-reward-row">`;
     if(q.experience) rewardHtml+=`<span class="qi-reward-item">⭐ ${q.experience.toLocaleString()} XP</span>`;
     rewardRep.forEach(r=>{rewardHtml+=`<span class="qi-reward-item">+${(r.standing||0).toFixed(2)} ${r.trader?.name||''}</span>`;});
@@ -1105,12 +1139,12 @@ function qCard(q,state){
       </span>`;
     });
     if((q.finishRewards?.items||[]).length>3) rewardHtml+=`<span class="qi-reward-item" style="color:var(--t3)">+${(q.finishRewards.items.length-3)} more</span>`;
+    if(q._rewardText && !rewardItems.length) rewardHtml+=`<span class="qi-reward-item" style="color:var(--t2)">🎁 ${q._rewardText}</span>`;
     rewardHtml+=`</div>`;
   }
 
   return`<div class="qi ${isDone?'done':state==='locked'?'locked':''}" style="flex-direction:column;align-items:stretch;cursor:default">
     <div style="display:flex;align-items:flex-start;gap:9px;cursor:pointer" onclick="selQuest='${q.id}';renderPage()">
-      <div class="qi-chk ${isDone?'on':''}" onclick="event.stopPropagation();toggleDone('${q.id}')">✓</div>
       <div style="flex:1;min-width:0">
         <div class="qi-name-wrap">
           <span class="qi-name">${q.name}</span>
@@ -1127,7 +1161,8 @@ function qCard(q,state){
         ${state!=='locked'?`<div class="qi-objs">${objs}</div>`:''}
         ${rewardHtml}
       </div>
-      <div class="qi-actions" style="display:flex;gap:4px;align-items:center">
+      <div class="qi-actions" style="display:flex;gap:5px;align-items:center">
+        <button class="qi-done-btn ${isDone?'on':''}" onclick="event.stopPropagation();toggleDone('${q.id}')" title="완료 표시">${isDone?'✓ 완료됨':'완료'}</button>
         <button class="bk-btn ${isBk?'on':''}" onclick="event.stopPropagation();toggleBk('${q.id}')" title="Bookmark">★</button>
         <button class="qi-chevron" id="${cardId}_chev" onclick="event.stopPropagation();toggleQiDetail('${cardId}','${q.id}','${encodeURIComponent(q.wikiLink||'')}')">▼</button>
       </div>
@@ -1156,7 +1191,7 @@ function toggleQiDetail(cardId, questId, encodedWikiUrl){
   let html=`<div style="margin-bottom:6px">`;
   // All objectives
   (q.objectives||[]).forEach(o=>{
-    html+=`<div class="qi-obj" style="margin-bottom:2px">· ${fmtObjDesc(o.description)||o.type}</div>`;
+    html+=objLine(o, cardId);
   });
   html+=`</div>`;
   // Wiki frame
@@ -1217,15 +1252,23 @@ const mapCatOpen={available:true,accepted:true,locked:false,completed:false};
 const trCatOpen={available:true,accepted:true,locked:false,completed:false};
 
 function renderMaps() {
-  const maps = {};
+  // 퀘스트를 맵별로 모음 (다양한 키 정규화)
+  const byKey = {};
   quests.forEach(q => {
     if(!q.map) return;
     const k = mKey(q.map);
-    if(!maps[k]) maps[k] = {k, meta:MAP_META[k]||{n:q.map.name,i:'🗺️'}, quests:[]};
-    maps[k].quests.push(q);
+    (byKey[k]=byKey[k]||[]).push(q);
   });
-  if(!maps['labyrinth'] && MAP_META['labyrinth'])
-    maps['labyrinth'] = {k:'labyrinth', meta:MAP_META['labyrinth'], quests:[]};
+  // 사용자 지정 11개 순서로만 맵 목록 구성
+  const maps = {};
+  MAP_ORDER.forEach(k=>{
+    // 같은 맵의 별칭 키(streets/streets of tarkov, labs/laboratory 등) 퀘스트 병합
+    let qs = byKey[k] ? byKey[k].slice() : [];
+    if(k==='streets of tarkov' && byKey['streets']) qs=qs.concat(byKey['streets']);
+    if(k==='laboratory'){ ['labs','the lab'].forEach(a=>{if(byKey[a])qs=qs.concat(byKey[a]);}); }
+    if(k==='labyrinth' && byKey['the labyrinth']) qs=qs.concat(byKey['the labyrinth']);
+    maps[k] = {k, meta:MAP_META[k]||{n:k,i:'🗺️'}, quests:qs};
+  });
 
   // ── Left: map list ──
   let listHtml = `<div class="map-list-col"><div class="map-list-scroll">`;
@@ -1250,11 +1293,9 @@ function renderMaps() {
 
   const mapMeta = MAP_META[selMap]||{n:selMap,i:'🗺️'};
   const mapInfo = getMapData(selMap);
-  const layers = mapMeta.layers||[];
-  const layerIdx = selMapLayer[selMap]||0;
-  const imgSrc = layers.length>0?(layers[layerIdx]?.img||mapMeta.img):mapMeta.img;
+  const imgSrc = mapMeta.svg||null;
 
-  const mq = quests.filter(q=>q.map&&mKey(q.map)===selMap);
+  const mq = (maps[selMap]?maps[selMap].quests:quests.filter(q=>q.map&&mKey(q.map)===selMap));
   const accepted = mq.filter(q=>acceptedQuests.has(q.id)&&!completed.has(q.id));
   const avail = mq.filter(q=>isAvail(q)&&!acceptedQuests.has(q.id));
   const locked = mq.filter(q=>isLocked(q)&&!acceptedQuests.has(q.id));
@@ -1262,42 +1303,20 @@ function renderMaps() {
 
   // ── Center: map image ──
   let viewerHtml = `<div class="map-viewer-col">`;
-  if(layers.length>1){
-    viewerHtml+=`<div class="layer-tabs">`;
-    layers.forEach((layer,i)=>{
-      viewerHtml+=`<div class="layer-tab ${layerIdx===i?'on':''}" onclick="selMapLayer['${selMap}']=${i};renderPage()">${layer.label}</div>`;
-    });
-    viewerHtml+=`</div>`;
-  }
   viewerHtml+=`<div class="map-img-wrap" id="mapImgWrap">`;
   if(imgSrc){
     viewerHtml+=`<img src="${imgSrc}" alt="${mapMeta.n}"
-      onerror="document.getElementById('mapImgWrap').innerHTML='<div class=\\'map-no-img\\'><div class=\\'map-no-img-icon\\'>🗺️</div><div>Image not found: <code style=\\'font-size:10px\\'>${imgSrc}</code></div></div>'"
-      onload="this.style.opacity=1" style="opacity:0;transition:opacity .3s">`;
-    // ── 핀: 수락된(active) 퀘스트만 ──
-    viewerHtml+=`<div class="map-markers">`;
-    accepted.forEach((q,i)=>{
-      const zones=(q.objectives||[]).flatMap(o=>o.zones||[]).filter(z=>z?.position);
-      const pos=zones[0]?.position;
-      if(!pos)return;
-      const pct=worldToPercent(selMap,pos.x,pos.z);
-      if(!pct)return;
-      const isSel=selQuest===q.id;
-      viewerHtml+=`<div class="qmarker avail ${isSel?'sel':''}"
-        style="left:${pct.px.toFixed(2)}%;top:${pct.pz.toFixed(2)}%"
-        onclick="selQuest='${q.id}';renderPage()">
-        <div class="qmarker-pin">
-          <div class="qmarker-dot" style="background:#1a3070;border-color:#5a8de0">${i+1}</div>
-          <div class="qmarker-tail" style="background:#5a8de0;opacity:.6"></div>
-        </div>
-        <div class="qmarker-label">${q.name}</div>
-      </div>`;
-    });
-    viewerHtml+=`</div>`;
+      onerror="document.getElementById('mapImgWrap').innerHTML='<div class=\\'map-no-img\\'><div class=\\'map-no-img-icon\\'>🗺️</div><div>인터넷 연결 시 tarkov.dev 지도를 불러옵니다.<br><a href=\\'${mapMeta.link||'#'}\\' target=\\'_blank\\' style=\\'color:var(--accent)\\'>tarkov.dev에서 지도 열기 ↗</a></div></div>'"
+      onload="this.style.opacity=1" style="opacity:0;transition:opacity .3s;width:100%;height:100%;object-fit:contain">`;
   } else {
-    viewerHtml+=`<div class="map-no-img"><div class="map-no-img-icon">🗺️</div><div style="font-size:12px;text-align:center">Place map image at:<br><code style="font-size:10px">${mapMeta.img||'maps/'+selMap+'.png'}</code></div></div>`;
+    viewerHtml+=`<div class="map-no-img"><div class="map-no-img-icon">${mapMeta.i||'🗺️'}</div>
+      <div style="font-size:13px;text-align:center;line-height:1.7">${mapMeta.n} 지도는 tarkov.dev<br>인터랙티브 맵에서 확인하세요.<br>
+      <a href="${mapMeta.link||'#'}" target="_blank" style="color:var(--accent);font-weight:600">tarkov.dev에서 지도 열기 ↗</a></div></div>`;
   }
   viewerHtml+=`</div>`; // map-img-wrap
+  if(imgSrc && mapMeta.link){
+    viewerHtml+=`<div style="text-align:right;flex-shrink:0"><a href="${mapMeta.link}" target="_blank" style="font-size:11px;color:var(--accent)">tarkov.dev 인터랙티브 맵 (핀·추출구·전리품) 열기 ↗</a></div>`;
+  }
 
   if(mapInfo){
     viewerHtml+=`<div style="display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0">`;
@@ -1445,35 +1464,40 @@ function renderQuestDetail(questId) {
 
   // ── 아이템 제출 목표 + 진행 상황 입력 ──
   if(itemObjs.length){
-    html+=`<div><div class="qd-sec-title">Items Required</div>`;
+    html+=`<div><div class="qd-sec-title">필요 아이템</div>`;
     itemObjs.forEach(obj=>{
       const objId=obj.id||obj.description;
-      const items=obj.items||(obj.questItem?[obj.questItem]:[]);
+      const items=(obj.items||(obj.questItem?[obj.questItem]:[])).filter(Boolean);
       const need=obj.count||1;
       const prog=questProgress[q.id]?.[objId]||0;
-      const pct=Math.min(100,Math.round(prog/need*100));
       const fir=obj.foundInRaid;
-      items.forEach(item=>{
-        const img=bestImg(item,'inspect');
-        html+=`<div class="qd-item-row" style="flex-direction:column;gap:6px;align-items:stretch">
-          <div style="display:flex;align-items:center;gap:8px">
-            ${img?`<img class="qd-item-img" src="${img}" alt="${item.name}" onerror="this.src='${item.gridImageLink||''}';this.onerror=null">`:`<div class="qd-item-img-ph">📦</div>`}
-            <div style="flex:1;min-width:0">
-              <div class="qd-item-name">${item.name}</div>
-              ${fir?`<div style="font-size:10px;color:var(--accent)">FIR required</div>`:''}
-            </div>
-            <div class="qd-item-count">×${need}</div>
-          </div>
-          <div class="qd-progress-row">
-            <span class="qd-progress-label">Have:</span>
-            <input class="qd-progress-input" type="number" min="0" max="${need}" value="${prog}"
-              onchange="setProgress('${q.id}','${objId}',+this.value,${need})"
-              onclick="event.stopPropagation()">
-            <div class="qd-progress-bar"><div class="qd-progress-fill" style="width:${pct}%"></div></div>
-            <span class="qd-progress-label" style="color:${prog>=need?'var(--green)':'var(--t3)'}">${prog}/${need}</span>
-          </div>
-        </div>`;
-      });
+      // 종류명: 단일이면 아이템명, 여러개면 설명문에서 추출 시도, 실패 시 "N종 중 택1"
+      let label;
+      if(items.length===1){ label=items[0].name; }
+      else {
+        const d=fmtObjDesc(obj.description)||'';
+        label = d ? d : `아이템 ${items.length}종 중 택1`;
+      }
+      // hover 팝업: 해당 종류 아이템 목록
+      const popHtml=items.map(it=>{
+        const im=bestImg(it,'grid');
+        return `<div class="qd-pop-item">${im?`<img src="${im}" onerror="this.style.display='none'">`:''}<span>${it.name}</span></div>`;
+      }).join('');
+      const multi=items.length>1;
+      html+=`<div class="qd-item2">
+        <div class="qd-item2-top">
+          <span class="qd-item2-name ${multi?'has-pop':''}">${label}${multi?` <span style="color:var(--t3);font-weight:400">(${items.length}종)</span>`:''}
+            ${multi?`<div class="qd-pop">${popHtml}</div>`:''}
+          </span>
+          ${fir?`<span class="qd-fir">FIR</span>`:''}
+        </div>
+        <div class="qd-counter">
+          <button class="qd-step" onclick="event.stopPropagation();setProgress('${q.id}','${objId}',${Math.max(0,prog-1)},${need})">−</button>
+          <span class="qd-count-num" style="color:${prog>=need?'var(--green)':'var(--t1)'}">${prog} / ${need}</span>
+          <button class="qd-step" onclick="event.stopPropagation();setProgress('${q.id}','${objId}',${Math.min(need,prog+1)},${need})">+</button>
+          ${prog>=need?'<span style="color:var(--green);font-weight:700;margin-left:4px">✓</span>':''}
+        </div>
+      </div>`;
     });
     html+=`</div>`;
   }
@@ -1640,6 +1664,38 @@ function fmtObjDesc(desc){
     .replace(/(\d+)/g, ' $1 ')
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+// 핸드오버/수집 objective를 렌더. 필요한 아이템 종류가 있으면 밑줄 클릭 → 아이템 목록 펼침
+function objLine(o, idPrefix){
+  const base = fmtObjDesc(o.description)||o.type;
+  const items = (o.items||[]).filter(Boolean);
+  const qItem = o.questItem;
+  // 표시할 아이템 후보
+  let list = [];
+  if(items.length) list = items;
+  else if(qItem) list = [qItem];
+  if(!list.length){
+    return `<div class="qi-obj" style="margin-bottom:3px">· ${base}</div>`;
+  }
+  const cnt = o.count||1;
+  const oid = (idPrefix||'o')+'_'+(o.id||Math.random().toString(36).slice(2));
+  // 여러 종류면 "필요 아이템 N종" 안내, 단일이면 아이템명
+  const label = list.length>1
+    ? `필요 아이템 ${list.length}종 (각 ${cnt}개)`
+    : `${list[0].shortName||list[0].name}${cnt>1?' ×'+cnt:''}`;
+  const itemsHtml = list.map(it=>{
+    const img = bestImg(it,'grid');
+    return `<div class="obj-item">
+      ${img?`<img class="obj-item-img" src="${img}" onerror="this.style.display='none'">`:'<div class="obj-item-img"></div>'}
+      <span class="obj-item-name">${it.name}</span>
+      <span class="obj-item-cnt">×${cnt}</span>
+    </div>`;
+  }).join('');
+  return `<div class="qi-obj" style="margin-bottom:3px">· ${base}
+      <span class="obj-toggle" onclick="event.stopPropagation();var e=document.getElementById('${oid}');e.style.display=e.style.display==='none'?'block':'none'">${label} ▾</span>
+      <div class="obj-item-list" id="${oid}" style="display:none">${itemsHtml}</div>
+    </div>`;
 }
 
 function bestImg(item,size='inspect'){
