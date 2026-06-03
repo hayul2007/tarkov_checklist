@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kappa Checklist — Escape from Tarkov</title>
+<style>
+:root{
+  --bg0:#0d0e10;--bg1:#13151a;--bg2:#1a1d24;--bg3:#22262f;--bg4:#2a2f3a;
+  --border:#2e3340;--border2:#3a4050;
+  --t1:#e8eaf0;--t2:#9ba3b5;--t3:#626b7e;
+  --accent:#c8a84b;--accent2:#a8882e;
+  --green:#4caf7d;--gbg:#0d2318;--gborder:#1a4530;
+  --red:#e05a5a;--rbg:#220e0e;
+  --yellow:#e8b84b;--ybg:#1e1608;
+  --blue:#5a8de0;--bbg:#0a1422;
+  --sidebar-w:224px;
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg0);color:var(--t1);font-family:var(--font);font-size:15px;overflow:hidden}
+input,button,select{font-family:var(--font);font-size:14px;color:var(--t1)}
+/* ── 가독성 향상 오버라이드 ── */
+.qi-name{font-size:15px !important}
+.qi-obj{font-size:13px !important;color:var(--t2) !important}
+.pill{font-size:11px !important}
+.mc2-name{font-size:14px !important}
+.qd-obj{font-size:13px !important}
+.qd-item-name{font-size:14px !important}
+.tc-name{font-size:14px !important}
+.mqi-name,.mq-row-name{font-size:14px !important}
+.qi-reward-item{font-size:12px !important}
+.sect-title,.qd-sec-title{font-size:12px !important}
+/* 핸드오버 아이템 토글 */
+.obj-toggle{display:inline-block;margin-left:4px;color:var(--accent);text-decoration:underline;text-underline-offset:2px;cursor:pointer;font-weight:600;font-size:12px}
+.obj-toggle:hover{color:var(--t1)}
+.obj-item-list{margin:5px 0 2px 10px;padding:6px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px}
+.obj-item{display:flex;align-items:center;gap:8px;padding:3px 0}
+.obj-item-img{width:34px;height:34px;object-fit:contain;background:var(--bg1);border-radius:4px;flex-shrink:0}
+.obj-item-name{flex:1;font-size:13px;color:var(--t1);line-height:1.3}
+.obj-item-cnt{font-size:13px;font-weight:700;color:var(--accent)}
+input[type=number],input[type=text]{background:var(--bg3);border:1px solid var(--border2);border-radius:5px;padding:5px 8px;color:var(--t1)}
+input:focus{outline:none;border-color:var(--accent)}
+button{background:var(--bg3);border:1px solid var(--border2);border-radius:5px;padding:4px 12px;cursor:pointer;color:var(--t2);transition:all .15s}
+button:hover{background:var(--bg4);color:var(--t1)}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+
+/* LAYOUT */
+.layout{display:flex;height:100vh}
+.sidebar{width:var(--sidebar-w);background:var(--bg1);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar-header{padding:14px 14px 10px;border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.logo-k{width:30px;height:30px;background:var(--accent);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;font-weight:800;flex-shrink:0}
+.logo-title{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.5px}
+.logo-sub{font-size:10px;color:var(--t3);margin-top:1px}
+.lv-box{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:9px 10px}
+.lv-label{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px}
+.lv-row{display:flex;align-items:center;gap:8px}
+.lv-row input[type=number]{width:58px;font-size:17px;font-weight:700;text-align:center;padding:3px 4px}
+.lv-pbar{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.lv-pfill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s}
+.lv-hint{font-size:10px;color:var(--t3);margin-top:5px}
+.lv-hint.ok{color:var(--green)}
+.sidebar-nav{flex:1;padding:8px;overflow-y:auto}
+.nav-sec-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;padding:0 6px;margin:8px 0 3px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;cursor:pointer;color:var(--t2);font-size:13px;transition:all .15s;border:1px solid transparent;margin-bottom:1px}
+.nav-item:hover{background:var(--bg3);color:var(--t1)}
+.nav-item.active{background:var(--bg3);color:var(--t1);border-color:var(--border2)}
+.nav-item.active .ndot{background:var(--accent)}
+.ndot{width:6px;height:6px;border-radius:50%;background:var(--bg4);flex-shrink:0;transition:background .15s}
+.nbadge{font-size:10px;background:var(--bg4);color:var(--t3);padding:1px 6px;border-radius:8px;margin-left:auto}
+.nbadge.green{background:var(--gbg);color:var(--green);border:1px solid var(--gborder)}
+.sidebar-footer{padding:10px 12px;border-top:1px solid var(--border)}
+.api-status{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t3)}
+.adot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:var(--t3)}
+.adot.ok{background:var(--green)}.adot.err{background:var(--red)}.adot.load{background:var(--yellow);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* TOPBAR */
+.topbar{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;background:var(--bg1);flex-shrink:0}
+.page-title{font-size:15px;font-weight:600;color:var(--t1)}
+.page-sub{font-size:11px;color:var(--t3)}
+.topbar-right{margin-left:auto;display:flex;gap:7px}
+
+/* STATS BAR */
+.stats-bar{display:flex;gap:10px;padding:9px 18px;background:var(--bg1);border-bottom:1px solid var(--border);flex-shrink:0;align-items:center}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:7px 12px;min-width:80px}
+.stat-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.stat-val{font-size:17px;font-weight:700;color:var(--t1)}
+.stat-val.acc{color:var(--accent)}.stat-val.grn{color:var(--green)}
+.stat-pbar-wrap{flex:1;display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:7px 12px}
+.stat-pbar{flex:1;height:6px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.stat-pfill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s}
+.stat-pct{font-size:12px;font-weight:700;color:var(--accent);min-width:38px;text-align:right}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:18px}
+.content::-webkit-scrollbar{width:5px}
+.content::-webkit-scrollbar-track{background:transparent}
+.content::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+
+/* TRADER GRID */
+.trader-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:18px}
+.tc{background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all .15s}
+.tc:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.tc.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.tc-portrait{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top center;display:block;background:var(--bg3)}
+.tc-ph{width:100%;aspect-ratio:3/4;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:38px}
+.tc-info{padding:8px 10px}
+.tc-name{font-size:12px;font-weight:600;color:var(--t1);margin-bottom:5px}
+.tc-ll-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
+.tc-ll-lbl{font-size:10px;color:var(--t3)}
+.ll-badge{font-size:11px;font-weight:700;padding:1px 7px;border-radius:4px}
+.ll1{background:#1a1208;color:#c8a84b;border:1px solid #3a2e10}
+.ll2{background:#0d2018;color:#4caf7d;border:1px solid #1a4530}
+.ll3{background:#0a1422;color:#5a8de0;border:1px solid #1a2e50}
+.ll4{background:#1a0d28;color:#9b7ae8;border:1px solid #3a1a60}
+.tc-rep-lbl{font-size:9px;color:var(--t3);margin-bottom:2px;display:flex;justify-content:space-between}
+.tc-rep-bar{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.tc-rep-fill{height:100%;border-radius:2px;transition:width .4s}
+.tc-prog{font-size:10px;color:var(--t3);margin-top:3px;text-align:right}
+
+/* TRADER DETAIL BAR */
+.trader-detail-bar{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.tdb-name{font-size:13px;font-weight:600;color:var(--t1)}
+.ll-card{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;min-width:105px;transition:opacity .2s}
+.ll-card.achieved{border-color:var(--border2)}
+.ll-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
+.ll-card-req{font-size:10px;color:var(--t3);margin-bottom:3px}
+.ll-card-bar{height:3px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.ll-card-fill{height:100%;border-radius:2px}
+
+/* SECTION HEADERS */
+.sect-hd{display:flex;align-items:center;gap:7px;margin:13px 0 6px}
+.sect-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--t3)}
+.sbadge{font-size:10px;padding:1px 8px;border-radius:8px;font-weight:500}
+.s-ok{background:var(--gbg);color:var(--green);border:1px solid var(--gborder)}
+.s-active{background:var(--bbg);color:var(--blue);border:1px solid #1a2e50}
+.s-lock{background:var(--bg3);color:var(--t3);border:1px solid var(--border)}
+.s-done{background:var(--bg2);color:var(--t3);border:1px solid var(--border)}
+.s-kappa{background:#1a1208;color:var(--accent);border:1px solid #3a2e10}
+.kappa-badge{
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:10px;font-weight:700;letter-spacing:.3px;
+  padding:1px 6px;border-radius:4px;vertical-align:middle;
+  background:linear-gradient(135deg,#1e1308,#2a1a08);
+  color:#e8c060;border:1px solid #5a3e10;
+  box-shadow:0 1px 3px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,200,80,.08);
+  cursor:default;white-space:nowrap;flex-shrink:0;
+  transition:all .15s;
+}
+.kappa-badge:hover{background:linear-gradient(135deg,#2a1a08,#3a2408);border-color:#8a5e18;color:#f0d070;box-shadow:0 2px 6px rgba(200,160,60,.2);}
+.qi-name-wrap{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.mq-row-name-wrap{display:flex;align-items:center;gap:5px;flex:1;min-width:0;overflow:hidden}
+
+/* QUEST ITEM */
+.qi{display:flex;align-items:flex-start;gap:9px;padding:9px 11px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:border-color .12s;margin-bottom:4px}
+.qi:hover{border-color:var(--border2)}
+.qi.done{opacity:.4}.qi.locked{opacity:.6}
+.qi-chk{width:17px;height:17px;border:1.5px solid var(--border2);border-radius:4px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .12s}
+.qi-chk.on{background:var(--green);border-color:var(--green);color:#000}
+.qi-name{font-size:13px;font-weight:500;color:var(--t1);line-height:1.3}
+.qi-meta{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px}
+.pill{font-size:10px;padding:1px 7px;border-radius:8px;white-space:nowrap}
+.p-lv{background:var(--bg4);color:var(--t3);border:1px solid var(--border)}
+.p-map{background:var(--bg4);color:var(--t2);border:1px solid var(--border)}
+.p-warn{background:var(--ybg);color:var(--yellow);border:1px solid #3a2e10}
+.p-rep{background:#1a1208;color:var(--accent);border:1px solid #3a2e10}
+.qi-objs{margin-top:4px}
+.qi-obj{font-size:11px;color:var(--t3);line-height:1.6}
+.qi-acts{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
+.bk-btn{background:none;border:1px solid var(--border);color:var(--t3);font-size:12px;padding:3px 8px;border-radius:4px;cursor:pointer;transition:all .15s;font-family:var(--font)}
+.bk-btn:hover{border-color:var(--accent);color:var(--accent)}
+.bk-btn.on{border-color:var(--accent);color:var(--accent);background:#1a1208}
+.qi-done-btn{background:var(--bg3);border:1.5px solid var(--gborder);color:var(--green);font-size:12px;font-weight:700;padding:5px 12px;border-radius:5px;cursor:pointer;transition:all .15s;font-family:var(--font);white-space:nowrap}
+.qi-done-btn:hover{background:var(--gbg);border-color:var(--green)}
+.qi-done-btn.on{background:var(--green);border-color:var(--green);color:#06140d}
+
+/* MAP TAB */
+.map-layout{display:flex;gap:14px;height:100%;overflow:hidden}
+.map-quest-panel{flex:1;min-width:0;overflow-y:auto;padding-right:3px}
+.map-img-panel{width:420px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;overflow-y:auto}
+.map-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:8px;margin-bottom:18px}
+.mc{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:9px 8px;text-align:center;cursor:pointer;transition:all .15s}
+.mc:hover{border-color:var(--border2);background:var(--bg3)}
+.mc.sel{border-color:var(--accent);background:var(--bg3)}
+.mc.sel .mc-name{color:var(--accent)}
+.mc-icon{font-size:18px;margin-bottom:3px}
+.mc-name{font-size:12px;font-weight:500;color:var(--t1)}
+.mqi{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;margin-bottom:5px}
+.mqi-ti{font-size:22px;flex-shrink:0;margin-top:1px}
+.mqi-name{font-size:13px;font-weight:500;color:var(--t1)}
+.mqi-sub{font-size:11px;color:var(--t3);margin-top:2px}
+.mqi-obj{font-size:11px;color:var(--t3);line-height:1.6}
+.mqi-acts{display:flex;flex-direction:column;gap:4px;flex-shrink:0;align-items:flex-end}
+.map-img-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.map-img-hd{padding:9px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.map-img-title{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.6px}
+.map-img-body{background:var(--bg0);min-height:180px;display:flex;align-items:center;justify-content:center}
+.map-img-body img{width:100%;height:auto;display:block;cursor:zoom-in}
+.map-img-body img.zoomed{cursor:zoom-out;position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:contain;background:rgba(0,0,0,.93);z-index:999;padding:20px}
+.map-img-loading{color:var(--t3);font-size:12px;text-align:center;padding:36px}
+.floor-tabs{display:flex;gap:4px;padding:7px 9px;background:var(--bg2);border-top:1px solid var(--border);flex-wrap:wrap}
+.floor-tab{font-size:11px;padding:3px 9px;border-radius:4px;background:var(--bg3);border:1px solid var(--border);color:var(--t3);cursor:pointer;transition:all .15s}
+.floor-tab.on{background:var(--accent2);border-color:var(--accent);color:#000;font-weight:600}
+.map-info-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:11px 13px;font-size:12px}
+.mir{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border)}
+.mir:last-child{border-bottom:none}
+.mir-k{color:var(--t3)}.mir-v{color:var(--t1);font-weight:500}
+
+/* COLLECTOR */
+.coll-header{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:14px}
+.coll-title{font-size:14px;font-weight:600;color:var(--accent);margin-bottom:3px}
+.coll-desc{font-size:12px;color:var(--t3);line-height:1.6}
+.coll-pbar-row{display:flex;align-items:center;gap:10px;margin-top:10px}
+.coll-pbar{flex:1;height:7px;background:var(--bg4);border-radius:4px;overflow:hidden}
+.coll-pfill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:4px;transition:width .4s}
+.coll-pct{font-size:13px;font-weight:700;color:var(--accent);min-width:42px;text-align:right}
+.tog-row{display:flex;align-items:center;gap:7px;margin-bottom:14px;flex-wrap:wrap}
+.tog-btn{font-size:12px;padding:5px 13px;border-radius:18px}
+.tog-btn.on{background:#1a1208;border-color:var(--accent);color:var(--accent);font-weight:500}
+.coll-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:7px}
+.item-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:9px 11px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:all .15s}
+.item-card:hover{border-color:var(--border2);background:var(--bg3)}
+.item-card.found{border-color:var(--gborder);background:var(--gbg);opacity:.55}
+.item-chk{width:17px;height:17px;border:1.5px solid var(--border2);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .15s}
+.item-chk.on{background:var(--green);border-color:var(--green);color:#000}
+.item-name{font-size:12px;color:var(--t1);flex:1;min-width:0}
+.item-fir{font-size:10px;color:var(--t3);margin-top:1px}
+
+/* CHECKLIST */
+.cl-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+.cl-title{font-size:13px;color:var(--t2)}
+.btn-danger{background:var(--rbg);border:1px solid #4a1a1a;color:var(--red);font-size:11px;padding:4px 11px}
+.cl-item{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:11px 13px;margin-bottom:6px}
+.cl-item.done{opacity:.4}
+.cl-hd{display:flex;align-items:flex-start;gap:9px}
+.cl-ti{font-size:20px;flex-shrink:0}
+.cl-name{font-size:13px;font-weight:500;color:var(--t1)}
+.cl-sub{font-size:11px;color:var(--t3);margin-top:2px}
+.cl-objs{margin-top:6px;padding-top:6px;border-top:1px solid var(--border)}
+.cl-obj{font-size:11px;color:var(--t3);line-height:1.7}
+.cl-acts{display:flex;gap:5px;align-items:center;flex-shrink:0;margin-left:auto}
+.sp{font-size:10px;padding:2px 8px;border-radius:8px;white-space:nowrap}
+.sp-ok{background:var(--gbg);color:var(--green);border:1px solid var(--gborder)}
+.sp-lock{background:var(--ybg);color:var(--yellow);border:1px solid #3a2e10}
+.sp-done{background:var(--bg3);color:var(--t3);border:1px solid var(--border)}
+
+/* ── ITEM SEARCH TAB ── */
+.item-search-wrap{display:flex;gap:8px;margin-bottom:16px}
+.item-search-wrap input[type=text]{flex:1;font-size:14px;padding:8px 12px}
+.item-search-btn{padding:8px 18px;background:var(--accent2);border-color:var(--accent);color:#000;font-weight:600;font-size:13px}
+.item-search-btn:hover{background:var(--accent)}
+.item-result{background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px}
+.ir-header{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border)}
+.ir-img{width:80px;height:80px;object-fit:contain;background:var(--bg3);border-radius:6px;flex-shrink:0;border:1px solid var(--border)}
+.ir-img-ph{width:80px;height:80px;background:var(--bg3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0}
+.ir-title{font-size:14px;font-weight:600;color:var(--t1);margin-bottom:2px}
+.ir-short{font-size:11px;color:var(--t3)}
+.ir-price-row{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap}
+.ir-price-badge{font-size:11px;padding:2px 9px;border-radius:8px;border:1px solid var(--border)}
+.ir-flea{background:var(--bbg);color:var(--blue);border-color:#1a2e50}
+.ir-body{padding:12px 14px}
+.ir-section{margin-bottom:14px}
+.ir-sec-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.ir-sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.buy-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg3);border-radius:6px;margin-bottom:5px;border:1px solid var(--border)}
+.buy-row:hover{border-color:var(--border2)}
+.buy-trader-icon{font-size:18px;flex-shrink:0}
+.buy-info{flex:1;min-width:0}
+.buy-trader-name{font-size:12px;font-weight:500;color:var(--t1)}
+.buy-meta{font-size:11px;color:var(--t3);margin-top:1px}
+.buy-price{font-size:13px;font-weight:700;color:var(--accent);text-align:right;flex-shrink:0}
+.buy-ll{font-size:10px;padding:1px 7px;border-radius:4px;margin-left:auto}
+.buy-ll-warn{background:var(--ybg);color:var(--yellow);border:1px solid #3a2e10}
+.buy-ll-ok{background:var(--gbg);color:var(--green);border:1px solid var(--gborder)}
+.flea-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bbg);border:1px solid #1a2e50;border-radius:6px;margin-bottom:5px}
+.flea-icon{font-size:18px;flex-shrink:0}
+.flea-info{flex:1}
+.flea-name{font-size:12px;font-weight:500;color:var(--blue)}
+.flea-meta{font-size:11px;color:var(--t3);margin-top:1px}
+.flea-price{font-size:13px;font-weight:700;color:var(--blue);text-align:right;flex-shrink:0}
+.no-buy{font-size:12px;color:var(--t3);padding:8px 10px;background:var(--bg3);border-radius:6px;border:1px solid var(--border)}
+.ir-quest-tag{font-size:11px;padding:2px 8px;border-radius:5px;background:var(--ybg);color:var(--yellow);border:1px solid #3a2e10;margin-left:auto}
+.search-hint{text-align:center;padding:48px 20px;color:var(--t3)}
+.search-hint-icon{font-size:36px;margin-bottom:10px;opacity:.5}
+.search-loading{text-align:center;padding:40px;color:var(--t3);font-size:13px}
+.result-count{font-size:12px;color:var(--t3);margin-bottom:12px}
+
+/* SHARED */
+.search-row{position:relative;margin-bottom:13px}
+.search-row input{width:100%;padding:7px 12px 7px 32px}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:14px;pointer-events:none}
+.search-clear{position:absolute;right:9px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:15px;padding:2px}
+.empty{text-align:center;padding:56px 20px;color:var(--t3)}
+.empty-icon{font-size:38px;margin-bottom:10px;opacity:.5}
+.empty-text{font-size:13px}
+.loading-wrap{text-align:center;padding:60px}
+.spinner{display:inline-block;width:30px;height:30px;border:2px solid var(--bg4);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.err-box{background:var(--rbg);border:1px solid #4a1a1a;border-radius:6px;padding:13px 15px;color:var(--red);font-size:13px}
+
+/* ══ HIDEOUT TAB ══ */
+.hd-layout{display:flex;gap:14px;height:100%;overflow:hidden}
+.hd-list-panel{width:280px;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden}
+.hd-detail-panel{flex:1;min-width:0;overflow-y:auto}
+.hd-search{position:relative;margin-bottom:8px}
+.hd-search input{width:100%;padding:6px 10px 6px 30px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;color:var(--t1);font-size:12px}
+.hd-search input:focus{outline:none;border-color:var(--accent)}
+.hd-search-icon{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:13px;pointer-events:none}
+.hd-station-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:4px}
+.hd-station-item{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:9px 11px;cursor:pointer;transition:all .15s}
+.hd-station-item:hover{border-color:var(--border2);background:var(--bg3)}
+.hd-station-item.sel{border-color:var(--accent);background:var(--bg3)}
+.hd-station-name{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:5px}
+.hd-level-row{display:flex;align-items:center;gap:6px}
+.hd-lv-btn{width:22px;height:22px;border:1px solid var(--border2);border-radius:4px;background:var(--bg4);color:var(--t2);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;padding:0}
+.hd-lv-btn:hover{background:var(--accent2);border-color:var(--accent);color:#000}
+.hd-lv-badge{font-size:11px;font-weight:600;padding:1px 8px;border-radius:4px;background:var(--bg4);color:var(--t3);border:1px solid var(--border)}
+.hd-lv-badge.maxed{background:#1a0d28;color:#9b7ae8;border-color:#3a1a60}
+.hd-lv-badge.in-progress{background:#1a1208;color:var(--accent);border-color:#3a2e10}
+.hd-prog-bar{flex:1;height:3px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.hd-prog-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s}
+.hd-detail-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--t3);font-size:13px;gap:8px}
+.hd-detail-empty-icon{font-size:36px;opacity:.4}
+.hd-upgrade-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.hd-upgrade-card.current{border-color:var(--accent)}
+.hd-upgrade-hd{display:flex;align-items:center;gap:10px;padding:10px 13px;border-bottom:1px solid var(--border);cursor:pointer}
+.hd-upgrade-hd:hover{background:var(--bg3)}
+.hd-level-title{font-size:13px;font-weight:600;color:var(--t1)}
+.hd-time-badge{font-size:11px;padding:2px 8px;border-radius:5px;background:var(--bbg);color:var(--blue);border:1px solid #1a2e50;margin-left:auto}
+.hd-upgrade-body{padding:11px 13px}
+.hd-req-section{margin-bottom:10px}
+.hd-req-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);margin-bottom:6px}
+.hd-item-row{display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--bg3);border-radius:5px;margin-bottom:3px;border:1px solid var(--border)}
+.hd-item-img{width:56px;height:56px;object-fit:contain;background:var(--bg4);border-radius:5px;flex-shrink:0}
+.hd-item-img-ph{width:56px;height:56px;background:var(--bg4);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.hd-item-name{font-size:12px;color:var(--t1);flex:1;min-width:0}
+.hd-item-count{font-size:12px;font-weight:700;color:var(--accent);flex-shrink:0}
+.fir-badge{font-size:10px;padding:1px 6px;border-radius:4px;background:#1a1208;color:var(--accent);border:1px solid #3a2e10;flex-shrink:0}
+.hd-station-req{font-size:11px;padding:4px 10px;background:var(--bg3);border-radius:5px;color:var(--t2);border:1px solid var(--border);margin-bottom:3px}
+.hd-skill-req{font-size:11px;padding:4px 10px;background:var(--bg3);border-radius:5px;color:var(--t2);border:1px solid var(--border);margin-bottom:3px}
+.hd-trader-req{font-size:11px;padding:4px 10px;background:var(--bg3);border-radius:5px;color:var(--t2);border:1px solid var(--border);margin-bottom:3px}
+.hd-summary-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:14px}
+.hd-summary-title{font-size:12px;font-weight:600;color:var(--accent);margin-bottom:8px}
+.hd-summary-item{display:flex;align-items:center;gap:7px;padding:4px 7px;background:var(--bg3);border-radius:5px;margin-bottom:3px;font-size:12px}
+.hd-summary-item-name{flex:1;color:var(--t1)}
+.hd-summary-total{font-weight:700;color:var(--accent)}
+.hd-bm-btn{background:none;border:1px solid var(--border);color:var(--t3);font-size:11px;padding:2px 8px;border-radius:4px;cursor:pointer;margin-left:auto;transition:all .15s}
+.hd-bm-btn:hover{border-color:var(--accent);color:var(--accent)}
+.hd-bm-btn.on{border-color:var(--accent);color:var(--accent);background:#1a1208}
+.hd-maxed-banner{text-align:center;padding:20px;color:var(--t3);font-size:12px;background:var(--bg3);border-radius:6px}
+
+/* ══ SHOPPING LIST TAB ══ */
+.sl-layout{display:flex;gap:14px}
+.sl-col{flex:1;min-width:0}
+.sl-col-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.sl-col-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.sl-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;margin-bottom:5px;transition:all .15s}
+.sl-item:hover{border-color:var(--border2);background:var(--bg3)}
+.sl-item.fir .sl-item-name{color:var(--t1)}
+.sl-img{width:56px;height:56px;object-fit:contain;background:var(--bg3);border-radius:6px;flex-shrink:0;border:1px solid var(--border)}
+.sl-img-ph{width:56px;height:56px;background:var(--bg3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:1px solid var(--border)}
+.sl-item-body{flex:1;min-width:0}
+.sl-item-name{font-size:13px;font-weight:500;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sl-item-short{font-size:10px;color:var(--t3);margin-top:1px}
+.sl-item-sources{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}
+.sl-source-tag{font-size:10px;padding:1px 6px;border-radius:4px;background:var(--bg4);color:var(--t3);border:1px solid var(--border);max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sl-count-col{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.sl-count{font-size:16px;font-weight:700;color:var(--accent)}
+.sl-fir-pill{font-size:10px;padding:1px 6px;border-radius:4px;background:#1a1208;color:var(--accent);border:1px solid #3a2e10}
+.sl-hide-pill{font-size:10px;padding:1px 6px;border-radius:4px;background:var(--bbg);color:var(--blue);border:1px solid #1a2e50}
+.sl-summary-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;margin-bottom:16px;flex-wrap:wrap}
+.sl-summary-stat{display:flex;flex-direction:column;align-items:center;min-width:60px}
+.sl-summary-val{font-size:18px;font-weight:700;color:var(--accent)}
+.sl-summary-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px}
+.sl-empty{text-align:center;padding:40px 20px;color:var(--t3);font-size:12px;background:var(--bg2);border:1px solid var(--border);border-radius:8px}
+.sl-filter-row{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.sl-filter-btn{font-size:11px;padding:4px 11px;border-radius:16px}
+.sl-filter-btn.on{background:#1a1208;border-color:var(--accent);color:var(--accent);font-weight:500}
+
+/* ══ MAP TAB REDESIGN ══ */
+.map-page{display:flex;flex-direction:column;height:100%;overflow:hidden;gap:0}
+.map-top{display:flex;gap:10px;padding:0 0 10px 0;flex-shrink:0;flex-wrap:wrap}
+.map-body{display:flex;gap:12px;flex:1;overflow:hidden;min-height:0}
+.map-list-col{width:240px;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden;gap:6px}
+.map-viewer-col{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;gap:8px}
+.map-detail-col{width:310px;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden}
+
+/* Map card grid */
+.mc2{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:all .15s;margin-bottom:4px}
+.mc2:hover{border-color:var(--border2);background:var(--bg3)}
+.mc2.sel{border-color:var(--accent);background:var(--bg3)}
+.mc2-icon{font-size:16px;flex-shrink:0}
+.mc2-name{font-size:12px;font-weight:500;color:var(--t1);flex:1}
+.mc2-count{font-size:10px;padding:1px 6px;border-radius:8px;background:var(--bg4);color:var(--t3)}
+.mc2.sel .mc2-name{color:var(--accent)}
+.mc2.sel .mc2-count{background:#1a1208;color:var(--accent)}
+.map-list-scroll{flex:1;overflow-y:auto}
+
+/* Quest list in map */
+.mq-cat{margin-bottom:6px}
+.mq-cat-hd{display:flex;align-items:center;gap:6px;padding:5px 8px;background:var(--bg3);border-radius:5px;cursor:pointer;margin-bottom:4px;user-select:none;border:1px solid var(--border)}
+.mq-cat-hd:hover{background:var(--bg4)}
+.mq-cat-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);flex:1}
+.mq-cat-arrow{font-size:10px;color:var(--t3);transition:transform .2s}
+.mq-cat-arrow.open{transform:rotate(90deg)}
+.mq-cat-body{display:flex;flex-direction:column;gap:3px}
+.mq-cat-body.collapsed{display:none}
+
+/* Quest row in map */
+.mq-row{display:flex;align-items:center;gap:8px;padding:7px 9px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;cursor:pointer;transition:all .12s}
+.mq-row:hover{border-color:var(--border2);background:var(--bg3)}
+.mq-row.sel{border-color:var(--accent);background:#0d0e14}
+.mq-row.done{opacity:.38}
+.mq-row-trader{font-size:14px;flex-shrink:0}
+.mq-row-name{font-size:12px;font-weight:500;color:var(--t1);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mq-row-done-btn{font-size:10px;padding:2px 7px;border-radius:4px;flex-shrink:0;background:var(--bg3);border:1px solid var(--border2);color:var(--t3);transition:all .12s}
+.mq-row-done-btn:hover{background:var(--gbg);border-color:var(--gborder);color:var(--green)}
+.mq-row-done-btn.done{background:var(--gbg);border-color:var(--gborder);color:var(--green)}
+
+/* Map image viewer */
+.map-img-wrap{flex:1;position:relative;background:var(--bg0);border:1px solid var(--border);border-radius:8px;overflow:hidden;min-height:0}
+.map-img-wrap img{width:100%;height:100%;object-fit:contain;display:block;cursor:crosshair}
+.map-img-loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--t3);font-size:12px;background:var(--bg0)}
+.map-no-img{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--t3)}
+.map-no-img-icon{font-size:36px;opacity:.4}
+/* Layer tabs */
+.layer-tabs{display:flex;gap:4px;flex-shrink:0}
+.layer-tab{font-size:11px;padding:4px 12px;border-radius:5px;background:var(--bg2);border:1px solid var(--border);color:var(--t3);cursor:pointer;transition:all .15s}
+.layer-tab:hover{background:var(--bg3);color:var(--t1)}
+.layer-tab.on{background:var(--accent2);border-color:var(--accent);color:#000;font-weight:600}
+
+/* Quest marker on map */
+.map-markers{position:absolute;inset:0;pointer-events:none}
+.qmarker{position:absolute;transform:translate(-50%,-100%);pointer-events:auto;cursor:pointer;z-index:10}
+.qmarker-pin{width:24px;height:28px;display:flex;flex-direction:column;align-items:center}
+.qmarker-dot{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0;transition:all .15s;box-shadow:0 2px 6px rgba(0,0,0,.6)}
+.qmarker-tail{width:2px;height:8px;background:rgba(255,255,255,.4);flex-shrink:0}
+.qmarker.avail .qmarker-dot{background:#1a7a4a;border-color:#4caf7d}
+.qmarker.locked .qmarker-dot{background:#4a3a10;border-color:#c8a84b}
+.qmarker.done .qmarker-dot{background:#2a3a2a;border-color:#4a5a4a;opacity:.5}
+.qmarker.sel .qmarker-dot{background:#1a3a7a;border-color:#5a8de0;box-shadow:0 0 0 3px rgba(90,141,224,.3),0 2px 6px rgba(0,0,0,.6);transform:scale(1.2)}
+.qmarker:hover .qmarker-dot{transform:scale(1.15)}
+.qmarker-label{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;font-size:10px;padding:2px 6px;border-radius:3px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;max-width:140px;overflow:hidden;text-overflow:ellipsis;border:1px solid rgba(255,255,255,.1)}
+.qmarker:hover .qmarker-label{opacity:1}
+
+/* Quest detail panel */
+.qd-panel{flex:1;overflow-y:auto;background:var(--bg2);border:1px solid var(--border);border-radius:8px;display:flex;flex-direction:column}
+.qd-wiki-frame{flex:1;width:100%;border:none;background:var(--bg0);min-height:300px;border-top:1px solid var(--border)}
+.qd-progress-row{display:flex;align-items:center;gap:6px;padding:4px 0}
+.qd-progress-input{width:54px;font-size:12px;padding:2px 6px;text-align:center;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;color:var(--t1)}
+.qd-progress-bar{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.qd-progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s}
+.qd-progress-label{font-size:10px;color:var(--t3);white-space:nowrap}
+.qd-prereq{font-size:11px;padding:4px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;margin-bottom:3px;display:flex;align-items:center;gap:6px;cursor:pointer}
+.qd-prereq:hover{border-color:var(--border2)}
+.qd-prereq.done{opacity:.5}
+.qd-follow{font-size:11px;padding:4px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;margin-bottom:3px;display:flex;align-items:center;gap:6px;cursor:pointer}
+.qd-follow:hover{border-color:var(--accent)}
+.reward-item{display:flex;align-items:center;gap:7px;padding:4px 7px;background:var(--bg3);border-radius:4px;margin-bottom:3px;border:1px solid var(--border)}
+.reward-img{width:36px;height:36px;object-fit:contain;background:var(--bg4);border-radius:4px;flex-shrink:0}
+.reward-img-ph{width:36px;height:36px;background:var(--bg4);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.qd-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--t3);font-size:12px;gap:8px;padding:20px}
+.qd-empty-icon{font-size:32px;opacity:.35}
+.qd-header{padding:12px 14px;border-bottom:1px solid var(--border)}
+.qd-name{font-size:14px;font-weight:600;color:var(--t1);margin-bottom:4px;line-height:1.3}
+.qd-meta{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.qd-done-btn{width:100%;padding:7px;background:var(--gbg);border:1px solid var(--gborder);color:var(--green);font-size:12px;font-weight:600;border-radius:5px;cursor:pointer;transition:all .15s;text-align:center}
+.qd-done-btn:hover{background:#0d3020;color:#6fcf97}
+.qd-done-btn.done{background:var(--bg3);border-color:var(--border2);color:var(--t3)}
+.qd-body{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.qd-sec-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);margin-bottom:5px}
+.qd-obj{display:flex;align-items:flex-start;gap:6px;padding:5px 7px;background:var(--bg3);border-radius:4px;font-size:12px;color:var(--t2);border:1px solid var(--border);margin-bottom:3px}
+.qd-obj-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:4px}
+.qd-item-row{display:flex;align-items:center;gap:8px;padding:6px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:5px;margin-bottom:3px}
+.qd-item-img{width:64px;height:64px;object-fit:contain;background:var(--bg4);border-radius:6px;flex-shrink:0;border:1px solid var(--border)}
+.qd-item-img-ph{width:64px;height:64px;background:var(--bg4);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.qd-item-name{font-size:12px;color:var(--t1);flex:1;min-width:0}
+.qd-item-count{font-size:13px;font-weight:700;color:var(--accent)}
+.qd-bk-btn{font-size:11px;padding:4px 10px;border-radius:4px;background:none;border:1px solid var(--border);color:var(--t3)}
+.qd-bk-btn:hover{border-color:var(--accent);color:var(--accent)}
+.qd-bk-btn.on{background:#1a1208;border-color:var(--accent);color:var(--accent)}
+.qd-rep{font-size:11px;padding:3px 8px;border-radius:4px;background:#1a1208;color:var(--accent);border:1px solid #3a2e10;display:inline-block;margin-bottom:3px}
+.qd-lock-reason{font-size:11px;padding:6px 10px;background:var(--ybg);border:1px solid #3a2e10;border-radius:5px;color:var(--yellow)}
+/* 컴팩트 필요아이템 행 */
+.qd-item2{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:4px}
+.qd-item2-top{display:flex;align-items:center;gap:6px;flex:1;min-width:0}
+.qd-item2-name{font-size:14px;color:var(--t1);line-height:1.35;position:relative}
+.qd-item2-name.has-pop{text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:help;color:var(--accent)}
+.qd-fir{font-size:10px;font-weight:700;color:var(--accent);background:#1a1208;border:1px solid #3a2e10;padding:1px 6px;border-radius:4px;flex-shrink:0}
+/* hover 팝업 */
+.qd-pop{display:none;position:absolute;left:0;top:100%;margin-top:6px;z-index:50;background:var(--bg1);border:1px solid var(--border2);border-radius:8px;padding:7px;min-width:200px;max-width:300px;max-height:280px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.6)}
+.qd-item2-name.has-pop:hover .qd-pop{display:block}
+.qd-pop-item{display:flex;align-items:center;gap:8px;padding:4px 5px;border-radius:4px}
+.qd-pop-item:hover{background:var(--bg3)}
+.qd-pop-item img{width:36px;height:36px;object-fit:contain;background:var(--bg3);border-radius:4px;flex-shrink:0}
+.qd-pop-item span{font-size:13px;color:var(--t1);line-height:1.3;text-decoration:none}
+/* −/+ 카운터 */
+.qd-counter{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.qd-step{width:28px;height:28px;border-radius:6px;border:1px solid var(--border2);background:var(--bg4);color:var(--t1);font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+.qd-step:hover{border-color:var(--accent);color:var(--accent)}
+.qd-count-num{font-size:14px;font-weight:700;min-width:52px;text-align:center}
+
+/* Traders tab - category collapse */
+.tr-cat{margin-bottom:8px}
+.tr-cat-hd{display:flex;align-items:center;gap:6px;padding:5px 8px;background:var(--bg3);border-radius:5px;cursor:pointer;margin-bottom:4px;user-select:none;border:1px solid var(--border)}
+.tr-cat-hd:hover{background:var(--bg4)}
+.tr-cat-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);flex:1}
+.tr-cat-arrow{font-size:10px;color:var(--t3);transition:transform .2s}
+.tr-cat-arrow.open{transform:rotate(90deg)}
+.tr-cat-body.collapsed{display:none}
+
+/* ══ TRADER LOYALTY NEXT LEVEL ══ */
+.ll-next-box{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-top:6px}
+.ll-next-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);margin-bottom:8px}
+.ll-req-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.ll-req-label{font-size:11px;color:var(--t3);width:72px;flex-shrink:0}
+.ll-req-bar{flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.ll-req-fill{height:100%;border-radius:3px;transition:width .3s}
+.ll-req-val{font-size:11px;font-weight:600;min-width:80px;text-align:right;white-space:nowrap}
+.ll-req-ok{color:var(--green)}
+.ll-req-no{color:var(--yellow)}
+
+/* ══ QUEST CARD COLLAPSE ══ */
+.qi-collapse{cursor:pointer}
+.qi-chevron{font-size:11px;color:var(--t3);transition:transform .2s;flex-shrink:0;padding:2px 4px;border-radius:3px}
+.qi-chevron:hover{background:var(--bg4);color:var(--t1)}
+.qi-chevron.open{transform:rotate(180deg)}
+.qi-detail{border-top:1px solid var(--border);margin-top:7px;padding-top:7px;display:none}
+.qi-detail.open{display:block}
+.qi-wiki-frame{width:100%;height:320px;border:none;background:var(--bg0);border-radius:4px;margin-top:6px}
+.qi-reward-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.qi-reward-item{display:flex;align-items:center;gap:5px;padding:3px 8px;background:var(--bg3);border-radius:4px;border:1px solid var(--border);font-size:11px;color:var(--t2)}
+.qi-reward-img{width:24px;height:24px;object-fit:contain;background:var(--bg4);border-radius:3px}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-k">K</div>
+        <div><div class="logo-title">KAPPA</div><div class="logo-sub">Quest Tracker</div></div>
+      </div>
+      <div class="lv-box">
+        <div class="lv-label">Character Level</div>
+        <div class="lv-row">
+          <input type="number" id="lvInput" min="1" max="80" value="1">
+          <div class="lv-pbar"><div class="lv-pfill" id="lpfill" style="width:1%"></div></div>
+        </div>
+        <div class="lv-hint" id="lvHint">Level 48+ required for Collector</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-sec-lbl">Navigation</div>
+      <div class="nav-item active" id="nav-traders" onclick="switchPage('traders')">
+        <div class="ndot"></div><span style="flex:1">Traders</span>
+        <div class="nbadge" id="nb-traders">-</div>
+      </div>
+      <div class="nav-item" id="nav-maps" onclick="switchPage('maps')">
+        <div class="ndot"></div><span style="flex:1">Maps</span>
+      </div>
+      <div class="nav-item" id="nav-items" onclick="switchPage('items')">
+        <div class="ndot"></div><span style="flex:1">Item Search</span>
+        <div class="nbadge">🔍</div>
+      </div>
+      <div class="nav-item" id="nav-hideout" onclick="switchPage('hideout')">
+        <div class="ndot"></div><span style="flex:1">Hideout</span>
+        <div class="nbadge" id="nb-hideout">-</div>
+      </div>
+      <div class="nav-item" id="nav-collector" onclick="switchPage('collector')">
+        <div class="ndot"></div><span style="flex:1">Collector Items</span>
+        <div class="nbadge" id="nb-collector">0/43</div>
+      </div>
+      <div class="nav-item" id="nav-shopping" onclick="switchPage('shopping')">
+        <div class="ndot"></div><span style="flex:1">Shopping List</span>
+        <div class="nbadge" id="nb-shopping">0</div>
+      </div>
+      <div class="nav-item" id="nav-checklist" onclick="switchPage('checklist')">
+        <div class="ndot"></div><span style="flex:1">Checklist</span>
+        <div class="nbadge" id="nb-checklist">0</div>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="api-status">
+        <div class="adot load" id="apiDot"></div>
+        <span id="apiText">Loading data...</span>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title" id="pageTitle">Traders</div>
+        <div class="page-sub" id="pageSub">Kappa-required quests · sorted by availability</div>
+      </div>
+      <div class="topbar-right">
+        <button onclick="exportData()">📤 Export</button>
+        <button onclick="importData()">📥 Import</button>
+        <button style="color:var(--red);border-color:#4a1a1a" onclick="resetAll()">Reset</button>
+      </div>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-card"><div class="stat-lbl">Kappa Quests</div><div class="stat-val acc" id="stTotal">-</div></div>
+      <div class="stat-card"><div class="stat-lbl">Completed</div><div class="stat-val grn" id="stDone">0</div></div>
+      <div class="stat-card"><div class="stat-lbl">Available</div><div class="stat-val" id="stAvail">-</div></div>
+      <div class="stat-pbar-wrap">
+        <div class="stat-lbl" style="white-space:nowrap">Progress</div>
+        <div class="stat-pbar"><div class="stat-pfill" id="stPfill" style="width:0%"></div></div>
+        <div class="stat-pct" id="stPct">0%</div>
+      </div>
+    </div>
+    <div class="content" id="content">
+      <div class="loading-wrap"><div class="spinner"></div><br>Fetching data from tarkov.dev...</div>
+    </div>
+  </div>
+</div>
+<input type="file" id="fileInput" style="display:none" accept=".json" onchange="handleImport(event)">
+
+<script>
+const TRADER_META={
+  prapor:{n:'Prapor',i:'🪖'},therapist:{n:'Therapist',i:'🏥'},
+  skier:{n:'Skier',i:'⛷️'},peacekeeper:{n:'Peacekeeper',i:'🕊️'},
+  mechanic:{n:'Mechanic',i:'🔧'},ragman:{n:'Ragman',i:'🧥'},
+  jaeger:{n:'Jaeger',i:'🎯'},lightkeeper:{n:'Lightkeeper',i:'💡'},
+  fence:{n:'Fence',i:'🔒'},ref:{n:'Ref',i:'📡'},
+  'btr-driver':{n:'BTR Driver',i:'🚛'},'btr driver':{n:'BTR Driver',i:'🚛'},btrdriver:{n:'BTR Driver',i:'🚛'},
+  storyteller:{n:'Storyteller',i:'📖'},
+};
+// 맵 이미지 = tarkov.dev 공식 SVG (assets.tarkov.dev). 인터넷 연결 시 실시간 로드.
+const TDSVG='https://assets.tarkov.dev/maps/svg/';
+const TDMAP='https://tarkov.dev/map/';
+const MAP_META={
+  'ground zero':{n:'그라운드 제로',i:'🌀',svg:TDSVG+'GroundZero.svg',link:TDMAP+'ground-zero'},
+  woods:{n:'삼림 (Woods)',i:'🌲',svg:TDSVG+'Woods.svg',link:TDMAP+'woods'},
+  reserve:{n:'리저브 (Reserve)',i:'🏛️',svg:TDSVG+'Reserve.svg',link:TDMAP+'reserve'},
+  shoreline:{n:'쇼어라인 (Shoreline)',i:'🏖️',svg:TDSVG+'Shoreline.svg',link:TDMAP+'shoreline'},
+  lighthouse:{n:'등대 (Lighthouse)',i:'💡',svg:TDSVG+'Lighthouse.svg',link:TDMAP+'lighthouse'},
+  factory:{n:'공장 (Factory)',i:'⚙️',svg:TDSVG+'Factory.svg',link:TDMAP+'factory'},
+  customs:{n:'커스텀 (Customs)',i:'🏭',svg:TDSVG+'Customs.svg',link:TDMAP+'customs'},
+  'streets of tarkov':{n:'스트리트 (Streets)',i:'🏙️',svg:TDSVG+'StreetsOfTarkov.svg',link:TDMAP+'streets-of-tarkov'},
+  streets:{n:'스트리트 (Streets)',i:'🏙️',svg:TDSVG+'StreetsOfTarkov.svg',link:TDMAP+'streets-of-tarkov'},
+  interchange:{n:'인터체인지 (Interchange)',i:'🏬',svg:TDSVG+'Interchange.svg',link:TDMAP+'interchange'},
+  laboratory:{n:'랩 (Labs)',i:'🔬',link:TDMAP+'the-lab'},
+  labs:{n:'랩 (Labs)',i:'🔬',link:TDMAP+'the-lab'},
+  'the lab':{n:'랩 (Labs)',i:'🔬',link:TDMAP+'the-lab'},
+  'the labyrinth':{n:'미궁 (Labyrinth)',i:'🔮',link:TDMAP+'the-labyrinth'},
+  labyrinth:{n:'미궁 (Labyrinth)',i:'🔮',link:TDMAP+'the-labyrinth'},
+};
+// 맵 탭에 표시할 순서 (사용자 지정 11종)
+const MAP_ORDER=['ground zero','woods','reserve','shoreline','lighthouse','factory','customs','streets of tarkov','interchange','laboratory','labyrinth'];
+const COLLECTOR_ITEMS=[
+  {name:"42 Signature Blend English Tea",               id:"5bc9be8fd4351e00334cae6e"},
+  {name:"Antique axe",                                   id:"5bc9c1e2d4351e00367fbcf0"},
+  {name:"Armband (Evasion)",                             id:"60b0f988c4449e4cb624c1da"},
+  {name:"Axel parrot figurine",                          id:"62a091170b9d3c46de5b6cf2"},
+  {name:"Baddie's red beard",                            id:"62a09dd4621468534a797ac7"},
+  {name:"BakeEzy cook book",                             id:"62a09e73af34e73a266d932a"},
+  {name:"Battered antique book",                         id:"5bc9c049d4351e44f824d360"},
+  {name:"BEAR Buddy plush toy",                          id:"62a08f4c4f842e1bd12d9d62"},
+  {name:"Can of Dr. Lupo's coffee beans",                id:"5e54f6af86f7742199090bf3"},
+  {name:"Can of RatCola soda",                           id:"60b0f93284c20f0feb453da7"},
+  {name:"Can of sprats",                                 id:"5bc9c29cd4351e003562b8a3"},
+  {name:"Deadlyslob's beard oil",                        id:"5bc9b9ecd4351e3bac122519"},
+  {name:"Domontovich ushanka hat",                       id:"6937f02dfd6488bb27024839"},
+  {name:"DRD body armor",                                id:"62a09d79de7ac81993580530"},
+  {name:"Fake mustache",                                 id:"5bd073a586f7747e6f135799"},
+  {name:"#FireKlean gun lube",                           id:"5bc9b355d4351e6d1509862a"},
+  {name:"Gingy keychain",                                id:"62a09d3bcf4a99369e262447"},
+  {name:"Glorious E lightweight armored mask",           id:"62a09e08de7ac81993580532"},
+  {name:"Golden 1GPhone smartphone",                     id:"5bc9b720d4351e450201234b"},
+  {name:"Golden egg",                                    id:"62a09cfe4f842e1bd12da3e4"},
+  {name:"Golden rooster figurine",                       id:"5bc9bc53d4351e00367fbcee"},
+  {name:"Inseq gas pipe wrench",                         id:"66b37f114410565a8f6789e2"},
+  {name:"Jar of DevilDog mayo",                          id:"5bc9b156d4351e00367fbce9"},
+  {name:"JohnB Liquid DNB glasses",                      id:"62a09e410b9d3c46de5b6e78"},
+  {name:"Kotton beanie",                                 id:"5bd073c986f7747f627e796c"},
+  {name:"Loot Lord plushie",                             id:"60b0f7057897d47c5b04ab94"},
+  {name:"LVNDMARK's rat poison",                         id:"60b0f561c4449e4cb624c1d7"},
+  {name:"Mazoni golden dumbbell",                        id:"6937edb912d456a817083e82"},
+  {name:"Missam forklift key",                           id:"62a09ec84f842e1bd12da3f2"},
+  {name:"Nut Sack balaclava",                            id:"69398e94ca94fd2877039504"},
+  {name:"Old firesteel",                                 id:"5bc9c377d4351e3bac12251b"},
+  {name:"Pestily plague mask",                           id:"5e54f79686f7744022011103"},
+  {name:"Press pass (issued for NoiceGuy)",              id:"62a09cb7a04c0c5c6e0a84f8"},
+  {name:"Raven figurine",                                id:"5e54f62086f774219b0f1937"},
+  {name:"Shroud half-mask",                              id:"5e54f76986f7740366043752"},
+  {name:"Silver Badge",                                  id:"5bc9bdb8d4351e003562b8a1"},
+  {name:"Smoke balaclava",                               id:"5fd8d28367cb5e077335170f"},
+  {name:"Tamatthi kunai knife replica",                  id:"66b37ea4c5d72b0277488439"},
+  {name:"Tigzresq splint",                               id:"6937ecf8628ee476240c07cb"},
+  {name:"Veritas guitar pick",                           id:"5f745ee30acaeb0d490d8c5b"},
+  {name:"Video cassette with the Cyborg Killer movie",   id:"62a09e974f842e1bd12da3f0"},
+  {name:"Viibiin sneaker",                               id:"66b37eb4acff495a29492407"},
+  {name:"WZ Wallet",                                     id:"60b0f6c058e0b0481a09ad11"},
+];
+
+const GQL_TASKS=`query{
+  tasks{id name kappaRequired minPlayerLevel wikiLink taskImageLink experience normalizedName
+    trader{id name}map{id name}
+    objectives{
+      id type description
+      ...on TaskObjectiveBasic{zones{id position{x y z}}}
+      ...on TaskObjectiveItem{zones{id position{x y z}}items{id name shortName iconLink gridImageLink inspectImageLink image512pxLink}count foundInRaid}
+      ...on TaskObjectiveMark{zones{id position{x y z}}}
+      ...on TaskObjectiveShoot{zoneNames}
+      ...on TaskObjectiveQuestItem{questItem{id name shortName iconLink gridImageLink inspectImageLink image512pxLink}count}
+    }
+    taskRequirements{task{id name}status}
+    startRewards{
+      traderStanding{trader{id name}standing}
+      items{count item{id name shortName iconLink gridImageLink inspectImageLink}}
+    }
+    finishRewards{
+      traderStanding{trader{id name}standing}
+      items{count item{id name shortName iconLink gridImageLink inspectImageLink}}
+      offerUnlock{trader{id name}level item{id name shortName iconLink}}
+      skillLevelReward{name level}
+    }
+  }
+  maps{id name normalizedName wiki raidDuration players bosses{name}}
+  traders{id name normalizedName imageLink image4xLink
+    levels{level requiredPlayerLevel requiredReputation requiredCommerce}
+  }
+  hideoutStations{
+    id name normalizedName imageLink
+    levels{
+      id level constructionTime description
+      itemRequirements{count item{id name shortName iconLink gridImageLink inspectImageLink image512pxLink wikiLink}}
+      stationLevelRequirements{level station{id name}}
+      skillRequirements{name level}
+      traderRequirements{trader{id name} value requirementType}
+    }
+  }
+}`;
+
+const GQL_ITEM=`query SearchItems($name:String!){
+  items(name:$name,limit:8){
+    id name shortName iconLink gridImageLink inspectImageLink image512pxLink wikiLink
+    avg24hPrice lastLowPrice high24hPrice low24hPrice
+    buyFor{
+      price currency priceRUB
+      vendor{
+        name normalizedName
+        ...on TraderOffer{minTraderLevel taskUnlock{id name}}
+        ...on FleaMarket{minPlayerLevel enabled}
+      }
+    }
+    sellFor{price currency priceRUB vendor{name normalizedName}}
+    types
+  }
+}`;
+
+let quests=[],mapsData={},tradersData={},traderRepData={},hideoutStations=[];
+let selTrader=null,selMap=null,selFloor={};
+let selMapLayer={};  // mapKey -> layer index
+let selQuest=null;   // selected quest for detail panel
+let acceptedQuests=new Set(); // manually accepted/in-progress quests
+let questProgress={};  // questId -> {objId -> count} 아이템 진행도 직접 입력
+let charLevel=1,completed=new Set(),bookmarks=new Set(),collectorFound=new Set();
+let curPage='traders',searchQ='',itemSearchQ='',itemResults=[];
+let showFound=false,showNotFound=false;
+let itemSearching=false;
+
+let hideoutLevels={};   // stationId -> current level player has
+let hideoutBookmarks=new Set(); // stationLevelId bookmarked for shopping list
+let selHideoutStation=null;
+let hideoutSearch='';
+
+try{const s=JSON.parse(localStorage.getItem('kappa_v2')||'{}');
+  charLevel=s.lv||1;completed=new Set(s.done||[]);
+  bookmarks=new Set(s.bk||[]);// migrate old name-based → id-based
+  const rawCf=s.cf||[];
+  if(rawCf.length&&typeof rawCf[0]==='string'&&rawCf[0].length<30){
+    const nameToId={};COLLECTOR_ITEMS.forEach(it=>nameToId[it.name]=it.id);
+    collectorFound=new Set(rawCf.map(n=>nameToId[n]).filter(Boolean));
+  }else{collectorFound=new Set(rawCf);}
+  hideoutLevels=s.hl||{};
+  hideoutBookmarks=new Set(s.hbk||[]);
+  acceptedQuests=new Set(s.acc||[]);
+  questProgress=s.qp||{};
+}catch(e){}
+
+function save(){
+  try{localStorage.setItem('kappa_v2',JSON.stringify({
+    lv:charLevel,done:[...completed],bk:[...bookmarks],cf:[...collectorFound],
+    hl:hideoutLevels,hbk:[...hideoutBookmarks],acc:[...acceptedQuests],qp:questProgress
+  }))}catch(e){}
+}
+
+function updateHideoutBadge(){
+  if(!hideoutStations.length)return;
+  const total=hideoutStations.reduce((s,st)=>s+(st.levels?.length||0),0);
+  const done=hideoutStations.reduce((s,st)=>{
+    const cur=hideoutLevels[st.id]||0;
+    return s+Math.min(cur,st.levels?.length||0);
+  },0);
+  const nb=document.getElementById('nb-hideout');
+  if(nb)nb.textContent=done+'/'+total;
+}
+
+async function fetchData(){
+  try{
+    const r=await fetch('https://api.tarkov.dev/graphql',{method:'POST',
+      headers:{'Content-Type':'application/json'},body:JSON.stringify({query:GQL_TASKS})});
+    const d=await r.json();
+    if(d.errors) throw new Error(d.errors[0].message);
+    quests=d.data.tasks; // 전체 퀘스트 (카파 여부 포함)
+    const kappaCount=quests.filter(q=>q.kappaRequired).length;
+    (d.data.maps||[]).forEach(m=>{
+      if(m.normalizedName)mapsData[m.normalizedName]=m;
+      mapsData[m.name.toLowerCase()]=m;
+    });
+    (d.data.traders||[]).forEach(t=>{
+      tradersData[t.id]=t;tradersData[t.name.toLowerCase()]=t;
+      if(t.normalizedName)tradersData[t.normalizedName]=t;
+    });
+    hideoutStations=(d.data.hideoutStations||[]).sort((a,b)=>a.name.localeCompare(b.name));
+    updateHideoutBadge();
+    // custom-quests.json 병합 (누락된 퀘스트 보완)
+    try {
+      const cr = await fetch('custom-quests.json');
+      if(cr.ok){
+        const cd = await cr.json();
+        const customQ = (cd.quests||[]).map(q=>({
+          ...q,
+          _custom: true,
+          // API 형식에 맞게 정규화
+          finishRewards: q.finishRewards||{traderStanding:[],items:[],offerUnlock:[],skillLevelReward:[]},
+          startRewards: q.startRewards||{traderStanding:[],items:[]},
+          objectives: (q.objectives||[]).map((o,i)=>({...o, id:'custom_obj_'+q.id+'_'+i, zones:[]})),
+        }));
+        // 중복 제거 (이름 정규화: 공백·하이픈·기호 무시, 소문자)
+        const norm = s => (s||'').toLowerCase().replace(/[\s\-_–—:.'']/g,'').replace(/part/g,'');
+        const existingNames = new Set(quests.map(q=>norm(q.name)));
+        const newQ = customQ.filter(q=>!existingNames.has(norm(q.name)));
+        quests = [...quests, ...newQ];
+        if(newQ.length) console.log(`Custom quests loaded: ${newQ.length} quests added`);
+      }
+    } catch(e){ console.log('custom-quests.json not found or error:', e.message); }
+
+    computeRep();
+    document.getElementById('apiDot').className='adot ok';
+    document.getElementById('apiText').textContent=`tarkov.dev · ${quests.length} quests`;
+    document.getElementById('nb-traders').textContent=quests.filter(q=>q.kappaRequired).length;
+    document.getElementById('lvInput').value=charLevel;
+    updateLevel(false);renderPage();
+  }catch(e){
+    document.getElementById('apiDot').className='adot err';
+    document.getElementById('apiText').textContent='Connection failed — click to retry';
+    const isNetworkErr = e.message==='Failed to fetch'||e.message.includes('NetworkError')||e.message.includes('network');
+    document.getElementById('content').innerHTML=`
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:300px;gap:16px;padding:20px">
+        <div style="font-size:36px">⚠️</div>
+        <div style="font-size:14px;font-weight:600;color:var(--t1)">데이터를 불러올 수 없어요</div>
+        <div style="font-size:12px;color:var(--t3);text-align:center;max-width:400px;line-height:1.7">
+          ${isNetworkErr
+            ? `<b style="color:var(--yellow)">tarkov.dev API에 연결할 수 없어요.</b><br>
+               로컬 파일(<code>file://</code>)로 실행 중이라면 브라우저 보안 정책으로 인해 외부 API 호출이 차단돼요.<br><br>
+               <b style="color:var(--t1)">해결 방법:</b><br>
+               터미널에서 HTML 파일 폴더로 이동 후<br>
+               <code style="background:var(--bg3);padding:2px 8px;border-radius:4px;font-size:11px">python -m http.server 8080</code><br>
+               실행 후 브라우저에서<br>
+               <code style="background:var(--bg3);padding:2px 8px;border-radius:4px;font-size:11px">http://localhost:8080/kappa-checklist.html</code><br>
+               로 접속하세요.`
+            : `API 오류: <code>${e.message}</code>`
+          }
+        </div>
+        <button onclick="fetchData()" style="padding:8px 24px;background:var(--accent2);border:1px solid var(--accent);border-radius:6px;color:#000;font-size:13px;font-weight:600;cursor:pointer">
+          🔄 다시 시도
+        </button>
+      </div>`;
+  }
+}
+
+async function searchItems(name){
+  if(!name.trim()||itemSearching)return;
+  itemSearching=true;itemResults=[];
+  renderPage();
+  try{
+    const r=await fetch('https://api.tarkov.dev/graphql',{method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({query:GQL_ITEM,variables:{name}})});
+    const d=await r.json();
+    if(d.errors)throw new Error(d.errors[0].message);
+    itemResults=d.data.items||[];
+  }catch(e){
+    itemResults=[{_error:e.message}];
+  }
+  itemSearching=false;renderPage();
+}
+
+function computeRep(){
+  traderRepData={};
+  quests.forEach(q=>{
+    (q.finishRewards?.traderStanding||[]).forEach(rs=>{
+      if(!rs?.trader)return;
+      const tid=rs.trader.id;
+      if(!traderRepData[tid])traderRepData[tid]=0;
+      if(completed.has(q.id))traderRepData[tid]+=(rs.standing||0);
+    });
+  });
+}
+
+function getTraderLL(tid){
+  const t=tradersData[tid];
+  if(!t?.levels?.length)return{ll:1,rep:0,next:null,levels:[]};
+  const rep=traderRepData[tid]||0;
+  const levels=[...t.levels].sort((a,b)=>a.level-b.level);
+  let ll=1,next=null;
+  for(const lv of levels){
+    if(rep>=lv.requiredReputation&&charLevel>=(lv.requiredPlayerLevel||0))ll=lv.level;
+    else if(!next)next=lv;
+  }
+  return{ll,rep:Math.round(rep*100)/100,next,levels};
+}
+
+function renderLLNextBox(tid){
+  const lli=getTraderLL(tid);
+  const next=lli.next;
+  if(!next) return`<div class="ll-next-box"><div class="ll-next-title">Loyalty — MAX LEVEL</div><div style="font-size:11px;color:var(--green)">✓ All loyalty levels unlocked</div></div>`;
+  const rep=lli.rep;
+  const repPct=Math.min(100,Math.round(rep/next.requiredReputation*100));
+  const lvPct=Math.min(100,Math.round(charLevel/(next.requiredPlayerLevel||1)*100));
+  const repOk=rep>=next.requiredReputation;
+  const lvOk=charLevel>=(next.requiredPlayerLevel||0);
+  const comOk=true; // commerce data not tracked yet
+  return`<div class="ll-next-box">
+    <div class="ll-next-title">Next: <span class="ll-badge ${llClass(next.level)}">LL${next.level}</span></div>
+    <div class="ll-req-row">
+      <div class="ll-req-label">Reputation</div>
+      <div class="ll-req-bar"><div class="ll-req-fill" style="width:${repPct}%;background:${llColor(lli.ll)}"></div></div>
+      <div class="ll-req-val ${repOk?'ll-req-ok':'ll-req-no'}">${rep.toFixed(2)} / ${next.requiredReputation} ${repOk?'✓':''}</div>
+    </div>
+    <div class="ll-req-row">
+      <div class="ll-req-label">Player Lvl</div>
+      <div class="ll-req-bar"><div class="ll-req-fill" style="width:${lvPct}%;background:#5a8de0"></div></div>
+      <div class="ll-req-val ${lvOk?'ll-req-ok':'ll-req-no'}">Lv.${charLevel} / Lv.${next.requiredPlayerLevel||1} ${lvOk?'✓':''}</div>
+    </div>
+    ${next.requiredCommerce?`<div class="ll-req-row">
+      <div class="ll-req-label">Commerce</div>
+      <div class="ll-req-bar"><div class="ll-req-fill" style="width:0%;background:#9b7ae8"></div></div>
+      <div class="ll-req-val ll-req-no">? / ${next.requiredCommerce.toLocaleString()} ₽</div>
+    </div>`:''}
+  </div>`;
+}
+
+function llClass(ll){return['','ll1','ll2','ll3','ll4'][ll]||'ll4'}
+function llColor(ll){return['','#c8a84b','#4caf7d','#5a8de0','#9b7ae8'][ll]||'#9b7ae8'}
+
+function tKey(t){return(t?.id||t?.name||'').toLowerCase()}
+function mKey(m){return(m?.name||m?.id||'').toLowerCase()}
+
+function isAvail(q){
+  if(completed.has(q.id))return false;
+  if((q.minPlayerLevel||0)>charLevel)return false;
+  return(q.taskRequirements||[]).every(r=>r.status==='complete'?completed.has(r.task.id):true);
+}
+function isLocked(q){
+  if(completed.has(q.id))return false;
+  if((q.minPlayerLevel||0)>charLevel)return true;
+  return(q.taskRequirements||[]).some(r=>r.status==='complete'&&!completed.has(r.task.id));
+}
+function lockReason(q){
+  if((q.minPlayerLevel||0)>charLevel)return`Level ${q.minPlayerLevel} required`;
+  const miss=(q.taskRequirements||[]).filter(r=>r.status==='complete'&&!completed.has(r.task.id));
+  if(miss.length)return`Complete '${miss[0].task.name}' first`;
+  return'';
+}
+
+function updateStats(){
+  const kappaQ=quests.filter(q=>q.kappaRequired);
+  const tot=kappaQ.length,done=kappaQ.filter(q=>completed.has(q.id)).length;
+  const avail=kappaQ.filter(q=>isAvail(q)).length,pct=tot?Math.round(done/tot*100):0;
+  document.getElementById('stTotal').textContent=tot||'-';
+  document.getElementById('stDone').textContent=done;
+  document.getElementById('stAvail').textContent=avail||'-';
+  document.getElementById('stPfill').style.width=pct+'%';
+  document.getElementById('stPct').textContent=pct+'%';
+  document.getElementById('nb-checklist').textContent=bookmarks.size;
+  const cf=collectorFound.size;
+  const nb=document.getElementById('nb-collector');
+  const total=COLLECTOR_ITEMS.length;
+  nb.textContent=cf+'/'+total;
+  nb.className=cf>=total?'nbadge green':'nbadge';
+  // shopping list badge
+  const slItems=buildShoppingData();
+  const slNb=document.getElementById('nb-shopping');
+  if(slNb){
+    const total=Object.keys(slItems.merged).length;
+    slNb.textContent=total||'0';
+    slNb.className=total?'nbadge green':'nbadge';
+  }
+}
+
+function updateLevel(re=true){
+  charLevel=parseInt(document.getElementById('lvInput').value)||1;
+  document.getElementById('lpfill').style.width=Math.min(100,Math.round(charLevel/71*100))+'%';
+  const h=document.getElementById('lvHint');
+  if(charLevel>=48){h.textContent='✓ Collector unlocked';h.className='lv-hint ok';}
+  else{h.textContent='Level 48+ required for Collector';h.className='lv-hint';}
+  updateStats();save();if(re)renderPage();
+}
+document.getElementById('lvInput').addEventListener('input',()=>updateLevel());
+
+function switchPage(page){
+  curPage=page;searchQ='';
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+  document.getElementById('nav-'+page).classList.add('active');
+  const titles={traders:'Traders',maps:'Maps',items:'Item Search',hideout:'Hideout',shopping:'Shopping List',collector:'Collector Items',checklist:'Checklist'};
+  const subs={traders:'Kappa-required quests · sorted by availability',maps:'Select a map to view quests + map image',items:'Search items — trader availability, LL requirements, flea market price',hideout:'Track station levels · all upgrade items are FIR required (patch 0.16+)',shopping:'All items needed for bookmarked quests & hideout upgrades — with icons',collector:'The Collector quest — 43 FIR items required',checklist:'Bookmarked quests'};
+  document.getElementById('pageTitle').textContent=titles[page];
+  document.getElementById('pageSub').textContent=subs[page];
+  renderPage();
+}
+
+function renderPage(){
+  if(!quests.length)return;
+  updateStats();
+  const c=document.getElementById('content');
+  if(curPage==='maps'||curPage==='hideout'){c.style.cssText='overflow:hidden;padding:16px';}
+  else{c.style.cssText='overflow:auto;padding:18px';}
+  if(curPage==='traders')c.innerHTML=renderTraders();
+  else if(curPage==='maps')c.innerHTML=renderMaps();
+  else if(curPage==='items')c.innerHTML=renderItemSearch();
+  else if(curPage==='hideout'){c.style.cssText='overflow:hidden;padding:16px';c.innerHTML=renderHideout();}
+  else if(curPage==='shopping')c.innerHTML=renderShoppingList();
+  else if(curPage==='collector')c.innerHTML=renderCollector();
+  else if(curPage==='checklist')c.innerHTML=renderChecklist();
+}
+
+/* ══ TRADERS ══ */
+function renderTraders(){
+  const traders={};
+  quests.forEach(q=>{
+    const k=tKey(q.trader);
+    if(!traders[k])traders[k]={k,tid:q.trader.id,meta:TRADER_META[k]||{n:q.trader.name,i:'❓'},quests:[]};
+    traders[k].quests.push(q);
+  });
+  let html=`<div class="trader-grid">`;
+  Object.values(traders).forEach(t=>{
+    const done=t.quests.filter(q=>completed.has(q.id)).length;
+    const td=tradersData[t.tid]||tradersData[t.k]||null;
+    const lli=td?getTraderLL(t.tid):{ll:1,rep:0,next:null,levels:[]};
+    const lc=llClass(lli.ll),bc=llColor(lli.ll);
+    const img=td?.image4xLink||td?.imageLink||'';
+    const levels=(td?.levels||[]).sort((a,b)=>a.level-b.level);
+    const curReq=levels.find(l=>l.level===lli.ll)?.requiredReputation||0;
+    const nextReq=lli.next?.requiredReputation||curReq;
+    const range=nextReq-curReq;
+    const prog=range>0?Math.min(100,Math.round((lli.rep-curReq)/range*100)):100;
+    html+=`<div class="tc ${selTrader===t.k?'sel':''}" onclick="selTrader='${t.k}';renderPage()">`;
+    if(img)html+=`<img class="tc-portrait" src="${img}" alt="${t.meta.n}" onerror="this.outerHTML='<div class=\\'tc-ph\\'>${t.meta.i}</div>'">`;
+    else html+=`<div class="tc-ph">${t.meta.i}</div>`;
+    html+=`<div class="tc-info">
+      <div class="tc-name">${t.meta.n}</div>
+      <div class="tc-ll-row"><span class="tc-ll-lbl">Loyalty</span><span class="ll-badge ${lc}">LL${lli.ll}</span></div>
+      <div class="tc-rep-lbl"><span>${lli.rep.toFixed(2)} rep</span>${lli.next?`<span>LL${lli.next.level}: ${lli.next.requiredReputation}</span>`:'<span style="color:var(--accent)">MAX</span>'}</div>
+      <div class="tc-rep-bar"><div class="tc-rep-fill" style="width:${prog}%;background:${bc}"></div></div>
+      <div class="tc-prog">${done}/${t.quests.length} done · <span style="color:var(--accent)">${t.quests.filter(q=>q.kappaRequired).length} kappa</span></div>
+    </div></div>`;
+  });
+  html+=`</div>`;
+  if(!selTrader){html+=`<div class="empty"><div class="empty-icon">👆</div><div class="empty-text">Click a trader card</div></div>`;return html;}
+
+  const selT=Object.values(traders).find(t=>t.k===selTrader);
+  if(selT){
+    const td=tradersData[selT.tid]||tradersData[selT.k]||null;
+    const lli=td?getTraderLL(selT.tid):{ll:1,rep:0,next:null,levels:[]};
+    const levels=(td?.levels||[]).sort((a,b)=>a.level-b.level);
+    const rep=traderRepData[selT.tid]||0;
+    html+=`<div class="trader-detail-bar"><div class="tdb-name">${selT.meta.n} — Loyalty Levels</div>`;
+    levels.forEach(lv=>{
+      const lc=llClass(lv.level),bc=llColor(lv.level);
+      const achieved=lli.ll>=lv.level;
+      const prev=levels.find(l=>l.level===lv.level-1);
+      const prevReq=prev?.requiredReputation||0;
+      const prog=lv.requiredReputation>prevReq?Math.min(100,Math.round((rep-prevReq)/(lv.requiredReputation-prevReq)*100)):100;
+      html+=`<div class="ll-card ${achieved?'achieved':''}" style="opacity:${achieved?1:0.55}">
+        <div class="ll-card-top"><span class="ll-badge ${lc}">LL${lv.level}</span>${achieved?'<span style="font-size:11px;color:var(--green)">✓</span>':''}</div>
+        <div class="ll-card-req">Rep: ${lv.requiredReputation}${lv.requiredPlayerLevel?` / Lv.${lv.requiredPlayerLevel}`:''}${lv.requiredCommerce?` / ${(lv.requiredCommerce/1000).toFixed(0)}K₽`:''}  </div>
+        <div class="ll-card-bar"><div class="ll-card-fill" style="width:${achieved?100:prog}%;background:${bc}"></div></div>
+      </div>`;
+    });
+    html+=`</div>`;
+    // Next LL requirements detail
+    if(selT){
+      const td2=tradersData[selT.tid]||tradersData[selT.k]||null;
+      if(td2) html+=renderLLNextBox(td2.id||selT.tid||selT.k);
+    }
+  }
+
+  html+=`<div class="search-row"><span class="search-icon">🔍</span><input type="text" id="qSearch" placeholder="Search quests..." value="${searchQ}" oninput="searchQ=this.value;renderPage()">${searchQ?`<button class="search-clear" onclick="searchQ='';renderPage()">✕</button>`:''}</div>`;
+  const tq=quests.filter(q=>tKey(q.trader)===selTrader&&(!searchQ||q.name.toLowerCase().includes(searchQ.toLowerCase())));
+  const avail=tq.filter(q=>isAvail(q)),locked=tq.filter(q=>isLocked(q)),done=tq.filter(q=>completed.has(q.id));
+  function trCat(label,catKey,qs,bc){
+    if(!qs.length)return'';
+    const open=trCatOpen[catKey]!==false;
+    let h=`<div class="tr-cat"><div class="tr-cat-hd" onclick="trCatOpen['${catKey}']=!trCatOpen['${catKey}'];renderPage()"><span class="tr-cat-title">${label}</span><span class="sbadge ${bc}">${qs.length}</span><span class="tr-cat-arrow ${open?'open':''}">▶</span></div><div class="tr-cat-body ${open?'':'collapsed'}">`;
+    qs.forEach(q=>{h+=qCard(q,catKey);});
+    h+=`</div></div>`;
+    return h;
+  }
+  const trAcc=tq.filter(q=>acceptedQuests.has(q.id)&&!completed.has(q.id));
+  const trAvail=avail.filter(q=>!acceptedQuests.has(q.id));
+  html+=trCat('In Progress','accepted',trAcc,'s-ok');
+  html+=trCat('Available','available',trAvail,'s-ok');
+  html+=trCat('Locked','locked',locked,'s-lock');
+  html+=trCat('Completed','completed',done,'s-done');
+  return html;
+}
+
+function qCard(q,state){
+  const isDone=completed.has(q.id),isBk=bookmarks.has(q.id),isAcc=acceptedQuests.has(q.id)&&!isDone;
+  const mapM=q.map?(MAP_META[mKey(q.map)]||{n:q.map.name}):null;
+  const reason=state==='locked'?lockReason(q):'';
+  const objs=(q.objectives||[]).slice(0,3).map(o=>`<div class="qi-obj">· ${fmtObjDesc(o.description)||o.type}</div>`).join('');
+  const repTags=(q.finishRewards?.traderStanding||[]).map(rs=>`<span class="pill p-rep">+${(rs.standing||0).toFixed(2)} ${rs.trader?.name||''}</span>`).join('');
+  const cardId='qi_'+q.id.replace(/[^a-z0-9]/gi,'_');
+
+  // 보상 미리보기 (아이템 이미지 + XP)
+  const rewardItems=(q.finishRewards?.items||[]).slice(0,3);
+  const rewardRep=(q.finishRewards?.traderStanding||[]);
+  let rewardHtml='';
+  if(q.experience||rewardItems.length||rewardRep.length||q._rewardText){
+    rewardHtml=`<div class="qi-reward-row">`;
+    if(q.experience) rewardHtml+=`<span class="qi-reward-item">⭐ ${q.experience.toLocaleString()} XP</span>`;
+    rewardRep.forEach(r=>{rewardHtml+=`<span class="qi-reward-item">+${(r.standing||0).toFixed(2)} ${r.trader?.name||''}</span>`;});
+    rewardItems.forEach(ri=>{
+      const img=bestImg(ri.item,'icon');
+      rewardHtml+=`<span class="qi-reward-item">
+        ${img?`<img class="qi-reward-img" src="${img}" onerror="this.style.display='none'">`:''}
+        ${ri.item.shortName||ri.item.name} ×${ri.count}
+      </span>`;
+    });
+    if((q.finishRewards?.items||[]).length>3) rewardHtml+=`<span class="qi-reward-item" style="color:var(--t3)">+${(q.finishRewards.items.length-3)} more</span>`;
+    if(q._rewardText && !rewardItems.length) rewardHtml+=`<span class="qi-reward-item" style="color:var(--t2)">🎁 ${q._rewardText}</span>`;
+    rewardHtml+=`</div>`;
+  }
+
+  return`<div class="qi ${isDone?'done':state==='locked'?'locked':''}" style="flex-direction:column;align-items:stretch;cursor:default">
+    <div style="display:flex;align-items:flex-start;gap:9px;cursor:pointer" onclick="selQuest='${q.id}';renderPage()">
+      <div style="flex:1;min-width:0">
+        <div class="qi-name-wrap">
+          <span class="qi-name">${q.name}</span>
+          ${q.kappaRequired?`<span class="kappa-badge" title="Need for Kappa">🔑 Kappa</span>`:''}
+          ${q._estimated?`<span style="font-size:9px;padding:1px 5px;border-radius:3px;background:#2a1a08;color:#e08030;border:1px solid #5a3a10" title="공식 위키 미확인">⚠️ 추정</span>`:''}
+        </div>
+        <div class="qi-meta">
+          ${(q.minPlayerLevel||0)>1?`<span class="pill p-lv">Lv.${q.minPlayerLevel}</span>`:''}
+          ${mapM?`<span class="pill p-map">${mapM.n}</span>`:''}
+          ${isAcc?`<span class="pill" style="background:#0a1422;color:#5a8de0;border:1px solid #1a2e50">▶ In Progress</span>`:''}
+          ${reason?`<span class="pill p-warn">${reason}</span>`:''}
+          ${!isDone&&!isAcc&&repTags?repTags:''}
+        </div>
+        ${state!=='locked'?`<div class="qi-objs">${objs}</div>`:''}
+        ${rewardHtml}
+      </div>
+      <div class="qi-actions" style="display:flex;gap:5px;align-items:center">
+        <button class="qi-done-btn ${isDone?'on':''}" onclick="event.stopPropagation();toggleDone('${q.id}')" title="완료 표시">${isDone?'✓ 완료됨':'완료'}</button>
+        <button class="bk-btn ${isBk?'on':''}" onclick="event.stopPropagation();toggleBk('${q.id}')" title="Bookmark">★</button>
+        <button class="qi-chevron" id="${cardId}_chev" onclick="event.stopPropagation();toggleQiDetail('${cardId}','${q.id}','${encodeURIComponent(q.wikiLink||'')}')">▼</button>
+      </div>
+    </div>
+    <div class="qi-detail" id="${cardId}_detail"></div>
+  </div>`;
+}
+
+function toggleQiDetail(cardId, questId, encodedWikiUrl){
+  const detail = document.getElementById(cardId+'_detail');
+  const chev = document.getElementById(cardId+'_chev');
+  if(!detail||!chev) return;
+  const isOpen = detail.classList.contains('open');
+  if(isOpen){
+    detail.classList.remove('open');
+    chev.classList.remove('open');
+    detail.innerHTML='';
+    return;
+  }
+  chev.classList.add('open');
+  detail.classList.add('open');
+  const q=quests.find(x=>x.id===questId);
+  if(!q){detail.innerHTML='<div style="font-size:11px;color:var(--t3)">Not found</div>';return;}
+  // Detail content: full objectives + wiki iframe
+  const wikiUrl=decodeURIComponent(encodedWikiUrl);
+  let html=`<div style="margin-bottom:6px">`;
+  // All objectives
+  (q.objectives||[]).forEach(o=>{
+    html+=objLine(o, cardId);
+  });
+  html+=`</div>`;
+  // Wiki frame
+  if(wikiUrl){
+    html+=`<div style="font-size:10px;color:var(--t3);margin-bottom:4px;display:flex;justify-content:space-between">
+      <span>Wiki Page</span>
+      <a href="${wikiUrl}" target="_blank" style="color:var(--accent)">open in new tab ↗</a>
+    </div>
+    <iframe src="${wikiUrl}" class="qi-wiki-frame" loading="lazy"
+      sandbox="allow-scripts allow-same-origin allow-popups"
+      onerror="this.outerHTML='<div style=\\'font-size:11px;color:var(--t3);padding:8px\\'>Wiki unavailable</div>'">
+    </iframe>`;
+  } else {
+    html+=`<div style="font-size:11px;color:var(--t3);padding:6px">No wiki link available</div>`;
+  }
+  detail.innerHTML=html;
+}
+
+
+/* ══ MAPS ══ */
+function getMapData(key){return mapsData[key]||mapsData[key.replace(/-/g,' ')]||Object.values(mapsData).find(m=>m.name.toLowerCase()===key||m.normalizedName===key)||null;}
+
+// Map coordinate calibration
+// worldX/worldZ: game world coordinate bounds
+// imgRegion: fraction of image that contains the actual map (excludes title/legend padding)
+const MAP_CALIBRATION={
+  'customs':{worldX:[-340,290],worldZ:[-280,380],imgRegion:{l:0.0,t:0.06,r:1.0,b:0.88}},
+  'woods':{worldX:[-590,540],worldZ:[-610,420],imgRegion:{l:0.0,t:0.0,r:1.0,b:0.85}},
+  'factory':{worldX:[-125,175],worldZ:[-85,120],imgRegion:{l:0.12,t:0.07,r:0.88,b:0.82}},
+  'interchange':{worldX:[-280,250],worldZ:[-290,270],imgRegion:{l:0.0,t:0.06,r:0.75,b:0.92}},
+  'shoreline':{worldX:[-475,600],worldZ:[-430,580],imgRegion:{l:0.03,t:0.04,r:0.97,b:0.82}},
+  'reserve':{worldX:[-280,300],worldZ:[-270,250],imgRegion:{l:0.0,t:0.04,r:0.85,b:0.88}},
+  'lighthouse':{worldX:[-360,460],worldZ:[-1000,600],imgRegion:{l:0.05,t:0.04,r:0.88,b:0.90}},
+  'streets of tarkov':{worldX:[-380,390],worldZ:[-440,400],imgRegion:{l:0.05,t:0.04,r:0.95,b:0.85}},
+  'streets':{worldX:[-380,390],worldZ:[-440,400],imgRegion:{l:0.05,t:0.04,r:0.95,b:0.85}},
+  'laboratory':{worldX:[-130,130],worldZ:[-130,130],imgRegion:{l:0.05,t:0.14,r:0.95,b:0.82}},
+  'labs':{worldX:[-130,130],worldZ:[-130,130],imgRegion:{l:0.05,t:0.14,r:0.95,b:0.82}},
+  'ground zero':{worldX:[-195,230],worldZ:[-270,195],imgRegion:{l:0.04,t:0.06,r:0.70,b:0.86}},
+  'labyrinth':{worldX:[-180,180],worldZ:[-200,180],imgRegion:{l:0.08,t:0.05,r:0.95,b:0.72}},
+};
+
+function worldToPercent(mapKey,x,z){
+  const cal=MAP_CALIBRATION[mapKey];
+  if(!cal)return null;
+  const r=cal.imgRegion;
+  // 게임 좌표 → 이미지 내 상대 위치 (0~1)
+  const nx=(x-cal.worldX[0])/(cal.worldX[1]-cal.worldX[0]);
+  const nz=1-(z-cal.worldZ[0])/(cal.worldZ[1]-cal.worldZ[0]); // z축 반전
+  // 이미지 여백 영역으로 매핑
+  const px=(r.l+nx*(r.r-r.l))*100;
+  const pz=(r.t+nz*(r.b-r.t))*100;
+  if(px<0||px>100||pz<0||pz>100)return null;
+  return{px,pz};
+}
+
+// Cat collapse state
+const mapCatOpen={available:true,accepted:true,locked:false,completed:false};
+const trCatOpen={available:true,accepted:true,locked:false,completed:false};
+
+function renderMaps() {
+  // 퀘스트를 맵별로 모음 (다양한 키 정규화)
+  const byKey = {};
+  quests.forEach(q => {
+    if(!q.map) return;
+    const k = mKey(q.map);
+    (byKey[k]=byKey[k]||[]).push(q);
+  });
+  // 사용자 지정 11개 순서로만 맵 목록 구성
+  const maps = {};
+  MAP_ORDER.forEach(k=>{
+    // 같은 맵의 별칭 키(streets/streets of tarkov, labs/laboratory 등) 퀘스트 병합
+    let qs = byKey[k] ? byKey[k].slice() : [];
+    if(k==='streets of tarkov' && byKey['streets']) qs=qs.concat(byKey['streets']);
+    if(k==='laboratory'){ ['labs','the lab'].forEach(a=>{if(byKey[a])qs=qs.concat(byKey[a]);}); }
+    if(k==='labyrinth' && byKey['the labyrinth']) qs=qs.concat(byKey['the labyrinth']);
+    maps[k] = {k, meta:MAP_META[k]||{n:k,i:'🗺️'}, quests:qs};
+  });
+
+  // ── Left: map list ──
+  let listHtml = `<div class="map-list-col"><div class="map-list-scroll">`;
+  Object.values(maps).forEach(m => {
+    const accepted = m.quests.filter(q=>acceptedQuests.has(q.id)&&!completed.has(q.id)).length;
+    const avail = m.quests.filter(q=>isAvail(q)&&!acceptedQuests.has(q.id)).length;
+    const done = m.quests.filter(q=>completed.has(q.id)).length;
+    const isSel = selMap === m.k;
+    let badge='', badgeStyle='';
+    if(accepted>0){ badge=accepted+' active'; badgeStyle='color:#5a8de0;background:#0a1422;border:1px solid #1a2e50'; }
+    else if(avail>0){ badge=avail+' avail'; badgeStyle='color:var(--green);background:var(--gbg);border:1px solid var(--gborder)'; }
+    else { badge=done+'/'+m.quests.length; badgeStyle=''; }
+    listHtml += `<div class="mc2 ${isSel?'sel':''}" onclick="selMap='${m.k}';selQuest=null;renderPage()">
+      <div class="mc2-icon">${m.meta.i}</div>
+      <div class="mc2-name">${m.meta.n}</div>
+      <div class="mc2-count" style="${badgeStyle}">${badge}</div>
+    </div>`;
+  });
+  listHtml += `</div></div>`;
+
+  if(!selMap) return `<div class="map-page"><div class="map-body">${listHtml}<div class="empty" style="flex:1"><div class="empty-icon">🗺️</div><div class="empty-text">Select a map</div></div></div></div>`;
+
+  const mapMeta = MAP_META[selMap]||{n:selMap,i:'🗺️'};
+  const mapInfo = getMapData(selMap);
+  const imgSrc = mapMeta.svg||null;
+
+  const mq = (maps[selMap]?maps[selMap].quests:quests.filter(q=>q.map&&mKey(q.map)===selMap));
+  const accepted = mq.filter(q=>acceptedQuests.has(q.id)&&!completed.has(q.id));
+  const avail = mq.filter(q=>isAvail(q)&&!acceptedQuests.has(q.id));
+  const locked = mq.filter(q=>isLocked(q)&&!acceptedQuests.has(q.id));
+  const done = mq.filter(q=>completed.has(q.id));
+
+  // ── Center: map image ──
+  let viewerHtml = `<div class="map-viewer-col">`;
+  viewerHtml+=`<div class="map-img-wrap" id="mapImgWrap">`;
+  if(imgSrc){
+    viewerHtml+=`<img src="${imgSrc}" alt="${mapMeta.n}"
+      onerror="document.getElementById('mapImgWrap').innerHTML='<div class=\\'map-no-img\\'><div class=\\'map-no-img-icon\\'>🗺️</div><div>인터넷 연결 시 tarkov.dev 지도를 불러옵니다.<br><a href=\\'${mapMeta.link||'#'}\\' target=\\'_blank\\' style=\\'color:var(--accent)\\'>tarkov.dev에서 지도 열기 ↗</a></div></div>'"
+      onload="this.style.opacity=1" style="opacity:0;transition:opacity .3s;width:100%;height:100%;object-fit:contain">`;
+  } else {
+    viewerHtml+=`<div class="map-no-img"><div class="map-no-img-icon">${mapMeta.i||'🗺️'}</div>
+      <div style="font-size:13px;text-align:center;line-height:1.7">${mapMeta.n} 지도는 tarkov.dev<br>인터랙티브 맵에서 확인하세요.<br>
+      <a href="${mapMeta.link||'#'}" target="_blank" style="color:var(--accent);font-weight:600">tarkov.dev에서 지도 열기 ↗</a></div></div>`;
+  }
+  viewerHtml+=`</div>`; // map-img-wrap
+  if(imgSrc && mapMeta.link){
+    viewerHtml+=`<div style="text-align:right;flex-shrink:0"><a href="${mapMeta.link}" target="_blank" style="font-size:11px;color:var(--accent)">tarkov.dev 인터랙티브 맵 (핀·추출구·전리품) 열기 ↗</a></div>`;
+  }
+
+  if(mapInfo){
+    viewerHtml+=`<div style="display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0">`;
+    if(mapInfo.raidDuration) viewerHtml+=`<span style="font-size:11px;padding:3px 10px;border-radius:5px;background:var(--bg2);border:1px solid var(--border);color:var(--t3)">⏱ ${mapInfo.raidDuration} min</span>`;
+    if(mapInfo.players) viewerHtml+=`<span style="font-size:11px;padding:3px 10px;border-radius:5px;background:var(--bg2);border:1px solid var(--border);color:var(--t3)">👥 ${mapInfo.players}</span>`;
+    const bosses=(mapInfo.bosses||[]).map(b=>b.name).join(', ');
+    if(bosses) viewerHtml+=`<span style="font-size:11px;padding:3px 10px;border-radius:5px;background:var(--rbg);border:1px solid #4a1a1a;color:var(--red)">💀 ${bosses}</span>`;
+    viewerHtml+=`<span style="font-size:11px;padding:3px 10px;border-radius:5px;background:var(--bg2);border:1px solid var(--border);color:var(--t3);margin-left:auto">${accepted.length} active · ${avail.length} avail · ${done.length}/${mq.length} done</span>`;
+    viewerHtml+=`</div>`;
+  }
+  viewerHtml+=`</div>`; // map-viewer-col
+
+  // ── Right: quest detail + list ──
+  let rightHtml=`<div class="map-detail-col">`;
+  rightHtml+=renderQuestDetail(selQuest);
+
+  rightHtml+=`<div style="flex:1;overflow-y:auto;margin-top:8px">`;
+
+  function mqCat(label,catKey,qs,bc,accentColor){
+    if(!qs.length)return'';
+    const open=mapCatOpen[catKey]!==false;
+    let h=`<div class="mq-cat">
+      <div class="mq-cat-hd" onclick="mapCatOpen['${catKey}']=!mapCatOpen['${catKey}'];renderPage()">
+        <span class="mq-cat-title">${label}</span>
+        <span class="sbadge ${bc}">${qs.length}</span>
+        <span class="mq-cat-arrow ${open?'open':''}">▶</span>
+      </div>
+      <div class="mq-cat-body ${open?'':'collapsed'}">`;
+    qs.forEach(q=>{
+      const tm=TRADER_META[tKey(q.trader)]||{n:q.trader.name,i:'❓'};
+      const isDone=completed.has(q.id);
+      const isAcc=acceptedQuests.has(q.id);
+      const isSel=selQuest===q.id;
+      h+=`<div class="mq-row ${isDone?'done':''} ${isSel?'sel':''}"
+        onclick="selQuest='${q.id}';renderPage()"
+        style="${isSel&&accentColor?'border-color:'+accentColor+';background:#0a1020':''}">
+        <div class="mq-row-trader">${tm.i}</div>
+        <div class="mq-row-name-wrap">
+          <span class="mq-row-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${q.name}</span>
+          ${q.kappaRequired?'<span class="kappa-badge" title="Need for Kappa" style="font-size:9px;padding:0px 5px">K</span>':''}
+        </div>
+        ${!isDone?`<button class="mq-row-done-btn" title="${isAcc?'수락 취소':'수락'}"
+          onclick="event.stopPropagation();toggleAccept('${q.id}')"
+          style="${isAcc?'color:var(--blue);border-color:#1a2e50;background:#0a1422':''}">
+          ${isAcc?'▶':'○'}
+        </button>`:''}
+        ${isDone?`<button class="mq-row-done-btn done" onclick="event.stopPropagation();toggleDone('${q.id}')">✓</button>`:''}
+      </div>`;
+    });
+    h+=`</div></div>`;
+    return h;
+  }
+
+  rightHtml+=mqCat('Active (accepted)','accepted',accepted,'s-ok','#5a8de0');
+  rightHtml+=mqCat('Available','available',avail,'s-ok',null);
+  rightHtml+=mqCat('Locked','locked',locked,'s-lock',null);
+  rightHtml+=mqCat('Completed','completed',done,'s-done',null);
+
+  if(!mq.length) rightHtml+=`<div class="empty" style="padding:30px"><div class="empty-icon">📋</div><div class="empty-text">No kappa quests on this map</div></div>`;
+
+  rightHtml+=`</div></div>`;
+  return`<div class="map-page"><div class="map-body">${listHtml}${viewerHtml}${rightHtml}</div></div>`;
+}
+
+
+function renderQuestDetail(questId) {
+  if(!questId) return `<div class="qd-panel"><div class="qd-empty"><div class="qd-empty-icon">👆</div>Click a quest to see details</div></div>`;
+  const q = quests.find(x=>x.id===questId);
+  if(!q) return `<div class="qd-panel"><div class="qd-empty">Quest not found</div></div>`;
+
+  const tm = TRADER_META[tKey(q.trader)]||{n:q.trader.name,i:'❓'};
+  const mapM = q.map?(MAP_META[mKey(q.map)]||{n:q.map.name}):null;
+  const isDone = completed.has(q.id);
+  const isAcc = acceptedQuests.has(q.id)&&!isDone;
+  const isBk = bookmarks.has(q.id);
+  const state = isDone?'done':isAcc?'accepted':isAvail(q)?'avail':'locked';
+
+  // prereqs & follow-ups
+  const prereqs = (q.taskRequirements||[]).filter(r=>r.status==='complete');
+  const followUps = quests.filter(fq=>
+    (fq.taskRequirements||[]).some(r=>r.status==='complete'&&r.task.id===q.id)
+  );
+
+  // item objectives for progress tracking
+  const itemObjs = (q.objectives||[]).filter(o=>
+    (o.type==='giveItem'||o.type==='findItem'||o.type==='collect')&&(o.items?.length||o.questItem)
+  );
+  const otherObjs = (q.objectives||[]).filter(o=>!itemObjs.includes(o));
+
+  const fr = q.finishRewards||{};
+  const sr = q.startRewards||{};
+
+  let html = `<div class="qd-panel">
+    <div class="qd-header">
+      <!-- Header: trader icon + name + bookmark -->
+      <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px">
+        ${q.taskImageLink?`<img src="${q.taskImageLink}" style="width:48px;height:48px;object-fit:cover;border-radius:5px;flex-shrink:0;border:1px solid var(--border)" onerror="this.style.display='none'">`:`<span style="font-size:24px">${tm.i}</span>`}
+        <div style="flex:1;min-width:0">
+          <div class="qd-name">${q.name}</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:2px">${tm.n}${mapM?' · '+mapM.n:''}${(q.minPlayerLevel||0)>1?' · Level '+q.minPlayerLevel:''}</div>
+          <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap">
+            ${isDone?'<span style="font-size:10px;padding:1px 7px;border-radius:4px;background:var(--gbg);color:var(--green);border:1px solid var(--gborder)">✓ Completed</span>':''}
+            ${isAcc&&!isDone?'<span style="font-size:10px;padding:1px 7px;border-radius:4px;background:#0a1422;color:#5a8de0;border:1px solid #1a2e50">▶ In Progress</span>':''}
+            ${q.kappaRequired?'<span class="kappa-badge" title="Need for Kappa">🔑 Need for Kappa</span>':''}
+          </div>
+        </div>
+        <button class="qd-bk-btn ${isBk?'on':''}" onclick="toggleBk('${q.id}')" title="Bookmark">★</button>
+      </div>
+
+      ${state==='locked'?`<div class="qd-lock-reason">🔒 ${lockReason(q)}</div>`:''}
+
+      <!-- Accept + Complete buttons -->
+      <div style="display:flex;gap:6px;margin-top:6px">
+        ${!isDone?`<button onclick="toggleAccept('${q.id}')"
+          style="flex:1;padding:6px;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;
+          border:1px solid ${isAcc?'#1a2e50':'var(--border2)'};
+          background:${isAcc?'#0a1422':'var(--bg3)'};
+          color:${isAcc?'#5a8de0':'var(--t2)'}">
+          ${isAcc?'▶ In Progress':'○ Accept Quest'}
+        </button>`:''}
+        <button class="qd-done-btn ${isDone?'done':''}" style="flex:1;margin-top:0"
+          onclick="toggleDone('${q.id}')">
+          ${isDone?'✓ Done — Undo':'✓ Mark Complete'}
+        </button>
+      </div>
+    </div>
+
+    <div class="qd-body">`;
+
+  // ── 선행 퀘스트 ──
+  if(prereqs.length){
+    html+=`<div><div class="qd-sec-title">Prerequisites</div>`;
+    prereqs.forEach(r=>{
+      const pq=quests.find(x=>x.id===r.task.id);
+      const ptm=pq?TRADER_META[tKey(pq.trader)]||{i:'❓'}:{i:'❓'};
+      const pdone=completed.has(r.task.id);
+      html+=`<div class="qd-prereq ${pdone?'done':''}" onclick="selQuest='${r.task.id}';renderPage()">
+        <span>${ptm.i}</span>
+        <span style="flex:1">${r.task.name}</span>
+        <span style="font-size:10px;color:${pdone?'var(--green)':'var(--red)'}">${pdone?'✓':'✗'}</span>
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+
+  // ── 아이템 제출 목표 + 진행 상황 입력 ──
+  if(itemObjs.length){
+    html+=`<div><div class="qd-sec-title">필요 아이템</div>`;
+    itemObjs.forEach(obj=>{
+      const objId=obj.id||obj.description;
+      const items=(obj.items||(obj.questItem?[obj.questItem]:[])).filter(Boolean);
+      const need=obj.count||1;
+      const prog=questProgress[q.id]?.[objId]||0;
+      const fir=obj.foundInRaid;
+      // 종류명: 단일이면 아이템명, 여러개면 설명문에서 추출 시도, 실패 시 "N종 중 택1"
+      let label;
+      if(items.length===1){ label=items[0].name; }
+      else {
+        const d=fmtObjDesc(obj.description)||'';
+        label = d ? d : `아이템 ${items.length}종 중 택1`;
+      }
+      // hover 팝업: 해당 종류 아이템 목록
+      const popHtml=items.map(it=>{
+        const im=bestImg(it,'grid');
+        return `<div class="qd-pop-item">${im?`<img src="${im}" onerror="this.style.display='none'">`:''}<span>${it.name}</span></div>`;
+      }).join('');
+      const multi=items.length>1;
+      html+=`<div class="qd-item2">
+        <div class="qd-item2-top">
+          <span class="qd-item2-name ${multi?'has-pop':''}">${label}${multi?` <span style="color:var(--t3);font-weight:400">(${items.length}종)</span>`:''}
+            ${multi?`<div class="qd-pop">${popHtml}</div>`:''}
+          </span>
+          ${fir?`<span class="qd-fir">FIR</span>`:''}
+        </div>
+        <div class="qd-counter">
+          <button class="qd-step" onclick="event.stopPropagation();setProgress('${q.id}','${objId}',${Math.max(0,prog-1)},${need})">−</button>
+          <span class="qd-count-num" style="color:${prog>=need?'var(--green)':'var(--t1)'}">${prog} / ${need}</span>
+          <button class="qd-step" onclick="event.stopPropagation();setProgress('${q.id}','${objId}',${Math.min(need,prog+1)},${need})">+</button>
+          ${prog>=need?'<span style="color:var(--green);font-weight:700;margin-left:4px">✓</span>':''}
+        </div>
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+
+  // ── 기타 목표 ──
+  if(otherObjs.length){
+    html+=`<div><div class="qd-sec-title">Objectives</div>`;
+    otherObjs.forEach(obj=>{
+      html+=`<div class="qd-obj"><div class="qd-obj-dot"></div><div>${fmtObjDesc(obj.description)||obj.type}</div></div>`;
+    });
+    html+=`</div>`;
+  }
+
+  // ── 완료 보상 ──
+  const hasRewards=(fr.traderStanding?.length||fr.items?.length||fr.offerUnlock?.length||fr.skillLevelReward?.length||q.experience);
+  if(hasRewards){
+    html+=`<div><div class="qd-sec-title">Rewards on Completion</div>`;
+    if(q.experience) html+=`<div style="font-size:11px;padding:3px 8px;background:var(--bg3);border-radius:4px;margin-bottom:3px;color:var(--yellow);border:1px solid #3a2e10">⭐ ${q.experience.toLocaleString()} XP</div>`;
+    (fr.traderStanding||[]).forEach(r=>{
+      html+=`<div class="qd-rep">+${(r.standing||0).toFixed(2)} ${r.trader?.name||''}</div> `;
+    });
+    (fr.skillLevelReward||[]).forEach(r=>{
+      html+=`<div style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--bg3);border:1px solid var(--border);color:var(--blue);display:inline-block;margin-bottom:3px">💪 ${r.name} +${r.level}</div> `;
+    });
+    if(fr.traderStanding?.length||fr.skillLevelReward?.length) html+=`<br>`;
+    (fr.items||[]).forEach(ri=>{
+      const img=bestImg(ri.item,'inspect');
+      html+=`<div class="reward-item">
+        ${img?`<img class="reward-img" src="${img}" onerror="this.outerHTML='<div class=\\'reward-img-ph\\'>📦</div>'">`:`<div class="reward-img-ph">📦</div>`}
+        <div style="flex:1;font-size:12px;color:var(--t1)">${ri.item.name}</div>
+        <div style="font-size:12px;font-weight:700;color:var(--accent)">×${ri.count}</div>
+      </div>`;
+    });
+    (fr.offerUnlock||[]).forEach(u=>{
+      const img=bestImg(u.item,'grid');
+      html+=`<div class="reward-item" style="border-color:#1a2e50">
+        ${img?`<img class="reward-img" src="${img}" onerror="this.outerHTML='<div class=\\'reward-img-ph\\'>🔓</div>'">`:`<div class="reward-img-ph">🔓</div>`}
+        <div style="flex:1;min-width:0">
+          <div style="font-size:11px;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${u.item.name}</div>
+          <div style="font-size:10px;color:var(--blue)">${u.trader?.name||''} LL${u.level} unlock</div>
+        </div>
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+
+  // ── 후속 퀘스트 ──
+  if(followUps.length){
+    html+=`<div><div class="qd-sec-title">Unlocks Next</div>`;
+    followUps.slice(0,5).forEach(fq=>{
+      const ftm=TRADER_META[tKey(fq.trader)]||{i:'❓',n:fq.trader.name};
+      const fdone=completed.has(fq.id);
+      html+=`<div class="qd-follow" onclick="selQuest='${fq.id}';renderPage()">
+        <span>${ftm.i}</span>
+        <span style="flex:1">${fq.name}</span>
+        <span style="font-size:10px;color:${fdone?'var(--green)':'var(--t3)'}">→</span>
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+
+  // ── 위키 링크 + 임베드 ──
+  if(q.wikiLink){
+    html+=`<div>
+      <div class="qd-sec-title" style="display:flex;align-items:center;justify-content:space-between">
+        <span>Wiki</span>
+        <a href="${q.wikiLink}" target="_blank" style="font-size:10px;color:var(--accent)">새 탭에서 열기 ↗</a>
+      </div>
+      <iframe
+        src="${q.wikiLink}"
+        class="qd-wiki-frame"
+        loading="lazy"
+        sandbox="allow-scripts allow-same-origin allow-popups"
+        title="${q.name} wiki">
+      </iframe>
+    </div>`;
+  }
+
+  html+=`</div></div>`; // qd-body + qd-panel
+  return html;
+}
+
+function setProgress(questId, objId, val, max){
+  if(!questProgress[questId]) questProgress[questId]={};
+  questProgress[questId][objId]=Math.min(max, Math.max(0, val||0));
+  save();
+  renderPage();
+}
+
+
+/* ══ ITEM SEARCH ══ */
+function renderItemSearch(){
+  let html=`<div class="item-search-wrap">
+    <input type="text" id="itemSearchInput" placeholder="Search items (e.g. LEDX, GPU, Red keycard...)" value="${itemSearchQ}"
+      onkeydown="if(event.key==='Enter')triggerItemSearch()">
+    <button class="item-search-btn" onclick="triggerItemSearch()">Search</button>
+  </div>`;
+  if(itemSearching){html+=`<div class="search-loading"><div class="spinner"></div><br>Searching tarkov.dev...</div>`;return html;}
+  if(!itemSearchQ&&!itemResults.length){html+=`<div class="search-hint"><div class="search-hint-icon">🔍</div>Search any item to see trader availability, loyalty level requirements, and flea market prices.</div>`;return html;}
+  if(itemResults.length&&itemResults[0]?._error){html+=`<div class="err-box">Search error: ${itemResults[0]._error}</div>`;return html;}
+  if(itemResults.length){html+=`<div class="result-count">${itemResults.length} result${itemResults.length!==1?'s':''} for "${itemSearchQ}"</div>`;itemResults.forEach(item=>{html+=renderItemResult(item);});}
+  else if(itemSearchQ){html+=`<div class="empty"><div class="empty-icon">😕</div><div class="empty-text">No items found for "${itemSearchQ}"</div></div>`;}
+  return html;
+}
+
+function renderItemResult(item){
+  const img=bestImg(item,'inspect');
+  const fleaPrice=item.avg24hPrice||item.lastLowPrice;
+  const traderBuys=(item.buyFor||[]).filter(b=>b.vendor?.normalizedName!=='flea-market'&&b.vendor?.normalizedName!=='fleamarket');
+  const fleaBuys=(item.buyFor||[]).filter(b=>b.vendor?.normalizedName==='flea-market'||b.vendor?.normalizedName==='fleamarket');
+  const traderSells=(item.sellFor||[]).filter(s=>s.vendor?.normalizedName!=='flea-market'&&s.vendor?.normalizedName!=='fleamarket');
+  const bestSell=traderSells.sort((a,b)=>(b.priceRUB||0)-(a.priceRUB||0))[0];
+  let html=`<div class="item-result"><div class="ir-header">`;
+  if(img)html+=`<img class="ir-img" src="${img}" alt="${item.name}" onerror="this.outerHTML='<div class=\\'ir-img-ph\\'>📦</div>'">`;
+  else html+=`<div class="ir-img-ph">📦</div>`;
+  html+=`<div style="flex:1;min-width:0"><div class="ir-title">${item.name}${item.wikiLink?` <a href="${item.wikiLink}" target="_blank" style="font-size:11px;color:var(--t3)">wiki ↗</a>`:''}</div><div class="ir-short">${item.shortName||''}</div><div class="ir-price-row">`;
+  if(fleaPrice)html+=`<span class="ir-price-badge ir-flea">Flea avg: ${fmt(fleaPrice)} ₽</span>`;
+  if(item.high24hPrice)html+=`<span class="ir-price-badge" style="background:var(--bg3);color:var(--t2);border-color:var(--border)">24h high: ${fmt(item.high24hPrice)} ₽</span>`;
+  if(item.low24hPrice)html+=`<span class="ir-price-badge" style="background:var(--bg3);color:var(--t2);border-color:var(--border)">24h low: ${fmt(item.low24hPrice)} ₽</span>`;
+  if(bestSell)html+=`<span class="ir-price-badge" style="background:var(--gbg);color:var(--green);border-color:var(--gborder)">Best sell: ${fmt(bestSell.priceRUB||bestSell.price)} ₽ → ${bestSell.vendor?.name}</span>`;
+  html+=`</div></div></div><div class="ir-body">`;
+  if(traderBuys.length){
+    html+=`<div class="ir-section"><div class="ir-sec-title">Buy from Traders</div>`;
+    traderBuys.sort((a,b)=>(a.vendor?.minTraderLevel||0)-(b.vendor?.minTraderLevel||0)).forEach(b=>{
+      const vname=b.vendor?.name||'Unknown';const vkey=vname.toLowerCase();
+      const tm=TRADER_META[vkey]||{n:vname,i:'🏪'};
+      const minLL=b.vendor?.minTraderLevel||1;const taskUnlock=b.vendor?.taskUnlock;
+      const tdata=tradersData[vkey]||null;const playerLL=tdata?getTraderLL(tdata.id||vkey).ll:0;
+      const canBuy=playerLL>=minLL;
+      const priceStr=b.currency==='USD'?`$${fmt(b.price)}`:b.currency==='EUR'?`€${fmt(b.price)}`:`${fmt(b.priceRUB||b.price)} ₽`;
+      html+=`<div class="buy-row"><div class="buy-trader-icon">${tm.i}</div><div class="buy-info"><div class="buy-trader-name">${tm.n}</div><div class="buy-meta">${b.currency!=='RUB'?`${fmt(b.price)} ${b.currency} · `:''}${fmt(b.priceRUB||b.price)} ₽${taskUnlock?` · Requires quest: ${taskUnlock.name}`:''}</div></div><span class="buy-ll ${canBuy?'buy-ll-ok':'buy-ll-warn'}">LL${minLL}${canBuy?' ✓':''}</span><div class="buy-price">${priceStr}</div></div>`;
+    });
+    html+=`</div>`;
+  }
+  if(fleaBuys.length){
+    html+=`<div class="ir-section"><div class="ir-sec-title">Flea Market</div>`;
+    fleaBuys.forEach(b=>{
+      const minFleaLv=b.vendor?.minPlayerLevel||15;const canFlea=charLevel>=minFleaLv;
+      html+=`<div class="flea-row"><div class="flea-icon">🛒</div><div class="flea-info"><div class="flea-name">Flea Market</div><div class="flea-meta">Min player level: ${minFleaLv} · ${canFlea?'<span style="color:var(--green)">Available at your level</span>':'<span style="color:var(--yellow)">Not available yet</span>'}</div></div><div class="flea-price">${fmt(b.priceRUB||b.price)} ₽</div></div>`;
+    });
+    html+=`</div>`;
+  }
+  if(!traderBuys.length&&!fleaBuys.length)html+=`<div class="no-buy">⚠️ Not available for purchase (loot/craft/quest reward only)</div>`;
+  if(traderSells.length){
+    html+=`<div class="ir-section"><div class="ir-sec-title">Sell to Traders</div><div style="display:flex;gap:6px;flex-wrap:wrap">`;
+    traderSells.sort((a,b)=>(b.priceRUB||0)-(a.priceRUB||0)).forEach(s=>{
+      const tm=TRADER_META[s.vendor?.normalizedName||s.vendor?.name?.toLowerCase()]||{n:s.vendor?.name||'?',i:'🏪'};
+      html+=`<span style="font-size:11px;padding:3px 10px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);color:var(--t2)">${tm.i} ${tm.n}: ${fmt(s.priceRUB||s.price)} ₽</span>`;
+    });
+    html+=`</div></div>`;
+  }
+  html+=`</div></div>`;return html;
+}
+
+function fmt(n){if(!n)return'0';return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,',');}
+function fmtObjDesc(desc){
+  if(!desc) return '';
+  // 이미 공백이 있으면 그대로
+  if(desc.includes(' ')) return desc;
+  // 공백 없는 경우: 대문자 앞에 공백 삽입 + 콜론 앞뒤 정리
+  return desc
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+    .replace(/(\d+)/g, ' $1 ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// 핸드오버/수집 objective를 렌더. 필요한 아이템 종류가 있으면 밑줄 클릭 → 아이템 목록 펼침
+function objLine(o, idPrefix){
+  const base = fmtObjDesc(o.description)||o.type;
+  const items = (o.items||[]).filter(Boolean);
+  const qItem = o.questItem;
+  // 표시할 아이템 후보
+  let list = [];
+  if(items.length) list = items;
+  else if(qItem) list = [qItem];
+  if(!list.length){
+    return `<div class="qi-obj" style="margin-bottom:3px">· ${base}</div>`;
+  }
+  const cnt = o.count||1;
+  const oid = (idPrefix||'o')+'_'+(o.id||Math.random().toString(36).slice(2));
+  // 여러 종류면 "필요 아이템 N종" 안내, 단일이면 아이템명
+  const label = list.length>1
+    ? `필요 아이템 ${list.length}종 (각 ${cnt}개)`
+    : `${list[0].shortName||list[0].name}${cnt>1?' ×'+cnt:''}`;
+  const itemsHtml = list.map(it=>{
+    const img = bestImg(it,'grid');
+    return `<div class="obj-item">
+      ${img?`<img class="obj-item-img" src="${img}" onerror="this.style.display='none'">`:'<div class="obj-item-img"></div>'}
+      <span class="obj-item-name">${it.name}</span>
+      <span class="obj-item-cnt">×${cnt}</span>
+    </div>`;
+  }).join('');
+  return `<div class="qi-obj" style="margin-bottom:3px">· ${base}
+      <span class="obj-toggle" onclick="event.stopPropagation();var e=document.getElementById('${oid}');e.style.display=e.style.display==='none'?'block':'none'">${label} ▾</span>
+      <div class="obj-item-list" id="${oid}" style="display:none">${itemsHtml}</div>
+    </div>`;
+}
+
+function bestImg(item,size='inspect'){
+  if(!item)return'';
+  if(size==='inspect')return item.inspectImageLink||item.image512pxLink||item.gridImageLink||item.iconLink||'';
+  if(size==='grid')return item.gridImageLink||item.iconLink||item.inspectImageLink||'';
+  return item.iconLink||item.gridImageLink||item.inspectImageLink||'';
+}
+function triggerItemSearch(){const v=document.getElementById('itemSearchInput')?.value||'';if(!v.trim())return;itemSearchQ=v;searchItems(v);}
+
+/* ══ HIDEOUT ══ */
+function fmtTime(secs){if(!secs)return'—';const h=Math.floor(secs/3600),m=Math.floor((secs%3600)/60);if(h>=24){const d=Math.floor(h/24),rh=h%24;return`${d}d ${rh}h`;}if(h>0)return`${h}h ${m}m`;return`${m}m`;}
+
+function renderHideout(){
+  if(!hideoutStations.length)return`<div class="empty"><div class="empty-icon">🏠</div><div class="empty-text">Hideout data loading...</div></div>`;
+  const shopping={};
+  hideoutStations.forEach(st=>{(st.levels||[]).forEach(lv=>{if(!hideoutBookmarks.has(lv.id))return;(lv.itemRequirements||[]).forEach(req=>{const k=req.item.id;if(!shopping[k])shopping[k]={item:req.item,total:0};shopping[k].total+=req.count;});});});
+  let stList=`<div class="hd-list-panel">`;
+  const shopKeys=Object.keys(shopping);
+  if(shopKeys.length){
+    stList+=`<div class="hd-summary-box" style="margin-bottom:8px"><div class="hd-summary-title">🛒 FIR Shopping List (${shopKeys.length} items)</div>`;
+    shopKeys.slice(0,15).forEach(k=>{
+      const s=shopping[k];const img=bestImg(s.item,'icon');
+      stList+=`<div class="hd-summary-item">${img?`<img src="${img}" style="width:22px;height:22px;object-fit:contain;background:var(--bg4);border-radius:3px" onerror="this.style.display='none'">`:'📦'}<span class="hd-summary-item-name">${s.item.shortName||s.item.name}</span><span class="hd-summary-total">×${s.total}</span><span class="fir-badge">FIR</span></div>`;
+    });
+    if(shopKeys.length>15)stList+=`<div style="font-size:10px;color:var(--t3);margin-top:4px;text-align:center">+${shopKeys.length-15} more</div>`;
+    stList+=`</div>`;
+  }
+  stList+=`<div class="hd-search"><span class="hd-search-icon">🔍</span><input type="text" placeholder="Search stations..." value="${hideoutSearch}" oninput="hideoutSearch=this.value;renderPage()"></div>`;
+  stList+=`<div class="hd-station-list">`;
+  hideoutStations.filter(st=>!hideoutSearch||st.name.toLowerCase().includes(hideoutSearch.toLowerCase())).forEach(st=>{
+    const maxLv=st.levels?.length||0,cur=hideoutLevels[st.id]||0;
+    const pct=maxLv?Math.round(cur/maxLv*100):0,isMaxed=cur>=maxLv,isSel=selHideoutStation===st.id;
+    stList+=`<div class="hd-station-item ${isSel?'sel':''}" onclick="selHideoutStation='${st.id}';renderPage()"><div class="hd-station-name">${st.name}</div><div class="hd-level-row"><button class="hd-lv-btn" onclick="event.stopPropagation();setHideoutLevel('${st.id}',${Math.max(0,cur-1)})" ${cur===0?'disabled':''}>−</button><span class="hd-lv-badge ${isMaxed?'maxed':cur>0?'in-progress':''}">${isMaxed?'MAX':`Lv ${cur}/${maxLv}`}</span><button class="hd-lv-btn" onclick="event.stopPropagation();setHideoutLevel('${st.id}',${Math.min(maxLv,cur+1)})" ${isMaxed?'disabled':''}>+</button><div class="hd-prog-bar"><div class="hd-prog-fill" style="width:${pct}%"></div></div></div></div>`;
+  });
+  stList+=`</div></div>`;
+  let detail=`<div class="hd-detail-panel">`;
+  if(!selHideoutStation){detail+=`<div class="hd-detail-empty"><div class="hd-detail-empty-icon">🏗️</div>Select a station</div>`;}
+  else{
+    const st=hideoutStations.find(s=>s.id===selHideoutStation);
+    if(st){
+      const cur=hideoutLevels[st.id]||0,maxLv=st.levels?.length||0;
+      detail+=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">${st.imageLink?`<img src="${st.imageLink}" style="width:48px;height:48px;object-fit:contain;background:var(--bg3);border-radius:6px" onerror="this.style.display='none'">`:''}<div><div style="font-size:15px;font-weight:600;color:var(--t1)">${st.name}</div><div style="font-size:11px;color:var(--t3);margin-top:2px">Current: <span style="color:${cur>=maxLv?'#9b7ae8':'var(--accent)'};font-weight:600">${cur>=maxLv?'MAX':('Level '+cur)}</span> · ${maxLv} total upgrades</div></div></div>`;
+      if(cur>=maxLv)detail+=`<div class="hd-maxed-banner">✓ Fully upgraded!</div>`;
+      (st.levels||[]).sort((a,b)=>a.level-b.level).forEach(lv=>{
+        const isNext=lv.level===cur+1,isDone=lv.level<=cur,isBk=hideoutBookmarks.has(lv.id);
+        detail+=`<div class="hd-upgrade-card ${isNext?'current':''}" style="opacity:${isDone?0.4:1}"><div class="hd-upgrade-hd"><div style="display:flex;align-items:center;gap:6px">${isDone?'<span style="color:var(--green);font-size:12px">✓</span>':''}<div class="hd-level-title">Level ${lv.level}${isNext?' <span style="font-size:10px;padding:1px 6px;border-radius:4px;background:var(--gbg);color:var(--green);border:1px solid var(--gborder)">NEXT</span>':''}</div></div><div class="hd-time-badge">⏱ ${fmtTime(lv.constructionTime)}</div>${!isDone?`<button class="hd-bm-btn ${isBk?'on':''}" onclick="event.stopPropagation();toggleHideoutBk('${lv.id}')">${isBk?'★ Listed':'☆ List'}</button>`:''}</div>${renderUpgradeBody(lv,isDone)}</div>`;
+      });
+    }
+  }
+  detail+=`</div>`;
+  return`<div class="hd-layout">${stList}${detail}</div>`;
+}
+
+function renderUpgradeBody(lv,isDone){
+  let html=`<div class="hd-upgrade-body">`;
+  if(lv.itemRequirements?.length){
+    html+=`<div class="hd-req-section"><div class="hd-req-title">🔧 Items Required <span style="color:var(--accent);font-size:10px;padding:1px 6px;border-radius:3px;background:#1a1208;border:1px solid #3a2e10;margin-left:4px">All FIR</span></div>`;
+    lv.itemRequirements.forEach(req=>{
+      const img=bestImg(req.item,'inspect');
+      html+=`<div class="hd-item-row">${img?`<img class="hd-item-img" src="${img}" alt="${req.item.name}" onerror="this.outerHTML='<div class=\\'hd-item-img-ph\\'>📦</div>'">`:'<div class="hd-item-img-ph">📦</div>'}<span class="hd-item-name">${req.item.name}</span><span class="fir-badge">FIR</span><span class="hd-item-count">×${req.count}</span></div>`;
+    });
+    html+=`</div>`;
+  }
+  if(lv.stationLevelRequirements?.length){html+=`<div class="hd-req-section"><div class="hd-req-title">🏠 Station Requirements</div>`;lv.stationLevelRequirements.forEach(r=>{html+=`<div class="hd-station-req">📍 ${r.station.name} Level ${r.level}</div>`;});html+=`</div>`;}
+  if(lv.skillRequirements?.length){html+=`<div class="hd-req-section"><div class="hd-req-title">📊 Skill Requirements</div>`;lv.skillRequirements.forEach(r=>{html+=`<div class="hd-skill-req">💪 ${r.name} Level ${r.level}</div>`;});html+=`</div>`;}
+  if(lv.traderRequirements?.length){html+=`<div class="hd-req-section"><div class="hd-req-title">🤝 Trader Requirements</div>`;lv.traderRequirements.forEach(r=>{const tm=TRADER_META[r.trader?.name?.toLowerCase()]||{n:r.trader?.name||'?',i:'🏪'};html+=`<div class="hd-trader-req">${tm.i} ${tm.n} LL${r.value||1}</div>`;});html+=`</div>`;}
+  if(!lv.itemRequirements?.length&&!lv.stationLevelRequirements?.length&&!lv.skillRequirements?.length&&!lv.traderRequirements?.length)html+=`<div style="font-size:12px;color:var(--t3);padding:8px">No additional requirements.</div>`;
+  html+=`</div>`;return html;
+}
+
+function setHideoutLevel(stId,lv){hideoutLevels[stId]=lv;save();updateHideoutBadge();renderPage();}
+function toggleHideoutBk(lvId){if(hideoutBookmarks.has(lvId))hideoutBookmarks.delete(lvId);else hideoutBookmarks.add(lvId);save();renderPage();}
+
+/* ══ SHOPPING LIST ══ */
+function buildShoppingData(){
+  const questItems={},hideoutItems={},merged={};
+  quests.filter(q=>bookmarks.has(q.id)&&!completed.has(q.id)).forEach(q=>{
+    (q.objectives||[]).forEach(obj=>{
+      if(obj.type==='giveItem'||obj.type==='findItem'||obj.type==='collect'){
+        (obj.items||[]).forEach(item=>{
+          if(!item?.id)return;
+          if(!questItems[item.id])questItems[item.id]={item,count:0,fir:!!obj.foundInRaid,sources:[]};
+          questItems[item.id].count+=obj.count||1;
+          if(!questItems[item.id].sources.includes(q.name))questItems[item.id].sources.push(q.name);
+        });
+      }
+    });
+  });
+  hideoutStations.forEach(st=>{
+    (st.levels||[]).forEach(lv=>{
+      if(!hideoutBookmarks.has(lv.id))return;
+      (lv.itemRequirements||[]).forEach(req=>{
+        if(!req.item?.id)return;
+        if(!hideoutItems[req.item.id])hideoutItems[req.item.id]={item:req.item,count:0,fir:true,sources:[]};
+        hideoutItems[req.item.id].count+=req.count||1;
+        const label=`${st.name} L${lv.level}`;
+        if(!hideoutItems[req.item.id].sources.includes(label))hideoutItems[req.item.id].sources.push(label);
+      });
+    });
+  });
+  Object.values(questItems).forEach(({item,count,fir,sources})=>{
+    if(!merged[item.id])merged[item.id]={item,questCount:0,hideCount:0,fir:false,sources:[]};
+    merged[item.id].questCount+=count;if(fir)merged[item.id].fir=true;
+    sources.forEach(s=>{if(!merged[item.id].sources.includes('Quest: '+s))merged[item.id].sources.push('Quest: '+s);});
+  });
+  Object.values(hideoutItems).forEach(({item,count,fir,sources})=>{
+    if(!merged[item.id])merged[item.id]={item,questCount:0,hideCount:0,fir:false,sources:[]};
+    merged[item.id].hideCount+=count;if(fir)merged[item.id].fir=true;
+    sources.forEach(s=>{if(!merged[item.id].sources.includes('Hideout: '+s))merged[item.id].sources.push('Hideout: '+s);});
+  });
+  return{questItems,hideoutItems,merged};
+}
+
+let slFilter='all';
+function renderShoppingList(){
+  const {questItems,hideoutItems,merged}=buildShoppingData();
+  const mergedArr=Object.values(merged);
+  const questOnly=Object.keys(questItems).length,hideOnly=Object.keys(hideoutItems).length;
+  const firCount=mergedArr.filter(m=>m.fir).length,totalUnique=mergedArr.length;
+  if(!totalUnique){
+    return`<div style="text-align:center;padding:60px 20px;color:var(--t3)">
+      <div style="font-size:40px;margin-bottom:12px;opacity:.4">🛒</div>
+      <div style="font-size:13px;font-weight:500;color:var(--t2);margin-bottom:8px">No items in shopping list</div>
+      <div style="font-size:12px;line-height:1.8;color:var(--t3)">
+        ★ Bookmark quests in <b style="color:var(--t1)">Traders</b> tab<br>
+        ☆ List hideout upgrades in <b style="color:var(--t1)">Hideout</b> tab
+      </div></div>`;
+  }
+  let html=`<div class="sl-summary-bar">
+    <div class="sl-summary-stat"><div class="sl-summary-val">${totalUnique}</div><div class="sl-summary-lbl">Unique Items</div></div>
+    <div style="width:1px;height:32px;background:var(--border)"></div>
+    <div class="sl-summary-stat"><div class="sl-summary-val" style="color:var(--green)">${questOnly}</div><div class="sl-summary-lbl">From Quests</div></div>
+    <div class="sl-summary-stat"><div class="sl-summary-val" style="color:var(--blue)">${hideOnly}</div><div class="sl-summary-lbl">For Hideout</div></div>
+    <div class="sl-summary-stat"><div class="sl-summary-val" style="color:var(--accent)">${firCount}</div><div class="sl-summary-lbl">Need FIR</div></div>
+    <div style="margin-left:auto;font-size:11px;color:var(--t3)">${bookmarks.size} quests · ${hideoutBookmarks.size} hideout upgrades</div>
+  </div>
+  <div class="sl-filter-row">
+    <button class="sl-filter-btn ${slFilter==='all'?'on':''}" onclick="slFilter='all';renderPage()">All (${totalUnique})</button>
+    <button class="sl-filter-btn ${slFilter==='quest'?'on':''}" onclick="slFilter='quest';renderPage()">Quests only (${questOnly})</button>
+    <button class="sl-filter-btn ${slFilter==='hideout'?'on':''}" onclick="slFilter='hideout';renderPage()">Hideout only (${hideOnly})</button>
+    <button class="sl-filter-btn ${slFilter==='fir'?'on':''}" onclick="slFilter='fir';renderPage()">FIR required (${firCount})</button>
+  </div>`;
+  let filtered=mergedArr;
+  if(slFilter==='quest')filtered=mergedArr.filter(m=>m.questCount>0);
+  else if(slFilter==='hideout')filtered=mergedArr.filter(m=>m.hideCount>0);
+  else if(slFilter==='fir')filtered=mergedArr.filter(m=>m.fir);
+  filtered.sort((a,b)=>{if(a.fir!==b.fir)return a.fir?-1:1;return(b.questCount+b.hideCount)-(a.questCount+a.hideCount);});
+  const mid=Math.ceil(filtered.length/2),col1=filtered.slice(0,mid),col2=filtered.slice(mid);
+  function itemCard(m){
+    const img=bestImg(m.item,'inspect');
+    const totalCount=m.questCount+m.hideCount;
+    return`<div class="sl-item">
+      ${img?`<img class="sl-img" src="${img}" alt="${m.item.name}" onerror="this.outerHTML='<div class=\\'sl-img-ph\\'>📦</div>'">`:`<div class="sl-img-ph">📦</div>`}
+      <div class="sl-item-body">
+        <div class="sl-item-name" title="${m.item.name}">${m.item.name}</div>
+        <div class="sl-item-short">${m.item.shortName||''}</div>
+        <div class="sl-item-sources">
+          ${m.sources.slice(0,3).map(s=>{
+            const isH=s.startsWith('Hideout:'),isQ=s.startsWith('Quest:');
+            const col=isH?'color:var(--blue);background:var(--bbg);border-color:#1a2e50':isQ?'color:var(--green);background:var(--gbg);border-color:var(--gborder)':'';
+            return`<span class="sl-source-tag" style="${col}" title="${s}">${s}</span>`;
+          }).join('')}
+          ${m.sources.length>3?`<span class="sl-source-tag">+${m.sources.length-3} more</span>`:''}
+        </div>
+      </div>
+      <div class="sl-count-col">
+        ${m.questCount>0&&m.hideCount>0
+          ?`<div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px"><span style="font-size:11px;color:var(--green)">×${m.questCount} quest</span><span style="font-size:11px;color:var(--blue)">×${m.hideCount} hideout</span><span class="sl-count">×${totalCount}</span></div>`
+          :`<span class="sl-count">×${totalCount}</span>`}
+        ${m.fir?`<span class="sl-fir-pill">FIR</span>`:''}
+        ${m.hideCount>0&&!m.questCount?`<span class="sl-hide-pill">Hideout</span>`:''}
+      </div>
+    </div>`;
+  }
+  html+=`<div class="sl-layout"><div class="sl-col">${col1.map(itemCard).join('')}</div><div class="sl-col">${col2.map(itemCard).join('')}</div></div>`;
+  return html;
+}
+
+/* ══ COLLECTOR ══ */
+function renderCollector(){
+  const found=collectorFound.size;
+  const pct=Math.round(found/COLLECTOR_ITEMS.length*100);
+  let filtered=[...COLLECTOR_ITEMS];
+  if(showFound)filtered=filtered.filter(it=>collectorFound.has(it.id));
+  if(showNotFound)filtered=filtered.filter(it=>!collectorFound.has(it.id));
+  const sq=searchQ.toLowerCase();
+  if(sq)filtered=filtered.filter(it=>it.name.toLowerCase().includes(sq));
+
+  let html=`<div class="coll-header">
+    <div class="coll-title">🏆 The Collector — Fence</div>
+    <div class="coll-desc">All ${COLLECTOR_ITEMS.length} items must be <strong style="color:var(--accent)">Found in Raid (FIR)</strong>. Farm at any level — get a head start! <span style="color:var(--t3);font-size:11px">Updated Patch 1.0</span></div>
+    <div class="coll-pbar-row"><div class="coll-pbar"><div class="coll-pfill" style="width:${pct}%"></div></div><div class="coll-pct">${found}/${COLLECTOR_ITEMS.length}</div></div>
+  </div>
+  <div class="tog-row">
+    <button class="tog-btn ${!showFound&&!showNotFound?'on':''}" onclick="showFound=false;showNotFound=false;renderPage()">All (${COLLECTOR_ITEMS.length})</button>
+    <button class="tog-btn ${showNotFound?'on':''}" onclick="showFound=false;showNotFound=true;renderPage()">Not found (${COLLECTOR_ITEMS.length-found})</button>
+    <button class="tog-btn ${showFound?'on':''}" onclick="showFound=true;showNotFound=false;renderPage()">Found (${found})</button>
+    <div class="search-row" style="flex:1;margin:0"><span class="search-icon">🔍</span>
+      <input type="text" placeholder="Filter items..." value="${searchQ}" oninput="searchQ=this.value;renderPage()">
+      ${searchQ?`<button class="search-clear" onclick="searchQ='';renderPage()">✕</button>`:''}
+    </div>
+  </div>
+  <div class="coll-grid">`;
+
+  filtered.forEach(item=>{
+    const f=collectorFound.has(item.id);
+    const iconUrl=`https://assets.tarkov.dev/${item.id}-icon.webp`;
+    html+=`<div class="item-card ${f?'found':''}" onclick="toggleCollector('${item.id}')">
+      <div class="item-chk ${f?'on':''}">✓</div>
+      <img src="${iconUrl}" 
+        style="width:36px;height:36px;object-fit:contain;background:var(--bg4);border-radius:4px;flex-shrink:0;border:1px solid var(--border)"
+        onerror="this.outerHTML='<div style=\\'width:36px;height:36px;background:var(--bg4);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;border:1px solid var(--border)\\'>📦</div>'"
+        alt="${item.name}">
+      <div>
+        <div class="item-name">${item.name}</div>
+        <div class="item-fir">FIR required</div>
+      </div>
+    </div>`;
+  });
+
+  return html+`</div>`;
+}
+
+
+/* ══ CHECKLIST ══ */
+function renderChecklist(){
+  const items=quests.filter(q=>bookmarks.has(q.id));
+  if(!items.length)return`<div class="empty"><div class="empty-icon">★</div><div class="empty-text">Use the ★ button on quest cards to bookmark them</div></div>`;
+  const pending=items.filter(q=>!completed.has(q.id));
+  let html=`<div class="cl-header"><div class="cl-title">${items.length} saved · ${pending.length} pending</div><button class="btn-danger" onclick="clearBk()">Clear all</button></div>`;
+  items.forEach(q=>{
+    const tm=TRADER_META[tKey(q.trader)]||{n:q.trader.name,i:'❓'};
+    const mapM=q.map?(MAP_META[mKey(q.map)]||{n:q.map.name}):null;
+    const isDone=completed.has(q.id),state=isDone?'done':isAvail(q)?'avail':'lock';
+    const spCls=state==='done'?'sp-done':state==='avail'?'sp-ok':'sp-lock';
+    const spLbl=state==='done'?'Completed':state==='avail'?'Available':'Locked';
+    const objs=(q.objectives||[]).map(o=>`<div class="cl-obj">· ${fmtObjDesc(o.description)||o.type}</div>`).join('');
+    html+=`<div class="cl-item ${isDone?'done':''}"><div class="cl-hd"><div class="cl-ti">${tm.i}</div><div style="flex:1;min-width:0"><div class="cl-name">${q.name}</div><div class="cl-sub">${tm.n}${mapM?' · '+mapM.n:''}${(q.minPlayerLevel||0)>1?' · Lv.'+q.minPlayerLevel:''}</div></div><div class="cl-acts"><span class="sp ${spCls}">${spLbl}</span><button style="font-size:11px;padding:3px 9px" onclick="toggleDone('${q.id}')">${isDone?'Undo':'Complete'}</button><button style="font-size:11px;padding:3px 9px;color:var(--red)" onclick="toggleBk('${q.id}')">✕</button></div></div>${objs?`<div class="cl-objs">${objs}</div>`:''}</div>`;
+  });
+  return html;
+}
+
+/* ══ ACTIONS ══ */
+function toggleDone(id){if(completed.has(id)){completed.delete(id);}else{completed.add(id);acceptedQuests.delete(id);}computeRep();save();renderPage();}
+function toggleBk(id){if(bookmarks.has(id))bookmarks.delete(id);else bookmarks.add(id);save();renderPage();}
+function toggleCollector(item){if(collectorFound.has(item))collectorFound.delete(item);else collectorFound.add(item);save();renderPage();}
+function clearBk(){if(confirm('Clear all bookmarks?')){bookmarks.clear();save();renderPage();}}
+function resetAll(){if(confirm('Reset all progress? This cannot be undone.')){completed.clear();bookmarks.clear();collectorFound.clear();acceptedQuests.clear();hideoutLevels={};hideoutBookmarks.clear();computeRep();save();updateHideoutBadge();renderPage();}}
+
+function exportData(){
+  const d={lv:charLevel,done:[...completed],bk:[...bookmarks],cf:[...collectorFound],hl:hideoutLevels,hbk:[...hideoutBookmarks],exported:new Date().toISOString()};
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([JSON.stringify(d,null,2)],{type:'application/json'})),download:`kappa-progress-${new Date().toISOString().slice(0,10)}.json`});
+  a.click();
+}
+function importData(){document.getElementById('fileInput').click();}
+function handleImport(e){
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=ev=>{try{
+    const d=JSON.parse(ev.target.result);
+    if(confirm(`Import saved data?\n(Exported: ${d.exported||'unknown'})`)){
+      charLevel=d.lv||d.level||1;completed=new Set(d.done||[]);bookmarks=new Set(d.bk||[]);
+      collectorFound=new Set(d.cf||[]);hideoutLevels=d.hl||{};hideoutBookmarks=new Set(d.hbk||[]);
+      computeRep();save();document.getElementById('lvInput').value=charLevel;updateLevel(false);renderPage();
+    }
+  }catch(err){alert('Invalid file format.');}};
+  r.readAsText(file);e.target.value='';
+}
+
+fetchData();
+</script>
+</body>
+</html>

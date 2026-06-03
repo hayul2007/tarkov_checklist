@@ -1,408 +1,248 @@
 {
-  "_note": "tarkov.dev API에 없는 퀘스트 보완용. Boreas는 추정 데이터 (_estimated:true) — 위키 업데이트 시 수정 필요.",
-  "_updated": "2026-06-01",
+  "_note": "BTR Driver questline - 공식 영문 위키 기준. 앱은 이름 정규화 중복 제거하므로 API에 이미 있으면 자동 스킵됨.",
+  "_updated": "2026-06-02",
+  "_source": "escapefromtarkov.fandom.com",
   "quests": [
     {
-      "id": "custom_boreas_01",
-      "name": "Boreas (Chapter Start)",
-      "kappaRequired": false,
-      "minPlayerLevel": 1,
-      "trader": {
-        "id": "mechanic",
-        "name": "Mechanic"
-      },
-      "map": null,
-      "experience": 8000,
-      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Boreas",
+      "id": "btr_shipping_delay_2", "name": "Shipping Delay - Part 2", "kappaRequired": false, "minPlayerLevel": 20,
+      "trader": {"id": "btr-driver", "name": "BTR Driver"}, "map": {"id": "woods", "name": "Woods"},
+      "experience": 11500, "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Shipping_Delay_-_Part_2",
       "taskRequirements": [],
       "objectives": [
-        {
-          "type": "findItem",
-          "description": "Obtain a Paradigm Shipping poster (Ground Zero / any map / Flea Market) OR access the radio at Intelligence Center Level 3"
-        },
-        {
-          "type": "visit",
-          "description": "Speak to Mechanic about the distress signal"
-        }
+        {"type": "visit", "description": "Woods 차고지(depot)의 창고(warehouses) 정찰"},
+        {"type": "visit", "description": "Woods 차고지의 사무실(office) 정찰"},
+        {"type": "visit", "description": "Woods 차고지의 차고(garages) 정찰"},
+        {"type": "task", "description": "A Helping Hand 완료"}
       ],
-      "finishRewards": {
-        "traderStanding": [],
-        "items": [],
-        "offerUnlock": [],
-        "skillLevelReward": []
-      },
-      "_chapter": "Boreas",
-      "_note": "Story chapter — start by finding poster on any map or Intel Center Lv3 radio",
-      "_estimated": true,
-      "_warning": "이 퀘스트는 공식 위키에 아직 등재되지 않은 추정 데이터입니다. 실제 내용과 다를 수 있습니다."
+      "finishRewards": {"traderStanding": [], "items": [], "offerUnlock": [], "skillLevelReward": []},
+      "_rewardText": "11,500 EXP · BTR Rep +0.01 · 84,000₽ · RSP-30 reactive signal cartridge(Blue) ×1 · Tetriz portable game console ×1",
+      "_chapter": "BTR Driver", "_estimated": true
     },
     {
-      "id": "custom_boreas_02",
-      "name": "Boreas — Fix the Equipment",
-      "kappaRequired": false,
-      "minPlayerLevel": 1,
-      "trader": {
-        "id": "mechanic",
-        "name": "Mechanic"
-      },
-      "map": {
-        "id": "woods",
-        "name": "Woods"
-      },
-      "experience": 10000,
-      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Boreas",
-      "taskRequirements": [
-        {
-          "task": {
-            "id": "custom_boreas_01",
-            "name": "Boreas (Chapter Start)"
-          },
-          "status": [
-            "complete"
-          ]
-        }
-      ],
+      "id": "btr_hot_wheels", "name": "Hot Wheels", "kappaRequired": false, "minPlayerLevel": 20,
+      "trader": {"id": "btr-driver", "name": "BTR Driver"}, "map": {"id": "reserve", "name": "Reserve"},
+      "experience": 24300, "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Hot_Wheels",
+      "taskRequirements": [{"task": {"id": "btr_shipping_delay_2", "name": "Shipping Delay - Part 2"}, "status": ["complete"]}],
       "objectives": [
-        {
-          "type": "visit",
-          "description": "Go to the Scav Bunker area in Woods (north of Sawmill)"
-        },
-        {
-          "type": "use",
-          "description": "Repair the equipment at the cellular tower using a Toolset"
-        }
+        {"type": "mark", "description": "여분 BTR 바퀴(spare BTR wheels)를 MS2000 Marker로 표시"},
+        {"type": "visit", "description": "(선택) 메인 목표를 최대한 빨리 완료"}
       ],
-      "finishRewards": {
-        "traderStanding": [
-          {
-            "trader": {
-              "id": "mechanic",
-              "name": "Mechanic"
-            },
-            "standing": 0.05
-          }
-        ],
-        "items": [],
-        "offerUnlock": [],
-        "skillLevelReward": []
-      },
-      "_chapter": "Boreas",
-      "_estimated": true,
-      "_warning": "이 퀘스트는 공식 위키에 아직 등재되지 않은 추정 데이터입니다. 실제 내용과 다를 수 있습니다."
+      "finishRewards": {"traderStanding": [], "items": [], "offerUnlock": [], "skillLevelReward": []},
+      "_rewardText": "24,300 EXP · BTR Rep +0.03 · 116,000₽ · Military power filter ×1",
+      "_chapter": "BTR Driver", "_estimated": true
     },
     {
-      "id": "custom_boreas_03",
-      "name": "Boreas — Find the Directive",
-      "kappaRequired": false,
-      "minPlayerLevel": 1,
-      "trader": {
-        "id": "mechanic",
-        "name": "Mechanic"
-      },
-      "map": {
-        "id": "lighthouse",
-        "name": "Lighthouse"
-      },
-      "experience": 10000,
-      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Boreas",
-      "taskRequirements": [
-        {
-          "task": {
-            "id": "custom_boreas_02",
-            "name": "Boreas — Fix the Equipment"
-          },
-          "status": [
-            "complete"
-          ]
-        }
-      ],
+      "id": "btr_hot_wheels_again", "name": "Hot Wheels - Let's Try Again", "kappaRequired": false, "minPlayerLevel": 20,
+      "trader": {"id": "btr-driver", "name": "BTR Driver"}, "map": {"id": "reserve", "name": "Reserve"},
+      "experience": 13500, "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Hot_Wheels_-_Let%27s_Try_Again",
+      "taskRequirements": [{"task": {"id": "btr_hot_wheels", "name": "Hot Wheels"}, "status": ["complete"]}],
       "objectives": [
-        {
-          "type": "findItem",
-          "description": "Find the Paradigm Shipping Directive in the warehouse near the train extraction (north of water treatment plant) on Lighthouse"
-        },
-        {
-          "type": "extract",
-          "description": "Extract from Lighthouse with the Directive"
-        }
+        {"type": "mark", "description": "여분 BTR 바퀴(spare BTR wheels)를 MS2000 Marker로 표시"}
       ],
-      "finishRewards": {
-        "traderStanding": [],
-        "items": [],
-        "offerUnlock": [],
-        "skillLevelReward": []
-      },
-      "_chapter": "Boreas",
-      "_estimated": true,
-      "_warning": "이 퀘스트는 공식 위키에 아직 등재되지 않은 추정 데이터입니다. 실제 내용과 다를 수 있습니다."
+      "finishRewards": {"traderStanding": [], "items": [], "offerUnlock": [], "skillLevelReward": []},
+      "_rewardText": "13,500 EXP · BTR Rep +0.02 · 84,000₽ · NIXXOR lens ×3",
+      "_chapter": "BTR Driver", "_estimated": true
     },
     {
-      "id": "custom_boreas_04",
-      "name": "Boreas — Report to Traders",
-      "kappaRequired": false,
-      "minPlayerLevel": 1,
-      "trader": {
-        "id": "mechanic",
-        "name": "Mechanic"
-      },
-      "map": null,
-      "experience": 5000,
-      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Boreas",
-      "taskRequirements": [
-        {
-          "task": {
-            "id": "custom_boreas_03",
-            "name": "Boreas — Find the Directive"
-          },
-          "status": [
-            "complete"
-          ]
-        }
-      ],
+      "id": "btr_swift_retribution", "name": "Swift Retribution", "kappaRequired": false, "minPlayerLevel": 20,
+      "trader": {"id": "btr-driver", "name": "BTR Driver"}, "map": {"id": "woods", "name": "Woods"},
+      "experience": 16000, "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Swift_Retribution",
+      "taskRequirements": [{"task": {"id": "btr_hot_wheels_again", "name": "Hot Wheels - Let's Try Again"}, "status": ["complete"]}],
       "objectives": [
-        {
-          "type": "visit",
-          "description": "Speak to Mechanic about Boreas"
-        },
-        {
-          "type": "visit",
-          "description": "Speak to Prapor about the transport"
-        }
+        {"type": "shoot", "description": "Woods에서 Scav 10명 처치", "count": 10}
       ],
-      "finishRewards": {
-        "traderStanding": [],
-        "items": [],
-        "offerUnlock": [],
-        "skillLevelReward": []
-      },
-      "_chapter": "Boreas",
-      "_note": "Quest splits here — Prapor branch (depends on Falling Skies choices) + BTR Driver branch",
-      "_estimated": true,
-      "_warning": "이 퀘스트는 공식 위키에 아직 등재되지 않은 추정 데이터입니다. 실제 내용과 다를 수 있습니다."
+      "finishRewards": {"traderStanding": [], "items": [], "offerUnlock": [], "skillLevelReward": []},
+      "_rewardText": "16,000 EXP · BTR Rep +0.03 · 85,000₽ · Old house room key ×1 · Old house toilet key ×1",
+      "_chapter": "BTR Driver", "_estimated": true
     },
     {
-      "id": "custom_boreas_05a",
-      "name": "Boreas — Prapor Branch (gave case)",
-      "kappaRequired": false,
-      "minPlayerLevel": 1,
-      "trader": {
-        "id": "prapor",
-        "name": "Prapor"
-      },
-      "map": {
-        "id": "reserve",
-        "name": "Reserve"
-      },
-      "experience": 15000,
-      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Boreas",
-      "taskRequirements": [
-        {
-          "task": {
-            "id": "custom_boreas_04",
-            "name": "Boreas — Report to Traders"
-          },
-          "status": [
-            "complete"
-          ]
-        }
-      ],
+      "id": "btr_inevitable_response", "name": "Inevitable Response", "kappaRequired": false, "minPlayerLevel": 20,
+      "trader": {"id": "btr-driver", "name": "BTR Driver"}, "map": {"id": "woods", "name": "Woods / Reserve"},
+      "experience": 15500, "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Inevitable_Response",
+      "taskRequirements": [{"task": {"id": "btr_swift_retribution", "name": "Swift Retribution"}, "status": ["complete"]}],
       "objectives": [
-        {
-          "type": "findItem",
-          "description": "Find AMG-10 hydraulic fluid on Reserve (multiple spawns)"
-        },
-        {
-          "type": "handover",
-          "description": "Hand over AMG-10 hydraulic fluid to Prapor"
-        }
+        {"type": "shoot", "description": "Woods에서 Scav 5명 처치", "count": 5},
+        {"type": "transit", "description": "Woods → Reserve 트랜짓 이용"},
+        {"type": "shoot", "description": "Reserve에서 Scav 5명 처치", "count": 5}
       ],
-      "finishRewards": {
-        "traderStanding": [
-          {
-            "trader": {
-              "id": "prapor",
-              "name": "Prapor"
-            },
-            "standing": 0.05
-          }
-        ],
-        "items": [],
-        "offerUnlock": [],
-        "skillLevelReward": []
-      },
-      "_chapter": "Boreas",
-      "_note": "If you GAVE the armored case to Prapor in Falling Skies — easier route",
-      "_estimated": true,
-      "_warning": "이 퀘스트는 공식 위키에 아직 등재되지 않은 추정 데이터입니다. 실제 내용과 다를 수 있습니다."
+      "finishRewards": {"traderStanding": [], "items": [], "offerUnlock": [], "skillLevelReward": []},
+      "_rewardText": "15,500 EXP · BTR Rep +0.02 · 82,000₽",
+      "_chapter": "BTR Driver", "_estimated": true
     },
     {
-      "id": "custom_boreas_05b",
-      "name": "Boreas — Prapor Branch (kept case)",
-      "kappaRequired": false,
-      "minPlayerLevel": 1,
-      "trader": {
-        "id": "prapor",
-        "name": "Prapor"
-      },
-      "map": {
-        "id": "reserve",
-        "name": "Reserve"
-      },
-      "experience": 15000,
-      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Boreas",
-      "taskRequirements": [
-        {
-          "task": {
-            "id": "custom_boreas_04",
-            "name": "Boreas — Report to Traders"
-          },
-          "status": [
-            "complete"
-          ]
-        }
-      ],
+      "id": "btr_building_foundations", "name": "Building Foundations", "kappaRequired": false, "minPlayerLevel": 20,
+      "trader": {"id": "btr-driver", "name": "BTR Driver"}, "map": {"id": "any", "name": "Any"},
+      "experience": 14500, "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Building_Foundations",
+      "taskRequirements": [{"task": {"id": "btr_inevitable_response", "name": "Inevitable Response"}, "status": ["complete"]}],
       "objectives": [
-        {
-          "type": "findItem",
-          "description": "Find AMG-10 hydraulic fluid on Reserve"
-        },
-        {
-          "type": "findItem",
-          "description": "Find 3x Military power filters (FIR)"
-        },
-        {
-          "type": "handover",
-          "description": "Hand over items to Prapor"
-        }
+        {"type": "sell", "description": "Ragman에게 아무 아이템 50개 판매"},
+        {"type": "sell", "description": "Prapor에게 아무 아이템 50개 판매"},
+        {"type": "sell", "description": "Peacekeeper에게 아무 아이템 50개 판매"}
       ],
-      "finishRewards": {
-        "traderStanding": [
-          {
-            "trader": {
-              "id": "prapor",
-              "name": "Prapor"
-            },
-            "standing": 0.05
-          }
-        ],
-        "items": [],
-        "offerUnlock": [],
-        "skillLevelReward": []
-      },
-      "_chapter": "Boreas",
-      "_note": "If you KEPT the armored case in Falling Skies — harder route (need 3x Military power filters FIR)",
-      "_estimated": true,
-      "_warning": "이 퀘스트는 공식 위키에 아직 등재되지 않은 추정 데이터입니다. 실제 내용과 다를 수 있습니다."
+      "finishRewards": {"traderStanding": [], "items": [], "offerUnlock": [], "skillLevelReward": []},
+      "_rewardText": "14,500 EXP · BTR Rep +0.01 · 126,000₽ · Bottle of Fierce Hatchling moonshine ×1",
+      "_chapter": "BTR Driver", "_estimated": true
     },
     {
-      "id": "custom_boreas_06",
-      "name": "Boreas — BTR Driver Branch",
-      "kappaRequired": false,
-      "minPlayerLevel": 1,
-      "trader": {
-        "id": "btr-driver",
-        "name": "BTR Driver"
-      },
-      "map": {
-        "id": "streets of tarkov",
-        "name": "Streets of Tarkov"
-      },
-      "experience": 12000,
-      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Boreas",
-      "taskRequirements": [
-        {
-          "task": {
-            "id": "custom_boreas_04",
-            "name": "Boreas — Report to Traders"
-          },
-          "status": [
-            "complete"
-          ]
-        }
-      ],
+      "id": "btr_natural_exchange", "name": "Natural Exchange", "kappaRequired": false, "minPlayerLevel": 20,
+      "trader": {"id": "btr-driver", "name": "BTR Driver"}, "map": {"id": "shoreline", "name": "Shoreline"},
+      "experience": 26800, "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Natural_Exchange",
+      "taskRequirements": [{"task": {"id": "btr_building_foundations", "name": "Building Foundations"}, "status": ["complete"]}],
       "objectives": [
-        {
-          "type": "visit",
-          "description": "Speak to BTR Driver about transport to Icebreaker"
-        },
-        {
-          "type": "visit",
-          "description": "Reach the BTR Driver checkpoint on Streets of Tarkov"
-        }
+        {"type": "visit", "description": "Shoreline 밀수꾼 기지에 첫 번째 metal fuel tank 보관"},
+        {"type": "visit", "description": "Shoreline 밀수꾼 기지에 두 번째 metal fuel tank 보관"}
       ],
-      "finishRewards": {
-        "traderStanding": [],
-        "items": [],
-        "offerUnlock": [],
-        "skillLevelReward": []
-      },
-      "_chapter": "Boreas",
-      "_estimated": true,
-      "_warning": "이 퀘스트는 공식 위키에 아직 등재되지 않은 추정 데이터입니다. 실제 내용과 다를 수 있습니다."
+      "finishRewards": {"traderStanding": [], "items": [], "offerUnlock": [], "skillLevelReward": []},
+      "_rewardText": "26,800 EXP · BTR Rep +0.03 · 96,000₽ · Graphics card ×1",
+      "_chapter": "BTR Driver", "_estimated": true
     },
     {
-      "id": "custom_boreas_07",
-      "name": "Boreas — Board the Icebreaker",
-      "kappaRequired": false,
-      "minPlayerLevel": 1,
-      "trader": {
-        "id": "prapor",
-        "name": "Prapor"
-      },
-      "map": {
-        "id": "shoreline",
-        "name": "Shoreline"
-      },
-      "experience": 20000,
-      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Boreas",
-      "taskRequirements": [
-        {
-          "task": {
-            "id": "custom_boreas_05a",
-            "name": "Boreas — Prapor Branch (gave case)"
-          },
-          "status": [
-            "complete"
-          ]
-        },
-        {
-          "task": {
-            "id": "custom_boreas_06",
-            "name": "Boreas — BTR Driver Branch"
-          },
-          "status": [
-            "complete"
-          ]
-        }
-      ],
+      "id": "btr_ask_for_directions", "name": "Ask for Directions", "kappaRequired": false, "minPlayerLevel": 20,
+      "trader": {"id": "btr-driver", "name": "BTR Driver"}, "map": {"id": "lighthouse", "name": "Lighthouse"},
+      "experience": 13200, "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Ask_for_Directions",
+      "taskRequirements": [{"task": {"id": "btr_natural_exchange", "name": "Natural Exchange"}, "status": ["complete"]}],
       "objectives": [
-        {
-          "type": "findItem",
-          "description": "Bring 400,000 Roubles and 2,500 Euros"
-        },
-        {
-          "type": "findItem",
-          "description": "Bring a Handheld Green Flare (RSP-30)"
-        },
-        {
-          "type": "visit",
-          "description": "Go to the Shoreline pier (Lighthouse extract direction)"
-        },
-        {
-          "type": "extract",
-          "description": "Board and extract from the Icebreaker via Shoreline pier"
-        }
+        {"type": "mark", "description": "Lighthouse 절벽길 1번 구간을 MS2000 Marker로 표시"},
+        {"type": "mark", "description": "Lighthouse 절벽길 2번 구간 표시"},
+        {"type": "mark", "description": "Lighthouse 절벽길 3번 구간 표시"},
+        {"type": "mark", "description": "Lighthouse 절벽길 4번 구간 표시"}
       ],
-      "finishRewards": {
-        "traderStanding": [],
-        "items": [],
-        "offerUnlock": [],
-        "skillLevelReward": []
-      },
-      "_chapter": "Boreas",
-      "_note": "Final step — unlocks Icebreaker map access",
-      "_estimated": true,
-      "_warning": "이 퀘스트는 공식 위키에 아직 등재되지 않은 추정 데이터입니다. 실제 내용과 다를 수 있습니다."
+      "finishRewards": {"traderStanding": [], "items": [], "offerUnlock": [], "skillLevelReward": []},
+      "_rewardText": "13,200 EXP · BTR Rep +0.02 · 85,000₽ · GreenBat lithium battery ×2",
+      "_chapter": "BTR Driver", "_estimated": true
+    },
+    {
+      "id": "btr_battery_change", "name": "Battery Change", "kappaRequired": false, "minPlayerLevel": 20,
+      "trader": {"id": "btr-driver", "name": "BTR Driver"}, "map": {"id": "any", "name": "Any"},
+      "experience": 58700, "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Battery_Change",
+      "taskRequirements": [{"task": {"id": "btr_ask_for_directions", "name": "Ask for Directions"}, "status": ["complete"]}],
+      "objectives": [
+        {"type": "findItem", "description": "6-STEN-140-M military battery 획득"},
+        {"type": "giveItem", "description": "6-STEN-140-M military battery 전달"}
+      ],
+      "finishRewards": {"traderStanding": [], "items": [], "offerUnlock": [], "skillLevelReward": []},
+      "_rewardText": "58,700 EXP · BTR Rep +0.03 · 284,000₽ · Body armor repair kit ×1",
+      "_chapter": "BTR Driver", "_estimated": true
+    },
+    {
+      "id": "btr_protect_the_sky", "name": "Protect the Sky", "kappaRequired": false, "minPlayerLevel": 20,
+      "trader": {"id": "btr-driver", "name": "BTR Driver"}, "map": {"id": "woods", "name": "Woods"},
+      "experience": 25400, "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Protect_the_Sky",
+      "taskRequirements": [{"task": {"id": "btr_battery_change", "name": "Battery Change"}, "status": ["complete"]}],
+      "objectives": [
+        {"type": "findItem", "description": "Woods 지정 장소에서 패키지 회수"},
+        {"type": "giveItem", "description": "패키지 전달"}
+      ],
+      "finishRewards": {"traderStanding": [], "items": [], "offerUnlock": [], "skillLevelReward": []},
+      "_rewardText": "25,400 EXP · BTR Rep +0.02 · 96,000₽ · .300 Blackout CBJ ammo pack(50발) ×4 · Mechanic LL4 Aklys Defense Velociraptor .300 BLK 소총 구매 해금",
+      "_chapter": "BTR Driver", "_estimated": true
+    },
+    {
+      "id": "btr_discombobulate", "name": "Discombobulate", "kappaRequired": false, "minPlayerLevel": 20,
+      "trader": {"id": "btr-driver", "name": "BTR Driver"}, "map": {"id": "woods", "name": "Woods"},
+      "experience": 23400, "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Discombobulate",
+      "taskRequirements": [{"task": {"id": "btr_protect_the_sky", "name": "Protect the Sky"}, "status": ["complete"]}],
+      "objectives": [
+        {"type": "visit", "description": "Woods 1번 RPG 탄약 상자에 VOG-25 Khattabka 수류탄 보관"},
+        {"type": "visit", "description": "Woods 2번 RPG 탄약 상자에 VOG-25 Khattabka 수류탄 보관"},
+        {"type": "visit", "description": "Woods 3번 RPG 탄약 상자에 VOG-25 Khattabka 수류탄 보관"}
+      ],
+      "finishRewards": {"traderStanding": [], "items": [], "offerUnlock": [], "skillLevelReward": []},
+      "_rewardText": "23,400 EXP · BTR Rep +0.03 · 175,000₽ · Military flash drive ×3",
+      "_chapter": "BTR Driver", "_estimated": true
+    },
+    {
+      "id": "btr_price_of_independence", "name": "The Price of Independence", "kappaRequired": false, "minPlayerLevel": 20,
+      "trader": {"id": "btr-driver", "name": "BTR Driver"}, "map": {"id": "any", "name": "Customs/Reserve/Woods/Lighthouse"},
+      "experience": 85400, "wikiLink": "https://escapefromtarkov.fandom.com/wiki/The_Price_of_Independence",
+      "taskRequirements": [{"task": {"id": "btr_discombobulate", "name": "Discombobulate"}, "status": ["complete"]}],
+      "objectives": [
+        {"type": "findItem", "description": "Customs에서 협박 편지(incriminating letter) 획득"},
+        {"type": "transit", "description": "Customs → Reserve 트랜짓 이용"},
+        {"type": "visit", "description": "Reserve 군 본부(military HQ) 3층에 편지 보관"},
+        {"type": "transit", "description": "Reserve → Woods 트랜짓 이용"},
+        {"type": "shoot", "description": "Woods에서 타겟 3명 처치", "count": 3},
+        {"type": "transit", "description": "Woods → Lighthouse 트랜짓 이용"},
+        {"type": "visit", "description": "Lighthouse 기차역 창고에서 노란 신호탄 발사"},
+        {"type": "visit", "description": "Lighthouse 부두(pier)에서 노란 신호탄 발사"},
+        {"type": "extract", "description": "Lighthouse에서 생존 탈출"},
+        {"type": "shoot", "description": "다른 목표 수행 중 Scav 10명 처치", "count": 10}
+      ],
+      "finishRewards": {"traderStanding": [], "items": [], "offerUnlock": [], "skillLevelReward": []},
+      "_rewardText": "85,400 EXP · BTR Rep +0.5 · 300,000₽ · Mechanic LL2 RSP-30(Blue) 바터 해금 · Mechanic LL3 Graphics card 바터 해금 · 업적 All-Wheel Drive",
+      "_chapter": "BTR Driver", "_estimated": true
+    },
+    {
+      "id": "btr_sensory_analysis_2", "name": "Sensory Analysis - Part 2", "kappaRequired": false, "minPlayerLevel": 20,
+      "trader": {"id": "btr-driver", "name": "BTR Driver"}, "map": {"id": "any", "name": "Any"},
+      "experience": 6800, "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Sensory_Analysis_-_Part_2",
+      "taskRequirements": [],
+      "objectives": [
+        {"type": "findItem", "description": "Bottle of Fierce Hatchling moonshine 획득"},
+        {"type": "giveItem", "description": "Bottle of Fierce Hatchling moonshine 전달"}
+      ],
+      "finishRewards": {"traderStanding": [], "items": [], "offerUnlock": [], "skillLevelReward": []},
+      "_rewardText": "6,800 EXP · BTR Rep +0.01 · 32,000₽",
+      "_chapter": "BTR Driver", "_estimated": true
+    },
+    {
+      "id": "btr_stick_to_it", "name": "Stick to It", "kappaRequired": false, "minPlayerLevel": 20,
+      "trader": {"id": "btr-driver", "name": "BTR Driver"}, "map": {"id": "any", "name": "Any / Icebreaker"},
+      "experience": 25000, "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Stick_to_It",
+      "taskRequirements": [],
+      "objectives": [
+        {"type": "shoot", "description": "Rogue 30명 처치", "count": 30}
+      ],
+      "finishRewards": {"traderStanding": [], "items": [], "offerUnlock": [], "skillLevelReward": []},
+      "_rewardText": "25,000 EXP · 100,000₽ · Water filter ×3",
+      "_chapter": "BTR Driver (Icebreaker)", "_estimated": true
+    },
+    {
+      "id": "btr_saving_private_roman", "name": "Saving Private Roman", "kappaRequired": false, "minPlayerLevel": 20,
+      "trader": {"id": "btr-driver", "name": "BTR Driver"}, "map": {"id": "any", "name": "Woods / Lighthouse"},
+      "experience": 42000, "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Saving_Private_Roman",
+      "taskRequirements": [],
+      "objectives": [
+        {"type": "mark", "description": "Woods에서 Lighthouse행 트랜짓을 MS2000 Marker로 표시"},
+        {"type": "transit", "description": "Woods → Lighthouse 트랜짓 이용"},
+        {"type": "mark", "description": "Lighthouse에서 Woods행 트랜짓을 MS2000 Marker로 표시"}
+      ],
+      "finishRewards": {"traderStanding": [], "items": [], "offerUnlock": [], "skillLevelReward": []},
+      "_rewardText": "42,000 EXP",
+      "_chapter": "BTR Driver", "_estimated": true
+    },
+    {
+      "id": "btr_a_bitter_victory", "name": "A Bitter Victory", "kappaRequired": false, "minPlayerLevel": 20,
+      "trader": {"id": "btr-driver", "name": "BTR Driver"}, "map": {"id": "any", "name": "Any"},
+      "experience": 30000, "wikiLink": "https://escapefromtarkov.fandom.com/wiki/A_Bitter_Victory",
+      "taskRequirements": [],
+      "objectives": [
+        {"type": "giveItem", "description": "BTR Driver에게 Bottle of Fierce Hatchling moonshine 2개 전달"},
+        {"type": "findItem", "description": "(선택) Bottle of Fierce Hatchling moonshine 2개 획득"},
+        {"type": "giveItem", "description": "BTR Driver에게 Rye crouton 4개 전달"},
+        {"type": "findItem", "description": "(선택) Rye crouton 4개 획득"},
+        {"type": "giveItem", "description": "BTR Driver에게 Bottle of Tarkovskaya vodka 4개 전달"},
+        {"type": "findItem", "description": "(선택) Bottle of Tarkovskaya vodka 4개 획득"},
+        {"type": "giveItem", "description": "BTR Driver에게 Salty Dog beef sausage 2개 전달"},
+        {"type": "findItem", "description": "(선택) Salty Dog beef sausage 2개 획득"},
+        {"type": "visit", "description": "BTR Driver와 대화"},
+        {"type": "extract", "description": "생존 탈출"}
+      ],
+      "finishRewards": {"traderStanding": [], "items": [], "offerUnlock": [], "skillLevelReward": []},
+      "_rewardText": "30,000 EXP",
+      "_chapter": "BTR Driver", "_estimated": true
+    },
+    {
+      "id": "btr_hangover", "name": "Hangover", "kappaRequired": false, "minPlayerLevel": 20,
+      "trader": {"id": "btr-driver", "name": "BTR Driver"}, "map": {"id": "any", "name": "Any"},
+      "experience": 60000, "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Hangover",
+      "taskRequirements": [],
+      "objectives": [
+        {"type": "visit", "description": "BTR Driver에게 돌아가 밀수꾼들과의 협상에 대해 묻기"}
+      ],
+      "finishRewards": {"traderStanding": [], "items": [], "offerUnlock": [], "skillLevelReward": []},
+      "_rewardText": "60,000 EXP · 로케이션 선택에서 Icebreaker(쇄빙선) 해금",
+      "_chapter": "BTR Driver", "_estimated": true
     }
   ]
 }
