@@ -835,12 +835,23 @@ async function fetchData(){
           startRewards: q.startRewards||{traderStanding:[],items:[]},
           objectives: (q.objectives||[]).map((o,i)=>({...o, id:'custom_obj_'+q.id+'_'+i, zones:[]})),
         }));
-        // 중복 제거: API 퀘스트 이름과 조금이라도 겹치면 custom 제외 (API 우선)
-        const norm = s => (s||'').toLowerCase().replace(/[^a-z0-9]/g,'').replace(/part\d*/g,'').replace(/\d+$/,'');
-        const existingNames = new Set(quests.map(q=>norm(q.name)));
-        const newQ = customQ.filter(q=>!existingNames.has(norm(q.name)));
-        quests = [...quests, ...newQ];
-        if(newQ.length) console.log(`Custom quests loaded: ${newQ.length} quests added`);
+        const norm = s => (s||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+        // BTR 드라이버 custom 퀘스트: API 퀘스트를 덮어쓰기 (custom 우선)
+        const btrCustom = customQ.filter(q => tKey(q.trader) === 'btrdriver');
+        const otherCustom = customQ.filter(q => tKey(q.trader) !== 'btrdriver');
+        // BTR API 퀘스트 전부 제거 후 custom으로 교체
+        const btrCustomNames = new Set(btrCustom.map(q => norm(q.name)));
+        quests = quests.filter(q => {
+          if(tKey(q.trader) !== 'btrdriver') return true;
+          // API BTR 퀘스트 중 custom에 있는 이름은 제거
+          return !btrCustomNames.has(norm(q.name));
+        });
+        // 나머지 custom: 중복 없는 것만 추가 (API 우선)
+        const existingNames = new Set(quests.map(q => norm(q.name)));
+        const newOther = otherCustom.filter(q => !existingNames.has(norm(q.name)));
+        quests = [...quests, ...btrCustom, ...newOther];
+        if(btrCustom.length) console.log(`BTR Driver quests overridden: ${btrCustom.length} quests`);
+        if(newOther.length) console.log(`Custom quests added: ${newOther.length} quests`);
       }
     } catch(e){ console.log('custom-quests.json not found or error:', e.message); }
 
