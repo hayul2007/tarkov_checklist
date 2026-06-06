@@ -399,9 +399,9 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 .map-body{display:flex;gap:12px;flex:1;overflow:hidden;min-height:0}
 .map-list-col{width:240px;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden;gap:6px}
 .map-viewer-col{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;gap:8px}
+.map-viewer-col.shrunk{flex:0 0 380px;min-width:0}
 .map-detail-col{width:310px;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden;transition:width .25s ease}
-.map-detail-col.expanded{width:540px}
-.map-viewer-col.shrunk{flex:0 1 auto;min-width:0}
+.map-detail-col.expanded{flex:1 1 auto;width:auto;min-width:0}
 
 /* Map card grid */
 .mc2{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:all .15s;margin-bottom:4px}
@@ -470,7 +470,7 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 
 /* Quest detail panel */
 .qd-panel{flex:1;overflow-y:auto;background:var(--bg2);border:1px solid var(--border);border-radius:8px;display:flex;flex-direction:column}
-.qd-wiki-frame{flex:1;width:100%;border:none;background:var(--bg0);min-height:300px;border-top:1px solid var(--border)}
+.qd-wiki-frame{flex:1;width:100%;border:none;background:var(--bg0);min-height:600px;border-top:1px solid var(--border)}
 .qd-progress-row{display:flex;align-items:center;gap:6px;padding:4px 0}
 .qd-progress-input{width:54px;font-size:12px;padding:2px 6px;text-align:center;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;color:var(--t1)}
 .qd-progress-bar{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
@@ -3270,7 +3270,7 @@ function renderMaps() {
       const isSel=selQuest===q.id;
       const isHL=mapHighlight===q.id;
       h+=`<div class="mq-row ${isDone?'done':''} ${isSel?'sel':''} ${isHL?'map-hl':''}"
-        onclick="selQuest='${q.id}';mapHighlight=mapHighlight==='${q.id}'?null:'${q.id}';renderPage()"
+        onclick="(selQuest==='${q.id}'?(selQuest=null,mapHighlight=null):(selQuest='${q.id}',mapHighlight='${q.id}'));renderPage()"
         style="${isHL?'border-color:#f0c040;background:#1a1500':''}${isSel&&!isHL&&accentColor?'border-color:'+accentColor+';background:#0a1020':''}">
         <div class="mq-row-trader">${tm.i}</div>
         <div class="mq-row-name-wrap">
@@ -3361,6 +3361,7 @@ function renderQuestDetail(questId) {
           </div>
         </div>
         <button class="qd-bk-btn ${isBk?'on':''}" onclick="toggleBk('${q.id}')" title="Bookmark">★</button>
+        <button class="qd-bk-btn" onclick="selQuest=null;mapHighlight=null;renderPage()" title="닫기" style="margin-left:4px">✕</button>
       </div>
 
       ${state==='locked'?`<div class="qd-lock-reason">🔒 ${lockReason(q)}</div>`:''}
