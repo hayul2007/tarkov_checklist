@@ -262,6 +262,12 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 
 /* ── ITEM SEARCH TAB ── */
 .item-search-wrap{display:flex;gap:8px;margin-bottom:16px}
+.item-filter-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+.item-filter-btn{font-size:11px;padding:4px 10px;border-radius:14px;background:var(--bg3);border:1px solid var(--border);color:var(--t2);cursor:pointer;white-space:nowrap;transition:all .12s}
+.item-filter-btn:hover{border-color:var(--accent);color:var(--t1)}
+.item-filter-btn.on{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}
+.item-filter-btn.sub{font-size:10px;padding:3px 9px;opacity:.85;background:var(--bg2)}
+.item-filter-btn.sub.on{opacity:1}
 .item-search-wrap input[type=text]{flex:1;font-size:14px;padding:8px 12px}
 .item-search-btn{padding:8px 18px;background:var(--accent2);border-color:var(--accent);color:#000;font-weight:600;font-size:13px}
 .item-search-btn:hover{background:var(--accent)}
@@ -598,7 +604,7 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
       </div>
       <div class="nav-item" id="nav-collector" onclick="switchPage('collector')">
         <div class="ndot"></div><span style="flex:1">Collector Items</span>
-        <div class="nbadge" id="nb-collector">0/43</div>
+        <div class="nbadge" id="nb-collector">0/41</div>
       </div>
       <div class="nav-item" id="nav-shopping" onclick="switchPage('shopping')">
         <div class="ndot"></div><span style="flex:1">Shopping List</span>
@@ -1736,36 +1742,34 @@ const COLLECTOR_ITEMS=[
   {name:"Antique axe",                                   id:"5bc9c1e2d4351e00367fbcf0"},
   {name:"Armband (Evasion)",                             id:"60b0f988c4449e4cb624c1da"},
   {name:"Axel parrot figurine",                          id:"62a091170b9d3c46de5b6cf2"},
+  {name:"BEAR Buddy plush toy",                          id:"62a08f4c4f842e1bd12d9d62"},
   {name:"Baddie's red beard",                            id:"62a09dd4621468534a797ac7"},
   {name:"BakeEzy cook book",                             id:"62a09e73af34e73a266d932a"},
   {name:"Battered antique book",                         id:"5bc9c049d4351e44f824d360"},
-  {name:"BEAR Buddy plush toy",                          id:"62a08f4c4f842e1bd12d9d62"},
   {name:"Can of Dr. Lupo's coffee beans",                id:"5e54f6af86f7742199090bf3"},
   {name:"Can of RatCola soda",                           id:"60b0f93284c20f0feb453da7"},
-  {name:"Can of sprats",                                 id:"5bc9c29cd4351e003562b8a3"},
   {name:"Deadlyslob's beard oil",                        id:"5bc9b9ecd4351e3bac122519"},
+  {name:"DesmondPilak CD", id:"", img:"data:image/webp;base64,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"},
   {name:"Domontovich ushanka hat",                       id:"6937f02dfd6488bb27024839"},
   {name:"DRD body armor",                                id:"62a09d79de7ac81993580530"},
+  {name:"Dunduk floppy disk", id:"", img:"data:image/webp;base64,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"},
   {name:"Fake mustache",                                 id:"5bd073a586f7747e6f135799"},
-  {name:"#FireKlean gun lube",                           id:"5bc9b355d4351e6d1509862a"},
+  {name:"FireKlean gun lube",                            id:"5bc9b355d4351e6d1509862a"},
   {name:"Gingy keychain",                                id:"62a09d3bcf4a99369e262447"},
   {name:"Glorious E lightweight armored mask",           id:"62a09e08de7ac81993580532"},
   {name:"Golden 1GPhone smartphone",                     id:"5bc9b720d4351e450201234b"},
   {name:"Golden egg",                                    id:"62a09cfe4f842e1bd12da3e4"},
-  {name:"Golden rooster figurine",                       id:"5bc9bc53d4351e00367fbcee"},
   {name:"Inseq gas pipe wrench",                         id:"66b37f114410565a8f6789e2"},
-  {name:"Jar of DevilDog mayo",                          id:"5bc9b156d4351e00367fbce9"},
   {name:"JohnB Liquid DNB glasses",                      id:"62a09e410b9d3c46de5b6e78"},
-  {name:"Kotton beanie",                                 id:"5bd073c986f7747f627e796c"},
-  {name:"Loot Lord plushie",                             id:"60b0f7057897d47c5b04ab94"},
   {name:"LVNDMARK's rat poison",                         id:"60b0f561c4449e4cb624c1d7"},
+  {name:"Loot Lord plushie",                             id:"60b0f7057897d47c5b04ab94"},
   {name:"Mazoni golden dumbbell",                        id:"6937edb912d456a817083e82"},
   {name:"Missam forklift key",                           id:"62a09ec84f842e1bd12da3f2"},
   {name:"Nut Sack balaclava",                            id:"69398e94ca94fd2877039504"},
-  {name:"Old firesteel",                                 id:"5bc9c377d4351e3bac12251b"},
   {name:"Pestily plague mask",                           id:"5e54f79686f7744022011103"},
   {name:"Press pass (issued for NoiceGuy)",              id:"62a09cb7a04c0c5c6e0a84f8"},
   {name:"Raven figurine",                                id:"5e54f62086f774219b0f1937"},
+  {name:"SheefGG piggy bank", id:"", img:"data:image/webp;base64,UklGRkYPAABXRUJQVlA4IDoPAACwQACdASp/AH8APhkKhEGhBPJFWAQAYSxtV6CXL2pn+TNukKXVOGo82HeawXp2rP/8P+Gs8YftvOQtD+L/GfK/l37SfzP3VfMv0eeYX+on+X6r/7Zeoz9ePVP/237Fe9X0AP5l/Yetv9A79ovTY/aj4Uv3K/cX4C/12ufXhn4qvKXsf+7nRNiI/Hvs39//tH7R/ml0c+qj1CPx7+Wf4T8of6/+4HqweIoAf88/rP+G/Jn++ftv7g39V6dfYz0N/zn/D/lr60HkC+SewJ/Lv7j/t/zD/0Hx+/6nmh+hv+d/n/yE+wX+Tf0z/Qfmh/e///4vP239m/9qi7vRvBfQpo8sfrr1ZIeUgQRRVe8eIrNY7WbWKfp30dQHVNt8qzddKJ/wCqwSQ3rN3sBCFI6oZ78XNbPRkNXcJFsArSSGGqvUscBCl/jPyAEyVPmvQEAqqEXsVfv2F+QWtvbviAZZ8uuOV8IAmpZ4YVF6izUihUSZmzyiiD8BemuM8zeb+S6metyKkp5Myqg56VdPOMIo1Mg4XzQBEC7nT8uad95zAAjZXMB0G3Bc8gTuf2wyHoNdWQpRBUVqKd+8pCFIzN8Mwq+FdP0Z2EqRzTnpgLPf2LP6cM+1e6p+9gMxHYENURz+iIRmBX8ykZ3Yt+igVcAKeuKzETcVKMl8W348dCRfMFhQdnLhdZwTo0WIwxi3dFR8AP7//hLMajD7dt2+bBU9YjquMzV7kw74TOaDTCTdVaKLh7KpdJVLNEQ24d+PCh0phLqKbn0xrC/kfbDDdfeZdS+HTpBomSqDFfIfpb9pcjHm8FeLUIT8IsPL1yENdAIkwU/eKBgqWiAZDjBggQI/Lf2bQvRuUggYKa+8BLZ9JRGrPGSDMNvp38pE9sZgp2XHqfG4dDJ/aQjtvjUc/PPWQS0VVbKJDu3SDet+kdqslnZwFh3L8t9gm9BCO6rueft5OI5wKhMMlyZ0tCWRV6YuJrn+h/5dw5qZe4Qg2MEPxA/Cn/DXCGfv4HVKj6eHkfk3oCh9E5KWn5CuOLk2yFrVHm1tpcl1YQkPhjz/3+jhZA7tL/16272wX7a2R8+GfU7giBaeZCC/Nw8rwewluLsYYZKCl80OCmY05/SZp3A31Kc6HnhLKvA9JS/B0ekdZHCB4595OK3x9W9FXTDp9h56qbZf7sDIgUETd8Sob8q4PkBD19YsTJ8ak2ggZcZC0duS3r7ti5UC5I1c29FTZYUmVzrW7EN+hk+HsqCIdj+ONejMLsdVsg1JCk0hVfRk3/tkOCZNDi7J0V7beu1RWTY7oM/NS0t3qoUX95PV6cz9t9VKysVRYIXMyB/DOxPtOFl/67bg2YnM6ix1iTB4iSa4/mKglGvzV/SQ55HAKp8QZb9s9Nmz2H+mvPRiu+ndL3/n76TVfq/etuWvqjclf/NI/nCOdiKP0zyFBd9EG+h4HhbRlOkUuaoOmmRXkjwu5HR4pc/8BvCQ84ixzuGp5GBrli2z+0B5B3B8vAIHDqJtDK5p9YC5yyQEtkTJq50WA5v5Lo4fUWuuGXRo9B1SPx25SVrPrMNi+xRZybTYO7sbhjO+fGoYst+KdQE/WxWowEcTSFaB+ODUTsGM3gAbM7IHEwx9rhGbSr+RrkjZbwfCBqmfbRI8J7gR9lLk2VQFXyFaUJjXhLz+NMO9h3SXW0W4KCWKg2uQGGnmjAcFwAeXx52/c04/Az42PWac2L8CtxLHFm9Oj+KW5U4LGpdgCzID9dUPLkhsqzjn4kp6dRZUKmTAjytnfR33EBbtUd6gsZy3eu+cNGIYwoPr3RexJlUYmB98wluBMPSWO+lUbfhLxQnL2XsKFf821KnhbMigCzwq7+vp+QmbD5XHCejWC4wAcIERRGhHDiQq0407u8FONBVzcE4S87jdsJWRvwfHHtgYJC/H5rpQuobuwzbsfBEjX1Nf3+IolJEmAfWi60z6tM0u6wR3S2seeb7fk8quQ+cytGRAs9+UO7ec6kmzIZRB/c8mN+aTjLWAw6/W+MiRgvhM1//BKwkLWhaFQhSN/OA4BKui5eZqQJZUSxC4SmjLt+lJ/g8Q5C7elboxs2lHr2BZNhGNlohyWCR77dZKDIc/o5nes2Dl+8a/sVk+2VopWaV+xYNxZbg3+F/nvUkWLikeQRXXuYUtzdhZOX/BSdl5Q78Dk6a0TjXy/x1h8k5ywPI/46tm/St5Ecw6sOmGAJMTHcdZc86y551luMkV5njieBiaCiVxzyt9VnMMouesVKIBM+yu5ydO/1UaUtSnFHUhZ10Rqvuh6LrJOPSXpNxuTlKHrrbL1G6/aPX/Ara2xSVCmnmjsHtLCUvBE7E6ag/qeRcHmzWgO08vq9WGb+J05AUtyozdoZTyq6vLk67MxZQA00Ilri+mhklXs3Hd12lTabdlu6tOhUDdfCCImhryFGUf3O/5qR7g1rXc6pSHKtWcyddpAVvw3Vqu8tziLrk1Cs10yVyyttSpu+mZbfA/WNXrZ9HcR0mR31kpUlIZyyH3GeEevFt13prGmXp/qQzztvMC9R/MXFrTwvt19sAgZ6qUZ9aJ1XTdf4b+IBiQ0c2E02RBZMbew3VzJu0+jnCLM3Rqmlb4/mWcKYWUcvWd8pG6RnBz6NW+OU5VGWvJphWxnvzACTMJSsX/2zsA+YtJWhAaX4zqGh1q476jGC2cTlZ5nwAfk2IoF/90B99kHu2eBJonggLRixWnFVPXlQC1/LOeU9/IqPBBoLvXe07pTlVrMZBWFuGlMZ69wK3kv+JZf+Q2iaHMjsIQxS9xNMsS/2IVea2JMjg0C6wKjnmkCwqqkAHhDm2YxLkmJAQ5NlaOfHOvGBQ/kokFW5m0MkoORTUmv1f9mLunVuWPkUZmhCFYAm1vtNP9VYrgF4IDrLnh5N1xzrjnD1WbekEdgNtZhlWSwG2RIz+BOLDcIk0mEpqH+UwwCcVhgcbzgG+ktykkwsy4YWx1R4YURirSqslhv0BdGwb4m5acYEKlQJHjYEm3ewiUr/piwD0KjQDct5SZebdbSJeVgDCgUJbGHhqUL9zjr6dE4AXpqupr5DikhahStetMBL94ja91wx7368nc04+WJhA2zhyqxhMx7zN0TvV5Anb36WchBmtK2UMUj4de5x1NrV6AzoWP1mDCiM/z0ugjyyZ3Ty3cmNhANSM9kfhtfwf48vmRsfT3IG3ZPUWnmCoBKGlN6ow6rHZ7cXBcdg6p/+kSWD/QEoD0xXBh7ouoRfHCmJqq7O57Gg/EDAvk5LNTVtfuxDydxOlXiUN0eah1yS7n46ZthZgIq+d+kkH7VuUToLbf6j2+QPh+WmoYjizvPNu8lYaSP7as/D5qUZjO4M0569q6h9Arlye/jtWRO6DUYi+6Tb3JwP5M2nkTT5By9L9g2fU6D7yOnCpYsByg79Jtc7wEQfdjSSnNrLJ+MnIUHu5EEDpmNYtgDwJgVWyE7mv/Faf0JWCtXlEnJ0rfeVsI3Q3FaL6GQZpWNfWaWV78s7B4rwdXhn5kd/yycjElr6APnjXIvIK8Gz3H3vIDa67376o2ZBwMB8JQ3+d1AlNOZcCftQbFKH8CeXne5uakpzxOvTrzxA5vXxTWeSmcWrR45bk8ncABFLWgMg22v9rnU+WfBsrU0VoM2cqAUCQ8qzat/2E4llfHshPI8HpylI6P5AqkeWLrtWY0NOc+9HgI6xPqlTxST+SSUV6Pow/HUs9HFAzR3Es9Bdzrzow42OxB+ar5Csf+0RhfgpJUOOBdv8xQG79dKiymLXA9fbrLZNSxipow50wEGRUoE68zeJDWsOq5LV/dWnxaekMMkfblCvOPFLYvox/XtsDlwgejzjrhjbhSGMg+l/ynfIWpGaPHon/BY28q1QKF1/M4RNtDVrcWbGCk6t6k3RYmCxJjeo17z6J+b9MA+GViwktdGAXHWg7QQTk5NzYGwqYpsqp6rEZDayt03gCI1U2GNq+rcmgUSrIeb6+CtWf76yhP6ZogOS+X3Sfn+1Xq4413fSn9wlxnvmC5dy2m976Yg2Mzk6uw1iTdfiJ/5bKx1K+xPJtTn7CN+8J481DDztXOJ7Rs24Zih/c7GRrJOFokD5e1KFjDYj2F7qtbygoIciZ19L4Ut/2yhnNJgqpqatG6J1s8S0l4YqL9Tdh0vh2v9URPu5v6ua/19its6bAg0q9Gu0+D34X/AIuQtPKlMzqimMRa+np47mZ7Qu1WxXdQUI1B0uw4EBw+ns3Qn8M7ipZ8c9YX+5Z6CaRkDbuWEXhZD3jvNKc8KLvjzYlWggo+6/6xHHqwbAkhqpGrIOxRUfm10qcdljaLb27A4N/JU5lKen9oWmVO+HtrObF5nzklFM53bjYBSAd+su5ycxOYnL5iKGoy9oJQ4gYTXfPOkwf0Ek5yAI60BLYyVUwcSSCFXpoqhXit9vyhUO2hPmylEvrHMyNAdbwpwkLXt09WUqvrlnSltNZ+c1BFOa32bGWmkw3gT86oh3U1riAHfwNi/JtblXKOV7+Ka0mwofFYR+/rytnZbegYOZrfUNgezXhbFQCff9ucnHBqvicM5FJbjtnzLABRODjf0y5QFGM5L6SreYbo5zym4gYEZtY57XMFBFu6sMx3VVxMgB4mYX7NQix6MqnIOAgmR7EQSK3GKR5w1lRwQ/9Pqmr00GAya6WFoDl58/S0juleMZs2tVBPUt4plVi55o3qmVVSvTjh1e++/7iAbfCj2zTaQxdnjvgIYFabWjy54/obc+s/P6cj5Hl5vMEGemY4NbNnEmDnExwSmgOhsjXPasaEbqANboUj6Ipx0wHZIcjckv98SceoDXcgeENu/h1j5MeUJONix44zcenTf4YWZEVRB4udQvrVxY/yL2OlsdIAaVZB5UidyCfk6sVBQKwWoOz9rRDW5ReATDibcFcppDF0wsDJ9II/Y3OEymP/8cUgDCtlwqQ0+n/sO4Bilpz3J/ao5dF5B7DRzrk5o2OaUGMkTRmIL++SWlCk1tr7Aek9T+WdPILP2i1+TKpsTjNnY4d8BGrj5tt46IWMQMM/gjeVUErHKBsYI7gXdW4KTCEjVarakKn50igNoQyYFnTzpM+jBAjOyaih+Ycvjhv1PjQuYls/2sL4WRr2SDiNwerJ7acBnBSyr2EQlIPeeaiVMJtTfxDK5mCCFcuRREC4GFcWVNLekaGTcGEX+47lUAAA"},
   {name:"Shroud half-mask",                              id:"5e54f76986f7740366043752"},
   {name:"Silver Badge",                                  id:"5bc9bdb8d4351e003562b8a1"},
   {name:"Smoke balaclava",                               id:"5fd8d28367cb5e077335170f"},
@@ -2051,10 +2055,11 @@ const GQL_TASKS=`query{
   }
 }`;
 
-const GQL_ITEM=`query SearchItems($name:String!){
-  items(name:$name,limit:8){
+const GQL_ITEM=`query SearchItems($name:String,$types:[ItemType]){
+  items(name:$name,types:$types,limit:50){
     id name shortName iconLink gridImageLink inspectImageLink image512pxLink wikiLink
     avg24hPrice lastLowPrice high24hPrice low24hPrice
+    category{name normalizedName}
     buyFor{
       price currency priceRUB
       vendor{
@@ -2367,6 +2372,26 @@ async function fetchData(){
       console.log('위키 objectives/보상 보강 완료');
     }
 
+    // ── Collector 신규 아이템 ID 보강 (Collector 퀘스트 objectives에서 추출) ──
+    try {
+      const collectorQ = quests.find(q=>q.name==='Collector' || (q.normalizedName||'')==='collector');
+      if(collectorQ){
+        const nameToId = {};
+        (collectorQ.objectives||[]).forEach(o=>{
+          // TaskObjectiveItem.items[] 또는 TaskObjectiveQuestItem.questItem
+          (o.items||[]).forEach(it=>{ if(it.name) nameToId[it.name.toLowerCase()]=it.id; });
+          if(o.questItem && o.questItem.name) nameToId[o.questItem.name.toLowerCase()]=o.questItem.id;
+        });
+        COLLECTOR_ITEMS.forEach(ci=>{
+          if(!ci.id){
+            const fid = nameToId[ci.name.toLowerCase()];
+            if(fid) ci.id = fid;
+          }
+        });
+        console.log('Collector ID 보강 완료');
+      }
+    } catch(e){ console.log('Collector ID 보강 스킵:', e.message); }
+
     // 트레이더 순서 정의
     computeRep();
     document.getElementById('apiDot').className='adot ok';
@@ -2402,21 +2427,67 @@ async function fetchData(){
   }
 }
 
-async function searchItems(name){
-  if(!name.trim()||itemSearching)return;
+// 아이템 필터 카테고리
+// type: API ItemType enum으로 1차 필터 / catMatch: category.name에 포함될 키워드(클라 2차 필터)
+const ITEM_FILTERS=[
+  {key:'all',      label:'전체',         type:null},
+  {key:'valuables',label:'💎 귀중품',    type:null, catMatch:['valuable']},
+  {key:'barter',   label:'🔧 물물교환',  type:'barter'},
+  {key:'provisions',label:'🍖 식량',     type:'provisions'},
+  {key:'meds',     label:'💊 의료',      type:'meds'},
+  {key:'keys',     label:'🔑 열쇠',      type:'keys'},
+  {key:'ammo',     label:'🔫 탄약',      type:'ammo'},
+  {key:'guns',     label:'🔫 무기',      type:'gun'},
+  {key:'armor',    label:'🛡️ 방탄복',    type:'armor'},
+  {key:'helmet',   label:'⛑️ 헬멧',      type:'helmet'},
+  {key:'rig',      label:'🎽 리그',      type:'rig'},
+  {key:'backpack', label:'🎒 가방',      type:'backpack'},
+  // 무기 보조부품 - 상세 (mods 타입으로 받아서 category로 거름)
+  {key:'handguard', label:'· 핸드가드',  type:'mods', catMatch:['handguard']},
+  {key:'pistolgrip',label:'· 권총손잡이',type:'pistolGrip'},
+  {key:'stock',    label:'· 개머리판',   type:'mods', catMatch:['stock','chassis']},
+  {key:'muzzle',   label:'· 총구장치',   type:'mods', catMatch:['muzzle']},
+  {key:'sight',    label:'· 조준경',     type:'mods', catMatch:['sight','scope','sights']},
+  {key:'magazine', label:'· 탄창',       type:'mods', catMatch:['magazine']},
+  {key:'suppressor',label:'· 소음기',    type:'suppressor'},
+  {key:'mount',    label:'· 마운트',     type:'mods', catMatch:['mount']},
+];
+let itemFilter='all';
+
+async function searchItems(name, opts={}){
+  const filter = ITEM_FILTERS.find(f=>f.key===itemFilter)||ITEM_FILTERS[0];
+  const hasFilter = filter.type || filter.catMatch;
+  if((!name||!name.trim()) && !hasFilter) return;
+  if(itemSearching)return;
   itemSearching=true;itemResults=[];
   renderPage();
   try{
+    const vars={};
+    if(name && name.trim()) vars.name = name.trim();
+    if(filter.type) vars.types = [filter.type];
     const r=await fetch('https://api.tarkov.dev/graphql',{method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({query:GQL_ITEM,variables:{name}})});
+      body:JSON.stringify({query:GQL_ITEM,variables:vars})});
     const d=await r.json();
     if(d.errors)throw new Error(d.errors[0].message);
-    itemResults=d.data.items||[];
+    let results=d.data.items||[];
+    // 세부 카테고리 클라이언트 필터
+    if(filter.catMatch){
+      results = results.filter(it=>{
+        const cn=(it.category?.name||'').toLowerCase();
+        const nn=(it.category?.normalizedName||'').toLowerCase();
+        return filter.catMatch.some(k=>cn.includes(k)||nn.includes(k));
+      });
+    }
+    itemResults=results;
   }catch(e){
     itemResults=[{_error:e.message}];
   }
   itemSearching=false;renderPage();
+}
+function setItemFilter(k){
+  itemFilter=k;
+  searchItems(itemSearchQ);
 }
 
 function computeRep(){
@@ -3546,11 +3617,25 @@ function renderItemSearch(){
       onkeydown="if(event.key==='Enter')triggerItemSearch()">
     <button class="item-search-btn" onclick="triggerItemSearch()">Search</button>
   </div>`;
+  // 필터 버튼들
+  html+=`<div class="item-filter-row">`;
+  ITEM_FILTERS.forEach(f=>{
+    const on=itemFilter===f.key;
+    const isSub=f.label.startsWith('·');
+    html+=`<button class="item-filter-btn${on?' on':''}${isSub?' sub':''}" onclick="setItemFilter('${f.key}')">${f.label}</button>`;
+  });
+  html+=`</div>`;
+
   if(itemSearching){html+=`<div class="search-loading"><div class="spinner"></div><br>Searching tarkov.dev...</div>`;return html;}
-  if(!itemSearchQ&&!itemResults.length){html+=`<div class="search-hint"><div class="search-hint-icon">🔍</div>Search any item to see trader availability, loyalty level requirements, and flea market prices.</div>`;return html;}
+  const filterActive = itemFilter!=='all';
+  if(!itemSearchQ&&!itemResults.length&&!filterActive){html+=`<div class="search-hint"><div class="search-hint-icon">🔍</div>아이템을 검색하거나 위 카테고리 필터를 선택하세요.<br>이름 검색 + 카테고리 필터를 함께 쓸 수도 있어요.</div>`;return html;}
   if(itemResults.length&&itemResults[0]?._error){html+=`<div class="err-box">Search error: ${itemResults[0]._error}</div>`;return html;}
-  if(itemResults.length){html+=`<div class="result-count">${itemResults.length} result${itemResults.length!==1?'s':''} for "${itemSearchQ}"</div>`;itemResults.forEach(item=>{html+=renderItemResult(item);});}
-  else if(itemSearchQ){html+=`<div class="empty"><div class="empty-icon">😕</div><div class="empty-text">No items found for "${itemSearchQ}"</div></div>`;}
+  if(itemResults.length){
+    const label = itemSearchQ ? `"${itemSearchQ}"` : (ITEM_FILTERS.find(f=>f.key===itemFilter)?.label||'');
+    html+=`<div class="result-count">${itemResults.length} result${itemResults.length!==1?'s':''}${itemResults.length>=50?'+ (상위 50개)':''} · ${label}</div>`;
+    itemResults.forEach(item=>{html+=renderItemResult(item);});
+  }
+  else if(itemSearchQ||filterActive){html+=`<div class="empty"><div class="empty-icon">😕</div><div class="empty-text">결과가 없어요</div></div>`;}
   return html;
 }
 
@@ -3564,7 +3649,7 @@ function renderItemResult(item){
   let html=`<div class="item-result"><div class="ir-header">`;
   if(img)html+=`<img class="ir-img" src="${img}" alt="${item.name}" onerror="this.outerHTML='<div class=\\'ir-img-ph\\'>📦</div>'">`;
   else html+=`<div class="ir-img-ph">📦</div>`;
-  html+=`<div style="flex:1;min-width:0"><div class="ir-title">${item.name}${item.wikiLink?` <a href="${item.wikiLink}" target="_blank" style="font-size:11px;color:var(--t3)">wiki ↗</a>`:''}</div><div class="ir-short">${item.shortName||''}</div><div class="ir-price-row">`;
+  html+=`<div style="flex:1;min-width:0"><div class="ir-title">${item.name}${item.wikiLink?` <a href="${item.wikiLink}" target="_blank" style="font-size:11px;color:var(--t3)">wiki ↗</a>`:''}</div><div class="ir-short">${item.shortName||''}${item.category?.name?` · <span style="color:var(--t3)">${item.category.name}</span>`:''}</div><div class="ir-price-row">`;
   if(fleaPrice)html+=`<span class="ir-price-badge ir-flea">Flea avg: ${fmt(fleaPrice)} ₽</span>`;
   if(item.high24hPrice)html+=`<span class="ir-price-badge" style="background:var(--bg3);color:var(--t2);border-color:var(--border)">24h high: ${fmt(item.high24hPrice)} ₽</span>`;
   if(item.low24hPrice)html+=`<span class="ir-price-badge" style="background:var(--bg3);color:var(--t2);border-color:var(--border)">24h low: ${fmt(item.low24hPrice)} ₽</span>`;
@@ -3655,7 +3740,7 @@ function bestImg(item,size='inspect'){
   if(size==='grid')return item.gridImageLink||item.iconLink||item.inspectImageLink||'';
   return item.iconLink||item.gridImageLink||item.inspectImageLink||'';
 }
-function triggerItemSearch(){const v=document.getElementById('itemSearchInput')?.value||'';if(!v.trim())return;itemSearchQ=v;searchItems(v);}
+function triggerItemSearch(){const v=document.getElementById('itemSearchInput')?.value||'';itemSearchQ=v;searchItems(v);}
 
 /* ══ HIDEOUT ══ */
 function fmtTime(secs){if(!secs)return'—';const h=Math.floor(secs/3600),m=Math.floor((secs%3600)/60);if(h>=24){const d=Math.floor(h/24),rh=h%24;return`${d}d ${rh}h`;}if(h>0)return`${h}h ${m}m`;return`${m}m`;}
@@ -3894,9 +3979,10 @@ function renderCollector(){
   <div class="coll-grid">`;
 
   filtered.forEach(item=>{
-    const f=collectorFound.has(item.id);
-    const iconUrl=`https://assets.tarkov.dev/${item.id}-icon.webp`;
-    html+=`<div class="item-card ${f?'found':''}" onclick="toggleCollector('${item.id}')">
+    const key = item.id || item.name;
+    const f=collectorFound.has(key);
+    const iconUrl=item.img?item.img:(item.id?`https://assets.tarkov.dev/${item.id}-icon.webp`:'');
+    html+=`<div class="item-card ${f?'found':''}" onclick="toggleCollector('${key.replace(/'/g,"\\'")}')">
       <div class="item-chk ${f?'on':''}">✓</div>
       <img src="${iconUrl}" 
         style="width:36px;height:36px;object-fit:contain;background:var(--bg4);border-radius:4px;flex-shrink:0;border:1px solid var(--border)"
